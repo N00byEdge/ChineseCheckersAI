@@ -75,7 +75,4 @@ $RECYCLE.BIN/
 *.lnk
 
 Källor
-*.depend
-*.cbp
-*.layout
 bin*

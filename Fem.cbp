@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Fem" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release Windows x86">
+				<Option platforms="Windows;" />
+				<Option output="bin/Release/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++0x" />
+					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="include" />
+					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
+					<Add directory="agents" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add library="boost_atomic" />
+					<Add library="boost_chrono" />
+					<Add library="boost_container" />
+					<Add library="boost_coroutine" />
+					<Add library="boost_date_time" />
+					<Add library="boost_exception" />
+					<Add library="boost_filesystem" />
+					<Add library="boost_graph" />
+					<Add library="boost_iostreams" />
+					<Add library="boost_locale" />
+					<Add library="boost_log" />
+					<Add library="boost_log_setup" />
+					<Add library="boost_math_c99" />
+					<Add library="boost_math_c99f" />
+					<Add library="boost_math_c99l" />
+					<Add library="boost_math_tr1" />
+					<Add library="boost_math_tr1f" />
+					<Add library="boost_math_tr1l" />
+					<Add library="boost_prg_exec_monitor" />
+					<Add library="boost_program_options" />
+					<Add library="boost_python" />
+					<Add library="boost_random" />
+					<Add library="boost_regex" />
+					<Add library="boost_serialization" />
+					<Add library="boost_signals" />
+					<Add library="boost_system" />
+					<Add library="boost_test_exec_monitor" />
+					<Add library="boost_thread" />
+					<Add library="boost_timer" />
+					<Add library="boost_unit_test_framework" />
+					<Add library="boost_wave" />
+					<Add library="boost_wserialization" />
+					<Add directory="../../API/SFML/2.3.1/x86/lib" />
+					<Add directory="../../API/Boost/1.58/windows-build/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release Windows x86 with interface">
+				<Option platforms="Windows;" />
+				<Option output="bin/Release/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++0x" />
+					<Add option="-DINTERFACE" />
+					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="include" />
+					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
+					<Add directory="agents" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add library="boost_atomic" />
+					<Add library="boost_chrono" />
+					<Add library="boost_container" />
+					<Add library="boost_coroutine" />
+					<Add library="boost_date_time" />
+					<Add library="boost_exception" />
+					<Add library="boost_filesystem" />
+					<Add library="boost_graph" />
+					<Add library="boost_iostreams" />
+					<Add library="boost_locale" />
+					<Add library="boost_log" />
+					<Add library="boost_log_setup" />
+					<Add library="boost_math_c99" />
+					<Add library="boost_math_c99f" />
+					<Add library="boost_math_c99l" />
+					<Add library="boost_math_tr1" />
+					<Add library="boost_math_tr1f" />
+					<Add library="boost_math_tr1l" />
+					<Add library="boost_prg_exec_monitor" />
+					<Add library="boost_program_options" />
+					<Add library="boost_python" />
+					<Add library="boost_random" />
+					<Add library="boost_regex" />
+					<Add library="boost_serialization" />
+					<Add library="boost_signals" />
+					<Add library="boost_system" />
+					<Add library="boost_test_exec_monitor" />
+					<Add library="boost_thread" />
+					<Add library="boost_timer" />
+					<Add library="boost_unit_test_framework" />
+					<Add library="boost_wave" />
+					<Add library="boost_wserialization" />
+					<Add directory="../../API/SFML/2.3.1/x86/lib" />
+					<Add directory="../../API/Boost/1.58/windows-build/lib" />
+				</Linker>
+			</Target>
+			<Target title="Debug Windows x86">
+				<Option platforms="Windows;" />
+				<Option output="bin/Debug/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++0x" />
+					<Add option="-DDEBUGGING" />
+					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="include" />
+					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
+					<Add directory="agents" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add library="boost_atomic" />
+					<Add library="boost_chrono" />
+					<Add library="boost_container" />
+					<Add library="boost_coroutine" />
+					<Add library="boost_date_time" />
+					<Add library="boost_exception" />
+					<Add library="boost_filesystem" />
+					<Add library="boost_graph" />
+					<Add library="boost_iostreams" />
+					<Add library="boost_locale" />
+					<Add library="boost_log" />
+					<Add library="boost_log_setup" />
+					<Add library="boost_math_c99" />
+					<Add library="boost_math_c99f" />
+					<Add library="boost_math_c99l" />
+					<Add library="boost_math_tr1" />
+					<Add library="boost_math_tr1f" />
+					<Add library="boost_math_tr1l" />
+					<Add library="boost_prg_exec_monitor" />
+					<Add library="boost_program_options" />
+					<Add library="boost_python" />
+					<Add library="boost_random" />
+					<Add library="boost_regex" />
+					<Add library="boost_serialization" />
+					<Add library="boost_signals" />
+					<Add library="boost_system" />
+					<Add library="boost_test_exec_monitor" />
+					<Add library="boost_thread" />
+					<Add library="boost_timer" />
+					<Add library="boost_unit_test_framework" />
+					<Add library="boost_wave" />
+					<Add library="boost_wserialization" />
+					<Add directory="../../API/SFML/2.3.1/x86/lib" />
+					<Add directory="../../API/Boost/1.58/windows-build/lib" />
+				</Linker>
+			</Target>
+			<Target title="Debug Windows x86 with interface">
+				<Option platforms="Windows;" />
+				<Option output="bin/Debug/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++0x" />
+					<Add option="-DINTERFACE" />
+					<Add option="-DDEBUGGING" />
+					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="include" />
+					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
+					<Add directory="agents" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add library="boost_atomic" />
+					<Add library="boost_chrono" />
+					<Add library="boost_container" />
+					<Add library="boost_coroutine" />
+					<Add library="boost_date_time" />
+					<Add library="boost_exception" />
+					<Add library="boost_filesystem" />
+					<Add library="boost_graph" />
+					<Add library="boost_iostreams" />
+					<Add library="boost_locale" />
+					<Add library="boost_log" />
+					<Add library="boost_log_setup" />
+					<Add library="boost_math_c99" />
+					<Add library="boost_math_c99f" />
+					<Add library="boost_math_c99l" />
+					<Add library="boost_math_tr1" />
+					<Add library="boost_math_tr1f" />
+					<Add library="boost_math_tr1l" />
+					<Add library="boost_prg_exec_monitor" />
+					<Add library="boost_program_options" />
+					<Add library="boost_python" />
+					<Add library="boost_random" />
+					<Add library="boost_regex" />
+					<Add library="boost_serialization" />
+					<Add library="boost_signals" />
+					<Add library="boost_system" />
+					<Add library="boost_test_exec_monitor" />
+					<Add library="boost_thread" />
+					<Add library="boost_timer" />
+					<Add library="boost_unit_test_framework" />
+					<Add library="boost_wave" />
+					<Add library="boost_wserialization" />
+					<Add directory="../../API/SFML/2.3.1/x86/lib" />
+					<Add directory="../../API/Boost/1.58/windows-build/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release OS X">
+				<Option platforms="Mac;" />
+				<Option output="binUnix/Release/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="objUnix/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++0x" />
+					<Add directory="../../API/SFML/2.3.1/OS X/include" />
+					<Add directory="include" />
+					<Add directory="../../API/Boost/1.59/unix" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add library="boost_atomic" />
+					<Add library="boost_chrono" />
+					<Add library="boost_container" />
+					<Add library="boost_coroutine" />
+					<Add library="boost_date_time" />
+					<Add library="boost_exception" />
+					<Add library="boost_filesystem" />
+					<Add library="boost_graph" />
+					<Add library="boost_iostreams" />
+					<Add library="boost_locale" />
+					<Add library="boost_log" />
+					<Add library="boost_log_setup" />
+					<Add library="boost_math_c99" />
+					<Add library="boost_math_c99f" />
+					<Add library="boost_math_c99l" />
+					<Add library="boost_math_tr1" />
+					<Add library="boost_math_tr1f" />
+					<Add library="boost_math_tr1l" />
+					<Add library="boost_prg_exec_monitor" />
+					<Add library="boost_program_options" />
+					<Add library="boost_python" />
+					<Add library="boost_random" />
+					<Add library="boost_regex" />
+					<Add library="boost_serialization" />
+					<Add library="boost_signals" />
+					<Add library="boost_system" />
+					<Add library="boost_test_exec_monitor" />
+					<Add library="boost_thread" />
+					<Add library="boost_timer" />
+					<Add library="boost_unit_test_framework" />
+					<Add library="boost_wave" />
+					<Add library="boost_wserialization" />
+					<Add directory="../../API/SFML/2.3.1/OS X/lib" />
+					<Add directory="../../API/Boost/1.59/unix/stage/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="agents/agent.cpp" />
+		<Unit filename="agents/agent.h" />
+		<Unit filename="agents/agent_human.cpp" />
+		<Unit filename="agents/agent_human.h" />
+		<Unit filename="agents/agent_neural.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="agents/agent_neural.h" />
+		<Unit filename="include/board.cpp" />
+		<Unit filename="include/board.h" />
+		<Unit filename="include/board_move.cpp" />
+		<Unit filename="include/board_move.h" />
+		<Unit filename="include/board_turn.cpp" />
+		<Unit filename="include/board_turn.h" />
+		<Unit filename="include/game.cpp" />
+		<Unit filename="include/game.h" />
+		<Unit filename="include/includes.h" />
+		<Unit filename="include/lib.cpp" />
+		<Unit filename="include/lib.h" />
+		<Unit filename="include/tile.cpp" />
+		<Unit filename="include/tile.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
