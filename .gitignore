@@ -73,3 +73,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+Källor
+*.depend
+*.cbp
+*.layout
+bin*
