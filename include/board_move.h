@@ -7,32 +7,28 @@ using namespace std;
 
 class board_move {
 
-    public:
+	public:
 
-        /* Constructor */
-        board_move ( );
+		bool didJump ( );
+		bool didWalk ( );
 
-        /* Destructor */
-        ~board_move ( );
+		unsigned int getDirection ( );
 
-        bool didJump ( );
-        bool didWalk ( );
+		void setRawData ( int );
+		int getRawData ( );
 
-        unsigned int getDirection ( );
+		void setTileStartCoords ( pair < int, int > );
+		pair < int, int > getTileStartCoords ( );
 
-        void setRawData ( int );
-        int getRawData ( );
+		void rotate ( );
 
-        void setTileStartCoords ( pair < int, int > );
-        pair < int, int > getTileStartCoords ( );
+	protected:
 
-    protected:
+	private:
 
-    private:
-
-        pair < int, int > tileStartCoords;
-    
-        int i = 0;
+		pair < int, int > tileStartCoords;
+	
+		int i = 0;
 };
 
 #endif // BOARD_MOVE

@@ -35,9 +35,9 @@ class board {
 
 		long long score ( int player );
 
-		void rotateBoard ( ); // rotates the board 1 step
-		void rotateBoard ( int steps );
-		void rotateForPerspective ( int player );
+		void rotate ( ); // rotates the board 1 step
+		void rotate ( int steps );
+		int rotateForPerspective ( int player );
 
 		pair < int, int > getCoordRight ( pair < int, int> coordinates );
 		pair < int, int > getCoordRight ( tile * tile );

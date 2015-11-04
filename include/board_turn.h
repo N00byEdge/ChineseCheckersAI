@@ -13,6 +13,9 @@ class board_turn {
 		/* A vector of moves for the turn */
 		vector < board_move > moves;
 
+		void rotate ( );
+		void rotate ( int steps );
+
 	protected:
 
 	private:

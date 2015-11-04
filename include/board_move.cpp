@@ -1,9 +1,5 @@
 #include "board_move.h"
 
-board_move::board_move ( ) { }
-
-board_move::~board_move ( ) { }
-
 bool board_move::didJump ( ) {
     return !( 1 <= this -> i && this -> i <= 6 );
 }
@@ -31,4 +27,16 @@ void board_move::setTileStartCoords ( pair < int, int > pii ) {
 
 pair < int, int > board_move::getTileStartCoords ( ) {
 	return this -> tileStartCoords;
+}
+
+void board_move::rotate ( ) {
+
+	auto rotationMap = getCoordTranslationTable ( );
+
+	this -> tileStartCoords = rotationMap [ this -> tileStartCoords ];
+	if ( this -> i % 6 == 5 )
+		i -= 5;
+	else
+		++ i;
+
 }

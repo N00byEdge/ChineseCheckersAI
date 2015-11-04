@@ -1483,16 +1483,16 @@ bool board::makeTurn ( board_turn t ) {
 
 }
 
-void board::rotateBoard ( ) {
+void board::rotate ( ) {
 
 	#ifdef DEBUGGING
 	cout << "Rotating board:\n";
 	this -> print ( );
 	#endif //DEBUGGING
 
-	vector < vector < tile > > tb2 = this -> tb;
+	auto tb2 = this -> tb;
 
-	map < pair < int, int >, pair < int, int > > coordMap = lib::getCoordTranslationTable ( );
+	auto rotationMap = lib::getCoordTranslationTable ( );
 
 	pair < int, int > pii1, pii2;
 
@@ -1502,7 +1502,7 @@ void board::rotateBoard ( ) {
 
 			pii1.first = j;
 			pii1.second = i;
-			pii2 = coordMap [ pii1 ];
+			pii2 = rotationMap [ pii1 ];
 
 			//tb2 [ pii2.second ] [ pii2.first ] = this -> tb [ j ] [ i ];
 
@@ -1547,16 +1547,18 @@ void board::rotateBoard ( ) {
 
 }
 
-void board::rotateBoard ( int steps ) {
+void board::rotate ( int steps ) {
 
 	for ( int i = 0; i < steps % 6; ++ i )
 		this -> rotateBoard ( );
 
 }
 
-void board::rotateForPerspective ( int player ) {
+int board::rotateForPerspective ( int player ) {
 
 	bool correctRotation = false;
+
+	int rotations = 0;
 
 	while ( !correctRotation ) {
 
@@ -1571,7 +1573,7 @@ void board::rotateForPerspective ( int player ) {
 				<< endl;
 			#endif //DEBUGGING
 
-			break;
+			return rotations;
 
 		} else {
 
@@ -1583,6 +1585,7 @@ void board::rotateForPerspective ( int player ) {
 			#endif //DEBUGGING
 
 			this -> rotateBoard ( );
+			++ rotations;
 
 		}
 
