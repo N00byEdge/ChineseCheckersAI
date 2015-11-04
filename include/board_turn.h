@@ -8,20 +8,14 @@
 /* Board Turn class */
 class board_turn {
 
-    public:
+	public:
 
-        /* Constructor */
-        board_turn ( );
+		/* A vector of moves for the turn */
+		vector < board_move > moves;
 
-        /* Destructor */
-        ~board_turn ( );
+	protected:
 
-        /* A vector of moves for the turn */
-        vector < board_move > moves;
-
-    protected:
-
-    private:
+	private:
 
 };
 
