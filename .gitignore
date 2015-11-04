@@ -79,3 +79,4 @@ bin*
 *.layout
 *.bat
 *.mak
+*.depend
