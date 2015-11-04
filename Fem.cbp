@@ -298,6 +298,8 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="agents/agent_neural.h" />
+		<Unit filename="agents/agent_scoring.cpp" />
+		<Unit filename="agents/agent_scoring.h" />
 		<Unit filename="include/board.cpp" />
 		<Unit filename="include/board.h" />
 		<Unit filename="include/board_move.cpp" />
