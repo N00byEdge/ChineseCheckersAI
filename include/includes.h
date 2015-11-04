@@ -23,4 +23,10 @@
 
 	#include <SFML/Graphics.hpp>
 
+	/* Game engine universal includes */
+
+	#ifndef LIB
+	#include <lib.h>
+	#endif
+
 #endif // INCLUDES

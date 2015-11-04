@@ -33,6 +33,8 @@ class tile {
 
         pair < int, int > getCoordinates ( );
 
+        void updateCoordinates ( int x, int y );
+
     protected:
 
     private:

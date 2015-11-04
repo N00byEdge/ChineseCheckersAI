@@ -11,12 +11,6 @@ class board {
 
 	public:
 
-		/* Constructor */
-		board ( );
-
-		/* Destructor */
-		~board ( );
-
 		void print ( );
 		void printWithCoords ( );
 
@@ -36,6 +30,14 @@ class board {
 
 		bool isValidTile ( pair < int, int > coordinates );
 		bool isValidTile ( tile * tile );
+
+		vector < tile * > getPlayerTiles ( int player );
+
+		long long score ( int player );
+
+		void rotateBoard ( ); // rotates the board 1 step
+		void rotateBoard ( int steps );
+		void rotateForPerspective ( int player );
 
 		pair < int, int > getCoordRight ( pair < int, int> coordinates );
 		pair < int, int > getCoordRight ( tile * tile );

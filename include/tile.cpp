@@ -15,25 +15,41 @@ tile::tile ( int x, int y, int c ) {
     cout << "Set y coordinate: " << this -> y << endl;
     cout << "Set contents: " << this -> c << endl;
     #endif
+
 }
 
 /* Get the coordinates of a given tile */
 int tile::getX ( ) {
+
     return this -> x;
+
 }
 
 int tile::getY ( ) {
+
     return this -> y;
+
 }
 
 /* Get the contents of a tile */
 int tile::getContents ( ) {
+
     return this -> c;
+
 }
 
 /* Set the contents of a given tile */
 void tile::setContents ( int i ) {
+
     this -> c = i;
+
+}
+
+void tile::updateCoordinates ( int x, int y ) {
+
+    this -> x = x;
+    this -> y = y;
+
 }
 
 pair < int, int > tile::getCoordinates ( ) {
@@ -44,4 +60,5 @@ pair < int, int > tile::getCoordinates ( ) {
     p.second = this -> y;
 
     return p;
+    
 }

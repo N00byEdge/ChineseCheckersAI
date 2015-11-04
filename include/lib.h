@@ -7,6 +7,8 @@ using namespace std;
 
 namespace lib {
 
+	map < pair < int, int >, pair < int, int > > getCoordTranslationTable ( );
+
     int charToInt ( char );
 
 }
