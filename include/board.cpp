@@ -141,8 +141,33 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 
 			this -> tb [ this -> tb.size ( ) - 1 ].push_back ( t );
 
-			this -> nests [ t.getContents ( ) ].push_back ( & t ) ;
-			this -> playerTiles [ t.getContents ( ) ].push_back ( & t );
+			this -> nests [ t.getContents ( ) ].push_back ( & ( this -> tb [ this -> tb.size ( ) - 1 ] [ this -> tb [ this -> tb.size ( ) - 1 ].size ( ) - 1 ] ) ) ;
+			
+			#ifdef DEBUGGING
+			cout << "Added tile "
+				<< this -> nests [ board [ i ] [ j ] ] [ this -> nests [ board [ i ] [ j ] ].size ( ) - 1 ]
+				<< ", ["
+				<< this -> nests [ board [ i ] [ j ] ] [ this -> nests [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).first
+				<< ", "
+				<< this -> nests [ board [ i ] [ j ] ] [ this -> nests [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).second
+				<< "] to player #"
+				<< board [ i ] [ j ]
+				<< "s nest.\n";
+			#endif // DEBUGGING
+
+			this -> playerTiles [ board [ i ] [ j ] ].push_back ( & ( this -> tb [ this -> tb.size ( ) - 1 ] [ this -> tb [ this -> tb.size ( ) - 1 ].size ( ) - 1 ] ) ) ;
+
+			#ifdef DEBUGGING
+			cout << "Added tile "
+				<< this -> playerTiles [ board [ i ] [ j ] ] [ this -> playerTiles [ board [ i ] [ j ] ].size ( ) - 1 ]
+				<< ", ["
+				<< this -> playerTiles [ board [ i ] [ j ] ] [ this -> playerTiles [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).first
+				<< ", "
+				<< this -> playerTiles [ board [ i ] [ j ] ] [ this -> playerTiles [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).second
+				<< "] to player #"
+				<< t.getContents ( )
+				<< "s playerTiles.\n";
+			#endif // DEBUGGING
 
 			#ifdef DEBUGGING
 			cout << "Finished pushing back tile.\n";
@@ -1490,11 +1515,31 @@ void board::rotate ( ) {
 	this -> print ( );
 	#endif //DEBUGGING
 
-	auto tb2 = this -> tb;
-
 	auto rotationMap = lib::getCoordTranslationTable ( );
 
 	pair < int, int > pii1, pii2;
+
+	for ( int i = 0; i < this -> playerTiles.size ( ); ++ i ) {
+
+		for ( int j = 0; j < this -> playerTiles [ i ].size ( ); ++ j ) {
+
+			this -> playerTiles [ i ] [ j ] = this -> getTile ( rotationMap [ playerTiles [ i ] [ j ] -> getCoordinates ( ) ] );
+
+		}
+
+	}
+
+	for ( int i = 0; i < this -> nests.size ( ); ++ i ) {
+
+		for ( int j = 0; j < this -> nests [ i ].size ( ); ++ j ) {
+
+			this -> nests [ i ] [ j ] = this -> getTile ( rotationMap [ nests [ i ] [ j ] -> getCoordinates ( ) ] );
+
+		}
+
+	}
+
+	auto tb2 = this -> tb;
 
 	for ( int i = 0; i < tb.size ( ); ++ i ) {
 
@@ -1504,41 +1549,19 @@ void board::rotate ( ) {
 			pii1.second = i;
 			pii2 = rotationMap [ pii1 ];
 
-			//tb2 [ pii2.second ] [ pii2.first ] = this -> tb [ j ] [ i ];
-
 			tb2 [ pii2.second ] [ pii2.first ].updateCoordinates ( pii2.second, pii2.first );
 			tb2 [ pii2.second ] [ pii2.first ].setContents ( tb [ i ] [ j ].getContents ( ) );
 
-			//#ifdef DEBUGGING
-			//cout << "Rotating board:\n";
-			//this -> print;
-			//#endif //DEBUGGING
-
 		}
 
 	}
 
-	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
+	/* Save board changes */
 
-		for ( int j = 0; j < playerTiles [ i ].size ( ); ++ j ) {
-
-
-
-		}
-
+	for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
+		for ( int j = 0; j < this -> tb [ i ].size ( ); ++ j )
+			this -> tb [ i ] [ j ] = tb2 [ i ] [ j ];
 	}
-
-	for ( int i = 0; i < nests.size ( ); ++ i ) {
-
-		for ( int j = 0; j < nests [ i ].size ( ); ++ j ) {
-
-
-
-		}
-
-	}
-
-	this -> tb = tb2;
 
 	#ifdef DEBUGGING
 	cout << "Rotated board:\n";
@@ -1550,7 +1573,7 @@ void board::rotate ( ) {
 void board::rotate ( int steps ) {
 
 	for ( int i = 0; i < steps % 6; ++ i )
-		this -> rotateBoard ( );
+		this -> rotate ( );
 
 }
 
@@ -1584,7 +1607,7 @@ int board::rotateForPerspective ( int player ) {
 				<< endl;
 			#endif //DEBUGGING
 
-			this -> rotateBoard ( );
+			this -> rotate ( );
 			++ rotations;
 
 		}

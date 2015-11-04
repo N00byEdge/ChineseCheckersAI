@@ -3,7 +3,7 @@
 void board_turn::rotate ( ) {
 
 	for ( int i = 0; i < this -> moves.size ( ); ++ i )
-		this -> moves.rotate ( );
+		this -> moves [ i ].rotate ( );
 
 }
 

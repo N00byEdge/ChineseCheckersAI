@@ -12,25 +12,25 @@
 	<includes.h>
 	<game.h>
 
-1446380866 source:g:\users\n00byedge\onedrive\programming\src\fem\include\board.cpp
+1446674271 source:g:\users\n00byedge\onedrive\programming\src\fem\include\board.cpp
 	"board.h"
 
-1445994533 g:\users\n00byedge\onedrive\programming\src\fem\include\board.h
+1446670184 g:\users\n00byedge\onedrive\programming\src\fem\include\board.h
 	<includes.h>
 	<board_turn.h>
 	<tile.h>
 
-1445807769 g:\users\n00byedge\onedrive\programming\src\fem\include\board_move.h
+1446670943 g:\users\n00byedge\onedrive\programming\src\fem\include\board_move.h
 	<includes.h>
 
 1444332501 h>
 
-1445972848 source:g:\users\n00byedge\onedrive\programming\src\fem\include\board_move.cpp
+1446672761 source:g:\users\n00byedge\onedrive\programming\src\fem\include\board_move.cpp
 	"board_move.h"
 
 1444139591 e.h"
 
-1445803015 g:\users\n00byedge\onedrive\programming\src\fem\include\includes.h
+1446666873 g:\users\n00byedge\onedrive\programming\src\fem\include\includes.h
 	<algorithm>
 	<iostream>
 	<stdlib.h>
@@ -44,6 +44,7 @@
 	<boost/thread.hpp>
 	<boost/date_time.hpp>
 	<SFML/Graphics.hpp>
+	<lib.h>
 
 1443215966 hics.hpp>
 
@@ -18575,13 +18576,13 @@
 1444139464 c:\users\n00byedge\onedrive\programming\src\fem\include\player.h
 	<includes.h>
 
-1445993902 source:g:\users\n00byedge\onedrive\programming\src\fem\include\tile.cpp
+1446667105 source:g:\users\n00byedge\onedrive\programming\src\fem\include\tile.cpp
 	"tile.h"
 
-1445993894 g:\users\n00byedge\onedrive\programming\src\fem\include\tile.h
+1446667264 g:\users\n00byedge\onedrive\programming\src\fem\include\tile.h
 	<includes.h>
 
-1445973708 g:\users\n00byedge\onedrive\programming\src\fem\include\board_turn.h
+1446670501 g:\users\n00byedge\onedrive\programming\src\fem\include\board_turn.h
 	<includes.h>
 	<board_move.h>
 
@@ -18606,13 +18607,13 @@
 
 1444139116 n.h"
 
-1444139116 source:g:\users\n00byedge\onedrive\programming\src\fem\include\board_turn.cpp
+1446672783 source:g:\users\n00byedge\onedrive\programming\src\fem\include\board_turn.cpp
 	"board_turn.h"
 
-1444332529 source:g:\users\n00byedge\onedrive\programming\src\fem\include\lib.cpp
+1446669011 source:g:\users\n00byedge\onedrive\programming\src\fem\include\lib.cpp
 	<lib.h>
 
-1445993170 g:\users\n00byedge\onedrive\programming\src\fem\include\lib.h
+1446667639 g:\users\n00byedge\onedrive\programming\src\fem\include\lib.h
 	<includes.h>
 
 1444332529 source:c:\users\n00byedge\onedrive\programming\src\fem\include\lib.cpp
@@ -33843,7 +33844,7 @@
 	<includes.h>
 	<board.h>
 
-1446378381 source:g:\users\n00byedge\onedrive\programming\src\fem\agents\agent_human.cpp
+1446674421 source:g:\users\n00byedge\onedrive\programming\src\fem\agents\agent_human.cpp
 	"agent_human.h"
 
 1445991280 g:\users\n00byedge\onedrive\programming\src\fem\agents\agent_human.h
@@ -33852,4 +33853,11 @@
 
 1445973639 g:\users\n00byedge\onedrive\programming\src\fem\include\include_agents.h
 	<agent_human.h>
+
+1446659268 source:g:\users\n00byedge\onedrive\programming\src\fem\agents\agent_scoring.cpp
+	"agent_scoring.h"
+
+1446646840 g:\users\n00byedge\onedrive\programming\src\fem\agents\agent_scoring.h
+	<includes.h>
+	<agent.h>
 

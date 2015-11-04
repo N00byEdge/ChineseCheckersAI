@@ -60,6 +60,13 @@ board_turn agent_human::doTurn ( board b, int player ) {
 	cout << "Printed board.\n";
 	#endif // DEBUGGING
 
+	auto playerTiles = b.getPlayerTiles ( player );
+
+	cout << "Your tiles: ";
+	for ( int i = 0; i < playerTiles.size ( ); ++ i )
+        cout << "[" << playerTiles [ i ] -> getCoordinates ( ).first  << ", " << playerTiles [ i ] -> getCoordinates ( ).second << "] ";
+    cout << endl;
+
 	cout << "Player #" << player << "s turn. Choose a tile:\n";
 
 	while ( !b.isValidTile( coords ) || b.getTile ( coords ) -> getContents ( ) != player ) {
@@ -69,7 +76,7 @@ board_turn agent_human::doTurn ( board b, int player ) {
 		cout << "y = ";
 		cin >> coords.second;
 
-		if ( !b.isValidTile ( coords) ) {
+		if ( !b.isValidTile ( coords ) ) {
 			cout << "Invalid tile.\n";
 		} else if ( b.getTile ( coords ) -> getContents ( ) != player ) {
 			cout << "That is not your tile.\n";
