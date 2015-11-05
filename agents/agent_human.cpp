@@ -48,10 +48,10 @@ board_turn agent_human::doTurn ( board b, int player ) {
 	cout << "Set initial coordinates.\n";
 	#endif // DEBUGGING
 
-	b.rotate ( 3 );
+	int boardRotations = b.rotateForPerspective ( player );
 
 	#ifdef DEBUGGING
-	cout << "Rotated board 3 steps.\n";
+	cout << "Rotated board " << boardRotations << " steps.\n";
 	#endif // DEBUGGING
 
 	b.print ( );
