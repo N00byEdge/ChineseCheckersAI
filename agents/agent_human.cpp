@@ -84,17 +84,17 @@ board_turn agent_human::doTurn ( board b, int player ) {
 
 	}
 
+	vector < board_move > v = b.getPossibleMoves ( b.getTile ( coords ) );
+
 	cout << "Possible moves for ["
         << coords.first
         << ", "
         << coords.second
         << "]: ";
 
-	vector < board_move > v = b.getPossibleMoves ( b.getTile ( coords ) );
-
 	for ( int i = 0; i < v.size ( ); ++ i ) {
         cout << v [ i ].getRawData ( ) << " ";
-	}
+	} cout << endl;
 
 	m.setTileStartCoords ( coords );
 
