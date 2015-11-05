@@ -8,6 +8,8 @@ using namespace std;
 /* Tile class */
 class tile {
 
+    friend class board;
+
     public:
 
         /* Constructor */
@@ -28,14 +30,15 @@ class tile {
          */
         int getContents ( );
 
-        /* Set the contents of a given tile */
-        void setContents ( int i );
-
         pair < int, int > getCoordinates ( );
 
+    protected:
+
+        /* Set the coordinates for the tile */
         void updateCoordinates ( int x, int y );
 
-    protected:
+        /* Set the contents for the tile */
+        void setContents ( int i );
 
     private:
 
