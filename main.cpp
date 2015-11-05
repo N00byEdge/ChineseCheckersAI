@@ -7,7 +7,7 @@
 void testStuff(){
     int players = 2;
     cout << "How many players? ";
-    //cin >> players;
+    cin >> players;
     game fem( players );
 
     pair < int, int > temp;
