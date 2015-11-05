@@ -1550,7 +1550,7 @@ void board::rotate ( ) {
 			pii.first = j;
 			pii.second = i;
 
-			tile * t = this -> getTile ( rotationMap [ pii ] );
+			tile * t = this -> getTile ( pii );
 
 			this -> nests [ t -> getContents ( ) ].push_back ( t );
 			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
