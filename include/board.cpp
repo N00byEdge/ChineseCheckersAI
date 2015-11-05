@@ -1534,26 +1534,21 @@ void board::rotate ( ) {
 			this -> tb [ i ] [ j ] = tb2 [ i ] [ j ];
 	}
 
-	for ( int i = 0; i < nests.size ( ); ++ i ) {
-		nests [ i ].clear ( );
+	for ( int i = 0; i < this -> playerTiles.size ( ); ++ i ) {
+
+		for ( int j = 0; j < this -> playerTiles [ i ].size ( ); ++ j ) {
+
+			this -> playerTiles [ i ] [ j ] = this -> getTile ( rotationMap [ playerTiles [ i ] [ j ] -> getCoordinates ( ) ] );
+
+		}
+
 	}
 
-	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
-		playerTiles [ i ].clear ( );
-	}
+	for ( int i = 0; i < this -> nests.size ( ); ++ i ) {
 
-	for ( int i = 0; i < tb.size ( ); ++ i ) {
+		for ( int j = 0; j < this -> nests [ i ].size ( ); ++ j ) {
 
-		for ( int j = 0; j < tb [ i ].size ( ); ++ j ) {
-
-			pair < int, int > pii;
-			pii.first = j;
-			pii.second = i;
-
-			tile * t = this -> getTile ( pii );
-
-			this -> nests [ t -> getContents ( ) ].push_back ( t );
-			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
+			this -> nests [ i ] [ j ] = this -> getTile ( rotationMap [ nests [ i ] [ j ] -> getCoordinates ( ) ] );
 
 		}
 
