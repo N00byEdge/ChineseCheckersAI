@@ -54,13 +54,13 @@ board_turn agent_human::doTurn ( board b, int player ) {
 	cout << "Rotated board 3 steps.\n";
 	#endif // DEBUGGING
 
-	b.printWithCoords ( );
+	b.print ( );
 
 	#ifdef DEBUGGING
 	cout << "Printed board.\n";
 	#endif // DEBUGGING
 
-	auto playerTiles = b.getPlayerTiles ( player );
+	vector < tile * > playerTiles = b.getPlayerTiles ( player );
 
 	cout << "Your tiles: ";
 	for ( int i = 0; i < playerTiles.size ( ); ++ i )
