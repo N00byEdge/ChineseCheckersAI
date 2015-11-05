@@ -1520,7 +1520,7 @@ void board::rotate ( ) {
 			pii1.second = i;
 			pii2 = rotationMap [ pii1 ];
 
-			tb2 [ pii2.second ] [ pii2.first ].updateCoordinates ( pii2.second, pii2.first );
+			tb2 [ pii2.second ] [ pii2.first ].updateCoordinates ( pii2.first, pii2.second );
 			tb2 [ pii2.second ] [ pii2.first ].setContents ( tb [ i ] [ j ].getContents ( ) );
 
 		}
