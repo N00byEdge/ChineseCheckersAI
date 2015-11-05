@@ -33,8 +33,6 @@ class board {
 
 		vector < tile * > getPlayerTiles ( int player );
 
-		long long score ( int player );
-
 		void rotate ( ); // rotates the board 1 step
 		void rotate ( int steps );
 		int rotateForPerspective ( int player );

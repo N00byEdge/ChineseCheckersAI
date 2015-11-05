@@ -141,39 +141,28 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 
 			this -> tb [ this -> tb.size ( ) - 1 ].push_back ( t );
 
-			this -> nests [ t.getContents ( ) ].push_back ( & ( this -> tb [ this -> tb.size ( ) - 1 ] [ this -> tb [ this -> tb.size ( ) - 1 ].size ( ) - 1 ] ) ) ;
-			
-			#ifdef DEBUGGING
-			cout << "Added tile "
-				<< this -> nests [ board [ i ] [ j ] ] [ this -> nests [ board [ i ] [ j ] ].size ( ) - 1 ]
-				<< ", ["
-				<< this -> nests [ board [ i ] [ j ] ] [ this -> nests [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).first
-				<< ", "
-				<< this -> nests [ board [ i ] [ j ] ] [ this -> nests [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).second
-				<< "] to player #"
-				<< board [ i ] [ j ]
-				<< "s nest.\n";
-			#endif // DEBUGGING
-
-			this -> playerTiles [ board [ i ] [ j ] ].push_back ( & ( this -> tb [ this -> tb.size ( ) - 1 ] [ this -> tb [ this -> tb.size ( ) - 1 ].size ( ) - 1 ] ) ) ;
-
-			#ifdef DEBUGGING
-			cout << "Added tile "
-				<< this -> playerTiles [ board [ i ] [ j ] ] [ this -> playerTiles [ board [ i ] [ j ] ].size ( ) - 1 ]
-				<< ", ["
-				<< this -> playerTiles [ board [ i ] [ j ] ] [ this -> playerTiles [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).first
-				<< ", "
-				<< this -> playerTiles [ board [ i ] [ j ] ] [ this -> playerTiles [ board [ i ] [ j ] ].size ( ) - 1 ] -> getCoordinates ( ).second
-				<< "] to player #"
-				<< t.getContents ( )
-				<< "s playerTiles.\n";
-			#endif // DEBUGGING
-
 			#ifdef DEBUGGING
 			cout << "Finished pushing back tile.\n";
 			#endif // DEBUGGING
 
 		}
+	}
+
+	for ( int i = 0; i < tb.size ( ); ++ i ) {
+
+		for ( int j = 0; j < tb [ i ].size ( ); ++ j ) {
+
+			pair < int, int > pii;
+			pii.first = j;
+			pii.second = i;
+
+			tile * t = this -> getTile ( pii );
+
+			this -> nests [ t -> getContents ( ) ].push_back ( t );
+			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
+
+		}
+
 	}
 
 	#ifdef DEBUGGING
@@ -1613,13 +1602,5 @@ int board::rotateForPerspective ( int player ) {
 		}
 
 	}
-
-}
-
-long long board::score ( int player ) {
-
-	long double ld;
-
-	vector < tile * > playerTiles = this -> getPlayerTiles ( player );
 
 }
