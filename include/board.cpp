@@ -85,6 +85,8 @@ void board::resetBoard ( int numPlayers ) {
 	/* If the number of players is not equal to 2, 3, 4 or 6, we are going to use 2 players. */
 	if( !( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) ) numPlayers = 2;
 
+	this -> numPlayers = numPlayers;
+
 	/* Sets the board to an empty board, defined at the top. */
 	if ( numPlayers == 2 ) board::setBoard ( Board2Players, numPlayers );
 	else board::setBoard ( emptyBoard, numPlayers );
@@ -1508,26 +1510,6 @@ void board::rotate ( ) {
 
 	pair < int, int > pii1, pii2;
 
-	for ( int i = 0; i < this -> playerTiles.size ( ); ++ i ) {
-
-		for ( int j = 0; j < this -> playerTiles [ i ].size ( ); ++ j ) {
-
-			this -> playerTiles [ i ] [ j ] = this -> getTile ( rotationMap [ playerTiles [ i ] [ j ] -> getCoordinates ( ) ] );
-
-		}
-
-	}
-
-	for ( int i = 0; i < this -> nests.size ( ); ++ i ) {
-
-		for ( int j = 0; j < this -> nests [ i ].size ( ); ++ j ) {
-
-			this -> nests [ i ] [ j ] = this -> getTile ( rotationMap [ nests [ i ] [ j ] -> getCoordinates ( ) ] );
-
-		}
-
-	}
-
 	auto tb2 = this -> tb;
 
 	for ( int i = 0; i < tb.size ( ); ++ i ) {
@@ -1550,6 +1532,31 @@ void board::rotate ( ) {
 	for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
 		for ( int j = 0; j < this -> tb [ i ].size ( ); ++ j )
 			this -> tb [ i ] [ j ] = tb2 [ i ] [ j ];
+	}
+
+	for ( int i = 0; i < nests.size ( ); ++ i ) {
+		nests [ i ].clear ( );
+	}
+
+	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
+		playerTiles [ i ].clear ( );
+	}
+
+	for ( int i = 0; i < tb.size ( ); ++ i ) {
+
+		for ( int j = 0; j < tb [ i ].size ( ); ++ j ) {
+
+			pair < int, int > pii;
+			pii.first = j;
+			pii.second = i;
+
+			tile * t = this -> getTile ( rotationMap [ pii ] );
+
+			this -> nests [ t -> getContents ( ) ].push_back ( t );
+			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
+
+		}
+
 	}
 
 	#ifdef DEBUGGING

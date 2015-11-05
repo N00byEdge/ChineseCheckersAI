@@ -137,6 +137,8 @@ class board {
 		/* The tiles belonging to a player, never reorganized. */
 		vector < vector < tile * > > playerTiles;
 
+		int numPlayers;
+
 };
 
 #endif // board
