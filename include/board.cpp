@@ -1562,7 +1562,7 @@ bool board::jumpDownLeft ( tile * t ) {
 		this -> getTile ( this -> getCoordJumpDownLeft ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
 			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDown Left ( t ) );
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDownLeft ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
