@@ -1,8 +1,6 @@
 #include "game.h"
 
-/* Game constructor */
-game::game ( int numPlayers ) {
-    /* Calling the constructor also creates all members without initial values, like board. */
+void game::startGame ( int numPlayers ) {
 
     /* Sets the number of players in the game */
     this -> numPlayers = numPlayers;
@@ -45,11 +43,7 @@ game::game ( int numPlayers ) {
         if ( i == numPlayers ) i = 0;
         human_agents [ i ] . doTurn ( this -> masterBoard, i + 1 );
     }
-
 }
-
-/* Game destructor */
-game::~game() { }
 
 board * game::getBoard ( ) {
     return & ( this -> masterBoard ) ;
