@@ -11,13 +11,9 @@ class game {
 
     public:
 
-        /* Constructor */
-        game ( int );
-
-        /* Destructor */
-        ~game ( );
-
         board * getBoard();
+
+        void startGame ( int numPlayers );
 
     protected:
 
