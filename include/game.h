@@ -23,7 +23,6 @@ class game {
         board masterBoard;
 
         /* A vector containing all of the agents ( players or AI ) */
-        vector < agent_human > human_agents;
         vector < agent * > players;
 
         /* The number of agents in the game */

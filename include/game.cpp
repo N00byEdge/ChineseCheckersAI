@@ -39,8 +39,17 @@ void game::startGame ( int numPlayers ) {
     }
 
     for ( int i = 0;  5; ++ i ) {
+
         if ( i == numPlayers ) i = 0;
-        players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
+        board_turn t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
+
+        if ( this -> masterBoard.canMakeTurn ( t ) ) {
+
+            this -> masterBoard.makeTurn ( t );
+
+        } else {
+        	cout << "Agent #" << i + 1 << " returned an invalid turn. Skipping turn.\n";
+        }
     }
 }
 
