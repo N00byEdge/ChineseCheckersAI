@@ -595,7 +595,7 @@ bool board::canWalkRight ( tile * t ) {
 
 		}
 
-		return ( t ) -> getContents ( ) == 0;
+		return ( tRight ) -> getContents ( ) == 0;
 
 	}
 
@@ -625,7 +625,7 @@ bool board::canWalkUpRight ( tile * t ) {
 
 		}
 
-		return ( t ) -> getContents ( ) == 0;
+		return ( tUpRight ) -> getContents ( ) == 0;
 
 	}
 
@@ -655,7 +655,7 @@ bool board::canWalkDownRight ( tile * t ) {
 
 		}
 
-		return ( t ) -> getContents ( ) == 0;
+		return ( tDownRight ) -> getContents ( ) == 0;
 
 	}
 
@@ -685,7 +685,7 @@ bool board::canWalkLeft ( tile * t ) {
 
 		}
 
-		return ( t ) -> getContents ( ) == 0;
+		return ( tLeft ) -> getContents ( ) == 0;
 
 	}
 
@@ -715,7 +715,7 @@ bool board::canWalkUpLeft ( tile * t ) {
 
 		}
 
-		return ( t ) -> getContents ( ) == 0;
+		return ( tUpLeft ) -> getContents ( ) == 0;
 
 	}
 
@@ -745,7 +745,7 @@ bool board::canWalkDownLeft ( tile * t ) {
 
 		}
 
-		return ( t ) -> getContents ( ) == 0;
+		return ( tDownLeft ) -> getContents ( ) == 0;
 
 	}
 
