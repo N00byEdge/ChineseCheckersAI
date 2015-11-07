@@ -295,8 +295,6 @@ tile * board::getTileRight ( tile * t ) {
 
 pair < int, int > board::getCoordUpRight ( pair < int, int > pii ) {
 
-	pii.second ++;
-
 	if ( pii.second <= 2 ) {
 
 		pii.first ++;
@@ -330,6 +328,8 @@ pair < int, int > board::getCoordUpRight ( pair < int, int > pii ) {
 
 	}
 
+	pii.second ++;
+
 	return pii;
 
 }
@@ -359,8 +359,6 @@ tile * board::getTileUpRight ( tile * t ) {
 }
 
 pair < int, int > board::getCoordDownRight ( pair < int, int > pii ) {
-
-	pii.second --;
 
 	if ( pii.second <= 3 ) {
 
@@ -393,6 +391,9 @@ pair < int, int > board::getCoordDownRight ( pair < int, int > pii ) {
 		pii.first ++;
 
 	}
+
+
+	pii.second --;
 
 	return pii;
 
@@ -456,9 +457,7 @@ tile * board::getTileLeft ( tile * t ) {
 
 pair < int, int > board::getCoordUpLeft ( pair < int, int > pii ) {
 
-	pii.second ++;
-
-	if ( pii.second <= 2 ) {
+	if ( pii.second <= 3 ) {
 
 	} else if ( pii.second == 4 ) {
 
@@ -480,6 +479,8 @@ pair < int, int > board::getCoordUpLeft ( pair < int, int > pii ) {
 		pii.first --;
 
 	}
+
+	pii.second ++;
 
 	return pii;
 
@@ -510,8 +511,6 @@ tile * board::getTileUpLeft ( tile * t ) {
 }
 
 pair < int, int > board::getCoordDownLeft ( pair < int, int > pii ) {
-
-	pii.second --;
 
 	if ( pii.second <= 3 ) {
 
@@ -544,6 +543,8 @@ pair < int, int > board::getCoordDownLeft ( pair < int, int > pii ) {
 	else if ( 14 <= pii.second ){
 
 	}
+
+	pii.second --;
 
 	return pii;
 
@@ -1427,6 +1428,10 @@ bool board::canMove ( board_move m ) {
 bool board::walkRight ( tile * t ) {
 	if ( this -> canWalkRight ( t ) ) {
 		this -> getTileRight ( t ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileRight ( t );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1435,6 +1440,10 @@ bool board::walkRight ( tile * t ) {
 bool board::walkUpRight ( tile * t ) {
 	if ( this -> canWalkUpRight ( t ) ) {
 		this -> getTileUpRight ( t ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileUpRight ( t );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1443,6 +1452,10 @@ bool board::walkUpRight ( tile * t ) {
 bool board::walkDownRight ( tile * t ) {
 	if ( this -> canWalkDownRight ( t ) ) {
 		this -> getTileDownRight ( t ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileDownRight ( t );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1451,6 +1464,10 @@ bool board::walkDownRight ( tile * t ) {
 bool board::walkLeft ( tile * t ) {
 	if ( this -> canWalkLeft ( t ) ) {
 		this -> getTileLeft ( t ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileLeft ( t );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1459,6 +1476,10 @@ bool board::walkLeft ( tile * t ) {
 bool board::walkUpLeft ( tile * t ) {
 	if ( this -> canWalkUpLeft ( t ) ) {
 		this -> getTileUpLeft ( t ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileUpLeft ( t );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1467,6 +1488,10 @@ bool board::walkUpLeft ( tile * t ) {
 bool board::walkDownLeft ( tile * t ) {
 	if ( this -> canWalkDownLeft ( t ) ) {
 		this -> getTileDownLeft ( t ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileDownLeft ( t );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1475,6 +1500,10 @@ bool board::walkDownLeft ( tile * t ) {
 bool board::jumpRight ( tile * t ) {
 	if ( this -> canJumpRight ( t ) ) {
 		this -> getTile ( this -> getCoordJumpRight ( t ) ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpRight ( t ) );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1483,6 +1512,10 @@ bool board::jumpRight ( tile * t ) {
 bool board::jumpUpRight ( tile * t ) {
 	if ( this -> canJumpUpRight ( t ) ) {
 		this -> getTile ( this -> getCoordJumpUpRight ( t ) ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpUpRight ( t ) );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1491,6 +1524,10 @@ bool board::jumpUpRight ( tile * t ) {
 bool board::jumpDownRight ( tile * t ) {
 	if ( this -> canJumpDownRight ( t ) ) {
 		this -> getTile ( this -> getCoordJumpDownRight ( t ) ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDownRight ( t ) );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1499,6 +1536,10 @@ bool board::jumpDownRight ( tile * t ) {
 bool board::jumpLeft ( tile * t ) {
 	if ( this -> canJumpLeft ( t ) ) {
 		this -> getTile ( this -> getCoordJumpLeft ( t ) ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpLeft ( t ) );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1507,6 +1548,10 @@ bool board::jumpLeft ( tile * t ) {
 bool board::jumpUpLeft ( tile * t ) {
 	if ( this -> canJumpUpLeft ( t ) ) {
 		this -> getTile ( this -> getCoordJumpUpLeft ( t ) ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpUpLeft ( t ) );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1515,6 +1560,10 @@ bool board::jumpUpLeft ( tile * t ) {
 bool board::jumpDownLeft ( tile * t ) {
 	if ( this -> canJumpDownLeft ( t ) ) {
 		this -> getTile ( this -> getCoordJumpDownLeft ( t ) ) -> setContents ( t -> getContents ( ) );
+		for ( int i = 0; i < 10; ++ i ) {
+			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDownLeft ( t ) );
+		}
 		t -> setContents ( 0 );
 		return true;
 	} else return false;
@@ -1640,19 +1689,39 @@ vector < board_move > board::getPossibleMoves ( ) {
 
 }
 
-bool board::canMakeTurn ( board_turn t ) {
+bool board::canMakeTurn ( board_turn trn ) {
 
-	for ( int i = 0; i < t.moves.size ( ); ++ i ){
+	for ( int i = 0; i < trn.moves.size ( ); ++ i ){
+
+		tile * tle = this -> getTile ( trn.moves [ i ].getTileStartCoords ( ) );
+		if ( tle == nullptr )
+			return false;
+
+		if ( ! this -> canMove ( trn.moves [ i ] ) ) {
+			return false;
+		}
 
 	}
+
+	return true;
 
 }
 
-bool board::makeTurn ( board_turn t ) {
+bool board::makeTurn ( board_turn trn ) {
 
-	for ( int i = 0; i < t.moves.size ( ); ++ i ) {
+	for ( int i = 0; i < trn.moves.size ( ); ++ i ){
+
+		tile * tle = this -> getTile ( trn.moves [ i ].getTileStartCoords ( ) );
+		if ( tle == nullptr )
+			return false;
+
+		if ( ! this -> move ( trn.moves [ i ] ) ) {
+			return false;
+		}
 
 	}
+
+	return true;
 
 }
 
