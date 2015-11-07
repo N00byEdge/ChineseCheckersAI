@@ -301,24 +301,24 @@ pair < int, int > board::getCoordUpRight ( pair < int, int > pii ) {
 
 	}
 
-	else if ( pii.second == 4 ) {
+	else if ( pii.second == 3 ) {
 
 		pii.first += 5;
 
 	}
 
-	else if ( 5 <= pii.second && pii.second <= 7 ) {
+	else if ( 4 <= pii.second && pii.second <= 7 ) {
 
 
 	}
 
-	else if ( 8 <= pii.second && pii.second <= 11) {
+	else if ( 8 <= pii.second && pii.second <= 12 ) {
 
 		pii.first ++;
 
 	}
 
-	else if ( pii.second == 12 ) {
+	else if ( pii.second == 13 ) {
 
 		pii.first -= 4;
 
@@ -457,13 +457,13 @@ tile * board::getTileLeft ( tile * t ) {
 
 pair < int, int > board::getCoordUpLeft ( pair < int, int > pii ) {
 
-	if ( pii.second <= 3 ) {
+	if ( pii.second <= 2 ) {
 
-	} else if ( pii.second == 4 ) {
+	} else if ( pii.second == 3 ) {
 
 		pii.first += 4;
 
-	} else if ( 5 <= pii.second && pii.second <= 7 ) {
+	} else if ( 4 <= pii.second && pii.second <= 7 ) {
 
 		pii.first --;
 
@@ -1562,7 +1562,7 @@ bool board::jumpDownLeft ( tile * t ) {
 		this -> getTile ( this -> getCoordJumpDownLeft ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
 			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDownLeft ( t ) );
+				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDown Left ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
