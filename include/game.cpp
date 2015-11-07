@@ -24,8 +24,7 @@ void game::startGame ( int numPlayers ) {
 
             if ( agentNum == 1 ) {
 
-                this -> human_agents.push_back ( agent_human ( ) );
-                this -> players.push_back ( & ( this -> human_agents [ this -> human_agents.size ( ) - 1 ] ) );
+                this -> players.push_back ( new agent_human ( ) );
                 failed = false;
 
             } else {
@@ -41,7 +40,7 @@ void game::startGame ( int numPlayers ) {
 
     for ( int i = 0;  5; ++ i ) {
         if ( i == numPlayers ) i = 0;
-        human_agents [ i ] . doTurn ( this -> masterBoard, i + 1 );
+        players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
     }
 }
 

@@ -130,7 +130,8 @@ int main(){
     #ifdef DEBUGGING
     testStuff();
     #else
-    game g ( 2 );
+    game g;
+    g.startGame ( 2 );
     #endif
     return 0;
 }
