@@ -24,7 +24,7 @@ void game::startGame ( int numPlayers ) {
 
             if ( agentNum == 1 ) {
 
-                this -> players.push_back ( new agent_human ( ) );
+                this -> players.push_back ( new agent_human );
                 failed = false;
 
             } else {
