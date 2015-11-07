@@ -1569,6 +1569,65 @@ bool board::jumpDownLeft ( tile * t ) {
 	} else return false;
 }
 
+pair < int, int > board::getWalkCoords ( tile * t, unsigned int direction ) {
+
+	switch ( direction ) {
+
+		case 1:
+			return this -> getCoordRight ( t );
+
+		case 2:
+			return this -> getCoordDownRight ( t );
+
+		case 3:
+			return this -> getCoordDownLeft ( t );
+
+		case 4:
+			return this -> getCoordLeft ( t );
+
+		case 5:
+			return this -> getCoordUpLeft ( t );
+
+		case 6:
+			return this -> getCoordUpRight ( t );
+
+	}
+}
+
+pair < int, int > board::getJumpCoords ( tile * t, unsigned int direction ) {
+
+	switch ( direction ) {
+
+		case 1:
+			return this -> getCoordJumpRight ( t );
+
+		case 2:
+			return this -> getCoordJumpDownRight ( t );
+
+		case 3:
+			return this -> getCoordJumpDownLeft ( t );
+
+		case 4:
+			return this -> getCoordJumpLeft ( t );
+
+		case 5:
+			return this -> getCoordJumpUpLeft ( t );
+
+		case 6:
+			return this -> getCoordJumpUpRight ( t );
+
+	}
+}
+
+pair < int, int > board::getMoveCoords ( board_move m ) {
+
+	if ( 1 <= m.getRawData ( ) && m.getRawData ( ) <= 6 )
+		return this -> getWalkCoords ( this -> getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
+	else if ( 7 <= m.getRawData ( ) && m.getRawData ( ) <= 12 )
+		return this -> getJumpCoords ( this -> getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) - 6 );
+
+}
+
 bool board::walk ( tile * t, unsigned int direction ) {
 
 	switch ( direction ) {
@@ -1691,17 +1750,8 @@ vector < board_move > board::getPossibleMoves ( ) {
 
 bool board::canMakeTurn ( board_turn trn ) {
 
-	for ( int i = 0; i < trn.moves.size ( ); ++ i ){
-
-		tile * tle = this -> getTile ( trn.moves [ i ].getTileStartCoords ( ) );
-		if ( tle == nullptr )
-			return false;
-
-		if ( ! this -> canMove ( trn.moves [ i ] ) ) {
-			return false;
-		}
-
-	}
+	board deadBoard = * this;
+	return deadBoard.makeTurn ( trn );
 
 	return true;
 
@@ -1709,17 +1759,54 @@ bool board::canMakeTurn ( board_turn trn ) {
 
 bool board::makeTurn ( board_turn trn ) {
 
-	for ( int i = 0; i < trn.moves.size ( ); ++ i ){
+	if ( trn.moves.size ( ) == 1 ) {
 
-		tile * tle = this -> getTile ( trn.moves [ i ].getTileStartCoords ( ) );
-		if ( tle == nullptr )
-			return false;
+		/* If the turn only is one move, do that move */
+		return this -> move ( trn.moves [ 0 ] );
 
-		if ( ! this -> move ( trn.moves [ i ] ) ) {
-			return false;
-		}
+	} else if ( trn.moves.size ( ) == 0 ) {
+
+		/* If the turn doesn't contain any moves, don't do anything. */
+		return true;
 
 	}
+
+
+	/* If the turn contains more than one move, and doesn't contain only jumps, the turn is invalid. */
+	for ( int i = 0; i < trn.moves.size ( ); ++ i ) {
+
+		if ( trn.moves [ 0 ].getRawData ( ) <= 6 )
+			return false;
+
+	}
+
+	/* If the tile has the same position more than once during a turn, the turn is invalid. */
+
+	vector < pair < int, int > > v;
+
+	for ( int i = 0; i < trn.moves.size ( ); ++ i ) {
+		for ( int j = 0; j < v.size ( ); ++ j ) {
+			if ( trn.moves [ i ].getTileStartCoords ( ) == v [ j ] )
+				return false;
+		}
+		v.push_back ( trn.moves [ i ].getTileStartCoords ( ) );
+	}
+
+	/* 
+	 * Checking that the tile start coords are right for every move (that the last move would end up in the correct tile).
+	 * Also checks that all moves are valid.
+	 */
+
+	board dummyBoard;
+
+	for ( int i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
+		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) );
+			return false;
+		if ( !dummyBoard.move ( trn.moves [ i ] ) )
+			return false;
+	}
+
+	* this = dummyBoard;
 
 	return true;
 
