@@ -42,7 +42,7 @@ game::game ( int numPlayers ) {
     }
 
     for ( int i = 0;  5; ++ i ) {
-        if ( i = numPlayers ) i = 0;
+        if ( i == numPlayers ) i = 0;
         human_agents [ i ] . doTurn ( this -> masterBoard, i + 1 );
     }
 
