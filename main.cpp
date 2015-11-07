@@ -8,7 +8,8 @@ void testStuff(){
     int players = 2;
     cout << "How many players? ";
     cin >> players;
-    game fem( players );
+    game fem;
+    fem.startGame ( players );
 
     pair < int, int > temp;
     temp.first = 0;
@@ -129,7 +130,8 @@ int main(){
     #ifdef DEBUGGING
     testStuff();
     #else
-    game g ( 2 );
+    game g;
+    g.startGame ( 2 );
     #endif
     return 0;
 }
