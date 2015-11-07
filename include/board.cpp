@@ -95,10 +95,8 @@ void board::resetBoard ( int numPlayers ) {
 void board::setBoard ( vector < string > board, int numPlayers ) {
 
 	#ifdef DEBUGGING
-
 	cout << "Setting board state:\n";
 	for( int i = board.size ( ) - 1; i != -1; -- i ) cout << board [ i ] << endl;
-
 	#endif //DEBUGGING
 
 	for ( int i = 0; i < board.size ( ); ++ i ){
@@ -181,7 +179,7 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 tile * board::getTile ( pair < int, int > pii ) {
 
 	tile t ( pii.first, pii.second, 0 );
-	if ( isValidTile ( t.getCoordinates ( ) ) )
+	if ( this -> isValidTile ( t.getCoordinates ( ) ) )
 		return & ( this -> tb [ pii.second ] [ pii.first ] );
 	else return nullptr;
 
