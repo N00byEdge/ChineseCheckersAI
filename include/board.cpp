@@ -263,7 +263,7 @@ bool board::isValidTile ( pair < int, int > pii ) {
 
 bool board::isValidTile ( tile * t ) {
 
-	if ( t == 0 ) {
+	if ( t == nullptr ) {
 
 		#ifdef DEBUGGING
 		cout << "isValidTile: Null pointer! Terminating.\n";
