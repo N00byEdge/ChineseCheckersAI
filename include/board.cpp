@@ -1,6 +1,7 @@
 #include "board.h"
 
 tile * orgTile;
+static vector < tile* > staticEmptyTilePointerVector;
 
 /* An empty board in the data format that we store the board */
 vector < string > emptyBoard =
@@ -44,6 +45,24 @@ vector < string > Board2Players =
 "1"}; // 0
 
 /*
+            2
+           2 2
+          2 2 2
+         2 2 2 2
+0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0
+   0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0
+         1 1 1 1
+          1 1 1
+           1 1
+            1
+*/
+
+/*
  *  Reset the board to a empty board. A good idea after creating a board object, but not required as you may have a template. If you are not copying a board, always reset it.
  *  Set numPlayers first, as the new board state depends on the number of players.
  */
@@ -52,9 +71,27 @@ void board::print ( ) {
 
 	for ( int i = this -> tb.size ( ) - 1; i != -1; -- i ) {
 
+        if ( i == 0 || i == tb.size ( ) - 1 ) {
+            cout << "            ";
+        } else if ( i == 1 || i == tb.size ( ) - 2 ) {
+            cout << "           ";
+        } else if ( i == 2 || i == tb.size ( ) - 3 ) {
+            cout << "          ";
+        } else if ( i == 3 || i == tb.size ( ) - 4 ) {
+            cout << "         ";
+        } else if ( i == 5 || i == tb.size ( ) - 6 ) {
+            cout << " ";
+        } else if ( i == 6 || i == tb.size ( ) - 7 ) {
+            cout << "  ";
+        } else if ( i == 7 || i == tb.size ( ) - 8 ) {
+            cout << "   ";
+        } else if ( i == 8 ) {
+            cout << "    ";
+        }
+
 		for ( int j = 0; j < this -> tb [ i ].size ( ); ++ j )
 
-			cout << this -> tb [ i ] [ j ]. getContents ( );
+			cout << this -> tb [ i ] [ j ]. getContents ( ) << " ";
 
 		cout << endl;
 
@@ -90,6 +127,7 @@ void board::resetBoard ( int numPlayers ) {
 	/* Sets the board to an empty board, defined at the top. */
 	if ( numPlayers == 2 ) board::setBoard ( Board2Players, numPlayers );
 	else board::setBoard ( emptyBoard, numPlayers );
+
 }
 
 void board::setBoard ( vector < string > board, int numPlayers ) {
@@ -252,6 +290,27 @@ bool board::isValidTile ( tile * t ) {
 }
 
 vector < tile * > board::getPlayerTiles ( int player ) {
+
+	this -> playerTiles.clear ( );
+	for ( int i = 0; i < player + 1; ++ i )
+        this -> playerTiles.push_back ( staticEmptyTilePointerVector );
+
+	for ( int i = 0; i < tb.size ( ); ++ i ) {
+
+		for ( int j = 0; j < tb [ i ].size ( ); ++ j ) {
+
+			pair < int, int > pii;
+			pii.first = j;
+			pii.second = i;
+
+			tile * t = this -> getTile ( pii );
+
+			this -> nests [ t -> getContents ( ) ].push_back ( t );
+			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
+
+		}
+
+	}
 
 	if ( player < playerTiles.size ( ) )
 		return playerTiles [ player ];
@@ -909,7 +968,7 @@ bool board::canJumpUpRight ( tile * t ) {
 			} else {
 
 				#ifdef DEBUGGING
-				cout << "canJumpRight: ["
+				cout << "canJumpUpRight: ["
 					<< orgTile -> getCoordinates ( ).first
 					<< ", "
 					<< orgTile -> getCoordinates ( ).second
@@ -1715,9 +1774,9 @@ vector < board_move > board::getPossibleMoves ( tile * t ) {
 
 	m.setTileStartCoords ( t -> getCoordinates ( ) );
 
-	for ( int i = 0; i < 12; ++ i ) {
-		if ( this -> canMove ( t, i + 1 ) ) {
-			m.setRawData ( i + 1 );
+	for ( int i = 1; i <= 12; ++ i ) {
+		if ( this -> canMove ( t, i ) ) {
+			m.setRawData ( i );
 			r.push_back ( m );
 		}
 
@@ -1792,7 +1851,7 @@ bool board::makeTurn ( board_turn trn ) {
 		v.push_back ( trn.moves [ i ].getTileStartCoords ( ) );
 	}
 
-	/* 
+	/*
 	 * Checking that the tile start coords are right for every move (that the last move would end up in the correct tile).
 	 * Also checks that all moves are valid.
 	 */

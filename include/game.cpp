@@ -2,57 +2,58 @@
 
 void game::startGame ( int numPlayers ) {
 
-    /* Sets the number of players in the game */
-    this -> numPlayers = numPlayers;
+	/* Sets the number of players in the game */
+	this -> numPlayers = numPlayers;
 
-    /* Reset the board with the number of players for the game. */
-    this -> masterBoard.resetBoard( this -> numPlayers );
+	/* Reset the board with the number of players for the game. */
+	this -> masterBoard.resetBoard( this -> numPlayers );
 
-    cout << "Available agents:\n"
-        << "\t1: Human interface agent\n";
+	cout << "Available agents:\n"
+		<< "\t1: Human interface agent\n"
+		<< "\t2: Scoring agent\n";
 
-    while ( players.size ( ) < numPlayers ) {
+	while ( players.size ( ) < numPlayers ) {
 
-        cout << "Enter the agent number for agent #" << players.size ( ) + 1 << ": ";
+		cout << "Enter the agent number for agent #" << players.size ( ) + 1 << ": ";
 
-        int agentNum;
-        cin >> agentNum;
+		agentinput:
 
-        bool failed = true;
+		int agentNum;
+		cin >> agentNum;
 
-        while ( failed ) {
 
-            if ( agentNum == 1 ) {
+		if ( agentNum == 1 ) {
 
-                this -> players.push_back ( new agent_human );
-                failed = false;
+			this -> players.push_back ( new agent_human );
 
-            } else {
+		} else if ( agentNum == 2 ) {
 
-                cout << "Invalid agent number. Try again: ";
-                cin >> agentNum;
+			this -> players.push_back ( new agent_scoring );
 
-            }
+		} else {
 
-        }
+			cout << "Invalid agent number. Try again: ";
+			goto agentinput;
 
-    }
+		}
 
-    for ( int i = 0;  5; ++ i ) {
+	}
 
-        if ( i == numPlayers ) i = 0;
-        board_turn t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
+	for ( int i = 0;  5; ++ i ) {
 
-        if ( this -> masterBoard.canMakeTurn ( t ) ) {
+		if ( i == numPlayers ) i = 0;
+		board_turn t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
 
-            this -> masterBoard.makeTurn ( t );
+		if ( this -> masterBoard.canMakeTurn ( t ) ) {
 
-        } else {
-        	cout << "Agent #" << i + 1 << " returned an invalid turn. Skipping turn.\n";
-        }
-    }
+			this -> masterBoard.makeTurn ( t );
+
+		} else {
+			cout << "Agent #" << i + 1 << " returned an invalid turn. Skipping turn.\n";
+		}
+	}
 }
 
 board * game::getBoard ( ) {
-    return & ( this -> masterBoard ) ;
+	return & ( this -> masterBoard ) ;
 }

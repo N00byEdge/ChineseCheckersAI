@@ -3,6 +3,16 @@
 map < pair < int, int >, pair < int, int > > coordTranslationTable;
 
 bool translationTableGenerated = false;
+bool randSeeded = false;
+
+int lib::randInt ( int mod ) {
+    if ( ! randSeeded ) {
+        srand ( time ( NULL ) );
+        randSeeded = true;
+    }
+
+    return rand ( ) % mod;
+}
 
 void addMap ( int i1, int i2, int i3, int i4 ) {
 

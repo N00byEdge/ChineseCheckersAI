@@ -11,6 +11,8 @@ namespace lib {
 
     int charToInt ( char );
 
+    int randInt ( int mod );
+
 }
 
 #endif // LIB

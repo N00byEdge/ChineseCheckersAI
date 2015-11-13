@@ -68,7 +68,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O3" />
 					<Add option="-std=c++0x" />
 					<Add option="-DINTERFACE" />
 					<Add directory="../../API/SFML/2.3.1/x86/include" />
@@ -125,7 +124,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O3" />
 					<Add option="-std=c++0x" />
 					<Add option="-DDEBUGGING" />
 					<Add directory="../../API/SFML/2.3.1/x86/include" />
@@ -182,7 +180,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O3" />
 					<Add option="-std=c++0x" />
 					<Add option="-DINTERFACE" />
 					<Add option="-DDEBUGGING" />
@@ -241,7 +238,6 @@
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-O3" />
 					<Add option="-std=c++0x" />
 					<Add directory="../../API/SFML/2.3.1/OS X/include" />
 					<Add directory="include" />
