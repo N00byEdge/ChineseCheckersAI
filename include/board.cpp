@@ -26,10 +26,10 @@ vector < string > emptyBoard =
 
 vector < string > Board2Players =
 
-{"2", // 16
-"22", // 15
-"222", // 14
-"2222", // 13
+{"1", // 16
+"11", // 15
+"111", // 14
+"1111", // 13
 "0000000000000", // 12
 "000000000000", // 11
 "00000000000", // 10
@@ -39,10 +39,10 @@ vector < string > Board2Players =
 "00000000000", // 6
 "000000000000", // 5
 "0000000000000", // 4
-"1111", // 3
-"111", // 2
-"11", // 1
-"1"}; // 0
+"2222", // 3
+"222", // 2
+"22", // 1
+"2"}; // 0
 
 /*
             2
@@ -216,8 +216,8 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 
 tile * board::getTile ( pair < int, int > pii ) {
 
-	tile t ( pii.first, pii.second, 0 );
-	if ( this -> isValidTile ( t.getCoordinates ( ) ) )
+	//tile t ( pii.first, pii.second, 0 );
+	if ( this -> isValidTile ( pii ) )
 		return & ( this -> tb [ pii.second ] [ pii.first ] );
 	else return nullptr;
 
@@ -291,9 +291,11 @@ bool board::isValidTile ( tile * t ) {
 
 vector < tile * > board::getPlayerTiles ( int player ) {
 
-	this -> playerTiles.clear ( );
+    vector < tile * > playerTiles;
+
+	/*this -> playerTiles.clear ( );
 	for ( int i = 0; i < player + 1; ++ i )
-        this -> playerTiles.push_back ( staticEmptyTilePointerVector );
+        this -> playerTiles.push_back ( staticEmptyTilePointerVector );*/
 
 	for ( int i = 0; i < tb.size ( ); ++ i ) {
 
@@ -303,17 +305,18 @@ vector < tile * > board::getPlayerTiles ( int player ) {
 			pii.first = j;
 			pii.second = i;
 
-			tile * t = this -> getTile ( pii );
+            tile * t = this -> getTile ( pii );
 
-			this -> nests [ t -> getContents ( ) ].push_back ( t );
-			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
+			//this -> nests [ t -> getContents ( ) ].push_back ( t );
+			if ( t -> getContents ( ) == player )
+                playerTiles.push_back ( t );
 
 		}
 
 	}
 
 	if ( player < playerTiles.size ( ) )
-		return playerTiles [ player ];
+		return playerTiles;
 
 }
 
@@ -822,10 +825,13 @@ bool board::canJumpRight ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileRight ( t ) ) && t != nullptr; ++ i ) {
+	for ( int i = 0; ( t = this -> getTileRight ( t ) ); ++ i ) {
 
 		if ( t == lastTile )
 			break;
+
+		if ( t == nullptr )
+			return false;
 
 		#ifdef DEBUGGING
 		cout << "canJumpRight: i: " << i << " t: " << t << endl;
@@ -1409,59 +1415,51 @@ pair < int, int > board::getCoordJumpDownLeft ( tile * tile ) {
 
 bool board::canWalk ( tile * t, unsigned int direction ) {
 
-	switch ( direction ) {
-
-	case 1:
+    if ( direction == 1 )
 		return this -> canWalkRight ( t );
 
-	case 2:
+	else if ( direction == 2 )
 		return this -> canWalkDownRight ( t );
 
-	case 3:
+	else if ( direction == 3 )
 		return this -> canWalkDownLeft ( t );
 
-	case 4:
+	else if ( direction == 4 )
 		return this -> canWalkLeft ( t );
 
-	case 5:
+	else if ( direction == 5 )
 		return this -> canWalkUpLeft ( t );
 
-	case 6:
+	else if ( direction == 6 )
 		return this -> canWalkUpRight ( t );
 
-	default:
+	else
 		return false;
-
-	}
 
 }
 
 bool board::canJump ( tile * t, unsigned int direction ) {
 
-	switch ( direction ) {
-
-	case 1:
+	if ( direction == 1 )
 		return this -> canJumpRight ( t );
 
-	case 2:
+	else if ( direction == 2 )
 		return this -> canJumpDownRight ( t );
 
-	case 3:
+	else if ( direction == 3 )
 		return this -> canJumpDownLeft ( t );
 
-	case 4:
+	else if ( direction == 4 )
 		return this -> canJumpLeft ( t );
 
-	case 5:
+	else if ( direction == 5 )
 		return this -> canJumpUpLeft ( t );
 
-	case 6:
+	else if ( direction == 6 )
 		return this -> canJumpUpRight ( t );
 
-	default:
+	else
 		return false;
-
-	}
 
 }
 

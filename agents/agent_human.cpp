@@ -50,11 +50,7 @@ board_turn agent_human::doTurn ( board b, int player ) {
 	cout << "Set initial coordinates.\n";
 	#endif // DEBUGGING
 
-	int boardRotations = b.rotateForPerspective ( player );
-
-	#ifdef DEBUGGING
-	cout << "Rotated board " << boardRotations << " steps.\n";
-	#endif // DEBUGGING
+	choosetile:
 
 	b.print ( );
 
@@ -70,8 +66,6 @@ board_turn agent_human::doTurn ( board b, int player ) {
 	cout << endl;
 
 	cout << "Player #" << player << "s turn. Choose a tile:\n";
-
-	choosetile:
 
 	cout << "x = ";
 	cin >> coords.first;
@@ -130,7 +124,7 @@ board_turn agent_human::doTurn ( board b, int player ) {
 	}
 
 	m.setTileStartCoords ( coords );
-	board dummyBoard = b;
+	/*board dummyBoard = b;
 
 	vector < pair < int, int > > visitedCoordinates;
 	visitedCoordinates.push_back ( coords );
@@ -145,22 +139,22 @@ board_turn agent_human::doTurn ( board b, int player ) {
 			vector < int > possibleJumps;
 
 			for ( int i = 1; i <= 6; ++ i ) {
-				if ( m.getRawData ( ) != 1 && i != 4 && dummyBoard.canJump ( moveFinishTile, i ) )
+				if ( m.getRawData ( ) != 7 && i != 4 && dummyBoard.canJump ( moveFinishTile, i ) )
 					possibleJumps.push_back ( i );
 
-				if ( m.getRawData ( ) != 2 && i != 5 && dummyBoard.canJump ( moveFinishTile, i ) )
+				if ( m.getRawData ( ) != 8 && i != 5 && dummyBoard.canJump ( moveFinishTile, i ) )
 					possibleJumps.push_back ( i );
 
-				if ( m.getRawData ( ) != 3 && i != 6 && dummyBoard.canJump ( moveFinishTile, i ) )
+				if ( m.getRawData ( ) != 9 && i != 6 && dummyBoard.canJump ( moveFinishTile, i ) )
 					possibleJumps.push_back ( i );
 
-				if ( m.getRawData ( ) != 4 && i != 1 && dummyBoard.canJump ( moveFinishTile, i ) )
+				if ( m.getRawData ( ) != 10 && i != 1 && dummyBoard.canJump ( moveFinishTile, i ) )
 					possibleJumps.push_back ( i );
 
-				if ( m.getRawData ( ) != 5 && i != 2 && dummyBoard.canJump ( moveFinishTile, i ) )
+				if ( m.getRawData ( ) != 11 && i != 2 && dummyBoard.canJump ( moveFinishTile, i ) )
 					possibleJumps.push_back ( i );
 
-				if ( m.getRawData ( ) != 6 && i != 3 && dummyBoard.canJump ( moveFinishTile, i ) )
+				if ( m.getRawData ( ) != 12 && i != 3 && dummyBoard.canJump ( moveFinishTile, i ) )
 					possibleJumps.push_back ( i );
 			}
 
@@ -172,29 +166,23 @@ board_turn agent_human::doTurn ( board b, int player ) {
 			}
 		}
 
-	}
+	}*/
 
 
+    t.moves.push_back ( m );
 
-	board_turn rotatedTurn = t;
-	rotatedTurn.rotate ( ( 6 - boardRotations ) % 6 );
-
-	if ( !originalBoard.canMakeTurn ( rotatedTurn ) ) {
+	if ( !originalBoard.canMakeTurn ( t ) ) {
 
 		cout << "That is not a valid move.\n";
 		goto choosetile;
 
 	} else {
 
-	    t.moves.push_back ( m );
-
         if ( 7 <= m.getRawData ( ) && m.getRawData ( ) <= 12 ) {
 
         }
 
 	}
-
-	t.rotate ( ( 6 - boardRotations ) % 6 );
 
 	return t;
 

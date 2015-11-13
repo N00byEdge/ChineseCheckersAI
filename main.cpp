@@ -11,7 +11,7 @@ void testStuff(){
     game fem;
     fem.startGame ( players );
 
-    pair < int, int > temp;
+    /*pair < int, int > temp;
     temp.first = 0;
     temp.second = 3;
 
@@ -106,7 +106,7 @@ void testStuff(){
         if ( boolv [ i ] ) cout << i + 1 << " ";
     }
 
-    cout << endl;
+    cout << endl;*/
 }
 
 #endif

@@ -20,12 +20,16 @@ tile::tile ( int x, int y, int c ) {
 
 /* Get the coordinates of a given tile */
 int tile::getX ( ) {
+    if ( this == nullptr )
+        return -1;
 
     return this -> x;
 
 }
 
 int tile::getY ( ) {
+    if ( this == nullptr )
+        return -1;
 
     return this -> y;
 
@@ -33,6 +37,8 @@ int tile::getY ( ) {
 
 /* Get the contents of a tile */
 int tile::getContents ( ) {
+    if ( this == nullptr )
+        return -1;
 
     return this -> c;
 
@@ -56,9 +62,17 @@ pair < int, int > tile::getCoordinates ( ) {
 
     pair < int, int > p;
 
+
+    if ( this == nullptr ) {
+        p.first = -1;
+        p.second = -1;
+
+        return p;
+    }
+
     p.first = this -> x;
     p.second = this -> y;
 
     return p;
-    
+
 }

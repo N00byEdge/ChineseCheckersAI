@@ -3,7 +3,7 @@
 int scoreBoard ( board b, int player ) {
     int score = 0;
     for ( int i = 0; i < b.getPlayerTiles ( player ).size ( ); ++ i )
-        score += ( b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second );
+        score += ( b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second * b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second );
     return score;
 }
 
