@@ -37,6 +37,8 @@ class board {
 		void rotate ( int steps );
 		int rotateForPerspective ( int player );
 
+		float getMiddleXCoord ( int y );
+
 		pair < int, int > getWalkCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getJumpCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getMoveCoords ( board_move move );

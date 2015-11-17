@@ -2023,3 +2023,9 @@ int board::rotateForPerspective ( int player ) {
 	}
 
 }
+
+float board::getMiddleXCoord ( int y ) {
+
+	return ( float ) this -> tb [ y ].size ( ) / 2.0f - 0.5f;
+
+}
