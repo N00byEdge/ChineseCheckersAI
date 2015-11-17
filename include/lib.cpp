@@ -14,6 +14,15 @@ int lib::randInt ( int mod ) {
     return rand ( ) % mod;
 }
 
+int lib::randInt ( ) {
+    if ( ! randSeeded ) {
+        srand ( time ( NULL ) );
+        randSeeded = true;
+    }
+
+    return rand ( );
+}
+
 void addMap ( int i1, int i2, int i3, int i4 ) {
 
 	pair < int, int > pii1, pii2;
