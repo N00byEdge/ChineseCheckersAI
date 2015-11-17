@@ -19,6 +19,7 @@
 					<Add directory="include" />
 					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
 					<Add directory="agents" />
+					<Add directory="neural_networks" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics" />
@@ -74,6 +75,7 @@
 					<Add directory="include" />
 					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
 					<Add directory="agents" />
+					<Add directory="neural_networks" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics" />
@@ -130,6 +132,7 @@
 					<Add directory="include" />
 					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
 					<Add directory="agents" />
+					<Add directory="neural_networks" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics" />
@@ -187,6 +190,7 @@
 					<Add directory="include" />
 					<Add directory="../../API/Boost/1.58/windows-build/include/boost-1_58" />
 					<Add directory="agents" />
+					<Add directory="neural_networks" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics" />
