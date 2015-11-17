@@ -15,6 +15,8 @@
 	#include <cmath>
 	#include <map>
 
+	#ifndef NOLIB
+
 	/* Boost universal includes */
 
 	#include <boost/thread.hpp>
@@ -23,6 +25,8 @@
 	/* SFML universal includes */
 
 	#include <SFML/Graphics.hpp>
+
+	#endif
 
 	/* Game engine universal includes */
 
