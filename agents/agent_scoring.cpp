@@ -1,83 +1,109 @@
 #include "agent_scoring.h"
 
+bool randSeeded = false;
+
+int irand ( int mod ) {
+
+	if ( !randSeeded )
+		srand ( time ( NULL ) );
+	randSeeded = true;
+
+	return rand ( ) % mod;
+
+}
+
 int scoreBoard ( board b, int player ) {
-    int score = 0;
-    for ( int i = 0; i < b.getPlayerTiles ( player ).size ( ); ++ i )
-        score += ( b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second * b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second );
-    return score;
+	int score = 0;
+	for ( int i = 0; i < b.getPlayerTiles ( player ).size ( ); ++ i )
+		score -= ( ( 17 - b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second ) * ( 17 - b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second ) );
+	return score;
+}
+
+vector < board_turn > findAllPossibleTurns ( board b, tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords ) {
+
+    vector < board_turn > allPossibleTurns;
+
+	auto possibleMoves = b.getPossibleMoves ( t );
+
+	for ( int i = 0; i < possibleMoves.size ( ); ++ i ) {
+
+		if ( 1 < moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 )
+			goto nomove;
+
+		if ( b.canMove ( possibleMoves [ i ] ) ) {
+
+			for ( int j = 0; j < visitedCoords.size ( ); ++ j ) {
+
+				if ( b.getMoveCoords ( possibleMoves [ i ] ) == visitedCoords [ j ] )
+					goto nomove;
+
+			}
+
+			board_turn trn;
+			trn.moves = moves;
+			allPossibleTurns.push_back ( trn );
+
+			board_move mv;
+			mv = possibleMoves [ i ];
+			moves.push_back ( mv );
+			visitedCoords.push_back ( b.getMoveCoords ( possibleMoves [ i ] ) );
+			tile * originalTile = t;
+			t = b.getTile ( b.getMoveCoords ( mv ) );
+			board originalBoard = b;
+			b.move ( mv );
+			auto w = findAllPossibleTurns ( b, t, moves, visitedCoords );
+			b = originalBoard;
+			t = originalTile;
+
+			for ( int k = 0; k < w.size ( ); ++ k )
+                allPossibleTurns.push_back ( w [ k ] );
+
+			moves.erase ( moves.end ( ) - 1 );
+			visitedCoords.erase ( visitedCoords.end ( ) - 1 );
+
+		}
+
+		nomove:
+		if ( 5 ) { }
+
+	}
+
+	return allPossibleTurns;
+
 }
 
 vector < board_turn > findAllPossibleTurns ( board b, int player ) {
+
 	vector < board_turn > allPossibleTurns;
-	vector < board_move > currentMoves;
 
 	vector < tile * > playerTiles = b.getPlayerTiles ( player );
 
 	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
 
-        /*auto tileMoves = b.getPossibleMoves ( playerTiles [ i ] );
+		vector < board_move > emptyMoveVector;
+		vector < pair < int, int > > emptyPiiVector;
+		vector < board_turn > emptyTurnVector;
 
-        for ( int j = 0; j <= tileMoves.size ( ); ++ j ) {
+		auto v = findAllPossibleTurns( b, playerTiles [ i ], emptyMoveVector, emptyPiiVector );
 
-            if ( tileMoves [ j ].getRawData ( ) <= 6 ) {
-
-                board_turn trn;
-                trn.moves.push_back ( tileMoves [ j ] );
-                allPossibleTurns.push_back ( trn );
-
-            }
-
-        }*/
-
-		for ( int j = 1; j <= 12; ++ j ) {
-
-			if ( b.canMove ( playerTiles [ i ], j ) ) {
-
-                #ifdef DEBUGGING
-                cout << "agentScoring canMove " << playerTiles [ i ] << " " << j << endl;
-                #endif // DEBUGGING
-
-				if ( j <= 6 ) {
-
-                    board_turn trn;
-                    board_move mv;
-                    mv.setTileStartCoords( playerTiles [ i ] -> getCoordinates ( ) );
-                    mv.setRawData ( j );
-                    trn.moves.push_back ( mv );
-                    allPossibleTurns.push_back ( trn );
-
-				} else {
-
-                    board_turn trn;
-                    board_move mv;
-                    mv.setTileStartCoords( playerTiles [ i ] -> getCoordinates ( ) );
-                    mv.setRawData ( j );
-                    trn.moves.push_back ( mv );
-                    allPossibleTurns.push_back ( trn );
-
-                    /*for ( int k = 1; k <= 6; ++ k ) {
-                        if ( b.canJump ( playerTiles [ i ], k ) ) {
-
-                        }
-                    }*/
-
-				}
-
-			}
-
-		}
+		for ( int j = 0; j < v.size ( ); ++ j )
+			allPossibleTurns.push_back ( v [ j ] );
 
 	}
 
-    return allPossibleTurns;
+	return allPossibleTurns;
 
 }
 
 board_turn agent_scoring::doTurn ( board b, int player ) {
 
-    board originalBoard = b;
+	board originalBoard = b;
 
-    int boardRotations = b.rotateForPerspective( player );
+	int boardRotations = b.rotateForPerspective( player );
+
+	cout << "Player #" << player << "s turn, scoring agent.\n\tBoard:\n\n";
+	b.print ( );
+	cout << endl;
 
 	/*
 
@@ -103,41 +129,46 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	vector < board_turn > v = findAllPossibleTurns ( b, player );
 
-    vector < int > boardScores;
-    for ( int i = 0; i < v.size ( ); ++ i ) {
-        board b2 = b;
-        b2.makeTurn ( v [ i ] );
-        boardScores.push_back ( scoreBoard ( b2, player ));
-    }
+	vector < int > boardScores;
+	for ( int i = 0; i < v.size ( ); ++ i ) {
+		board b2 = b;
+		b2.makeTurn ( v [ i ] );
+		boardScores.push_back ( scoreBoard ( b2, player ));
+	}
 
 	#ifdef DEBUGGING
 	cout << "All possible turns:\n";
 	for ( int i = 0; i < v.size ( ); ++ i ) {
-        cout << i << ": [" << v [ i ].moves [ 0 ].getTileStartCoords ( ).first << ", " << v [ i ].moves [ 0 ].getTileStartCoords ( ).second << "]: ";
-        for ( int j = 0; j < v [ i ].moves.size ( ); ++ j ) {
-            cout << v [ i ].moves [ j ].getRawData ( );
-        }
-        cout << ", score: " << boardScores [ i ] << endl;
+		cout << i << ": [" << v [ i ].moves [ 0 ].getTileStartCoords ( ).first << ", " << v [ i ].moves [ 0 ].getTileStartCoords ( ).second << "]: ";
+		for ( int j = 0; j < v [ i ].moves.size ( ); ++ j ) {
+			cout << v [ i ].moves [ j ].getRawData ( );
+		}
+		cout << ", score: " << boardScores [ i ] << endl;
 	}
 	#endif // DEBUGGING
 
-    int bestScore = 0;
+	int bestScore = std::numeric_limits < int >::min ( );
 	vector < board_turn > bestTurns;
 
-    for ( int i = 0; i < v.size ( ); ++ i ) {
-        if ( bestScore < boardScores [ i ] ) {
-            bestTurns.clear ( );
-        }
+	for ( int i = 0; i < v.size ( ); ++ i ) {
+		if ( bestScore < boardScores [ i ] ) {
+			bestTurns.clear ( );
+		}
 
-        if ( bestScore <= boardScores [ i ] ) {
-            bestTurns.push_back ( v [ i ] );
-        }
+		if ( bestScore <= boardScores [ i ] ) {
+			bestTurns.push_back ( v [ i ] );
+			bestScore = boardScores [ i ];
+		}
 
-    }
+	}
 
-    t = v [ lib::randInt ( v.size ( ) ) ];
+	#ifdef DEBUGGING
+	cout << "We have " << bestTurns.size ( ) << " best turns, and " << v.size ( ) << " total turns.\n";
+	#endif // DEBUGGING
 
-    t.rotate ( ( 6 - boardRotations ) % 6 );
+	t = bestTurns [ irand ( bestTurns.size ( ) ) ];
+
+	t.rotate ( 6 - boardRotations );
 
 	return t;
 
