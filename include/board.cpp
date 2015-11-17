@@ -1,6 +1,6 @@
 #include "board.h"
 
-tile * orgTile;
+tile * originalTile;
 static vector < tile* > staticEmptyTilePointerVector;
 
 /* An empty board in the data format that we store the board */
@@ -70,7 +70,7 @@ vector < string > Board2Players =
 void board::print ( ) {
 
 	for ( int i = this -> tb.size ( ) - 1; i != -1; -- i ) {
-
+    cout << i << "\t ";
         if ( i == 0 || i == tb.size ( ) - 1 ) {
             cout << "            ";
         } else if ( i == 1 || i == tb.size ( ) - 2 ) {
@@ -226,7 +226,7 @@ tile * board::getTile ( pair < int, int > pii ) {
 bool board::isValidTile ( pair < int, int > pii ) {
 
 	#ifdef DEBUGGING
-	cout << "Is [" << pii.first << ", " << pii.second << "] a valid tile?\n";
+	//cout << "Is [" << pii.first << ", " << pii.second << "] a valid tile?\n";
 	#endif // DEBUGGING
 
 	if ( pii.second < this -> tb.size ( ) && - 1 < pii.second ) {
@@ -234,7 +234,7 @@ bool board::isValidTile ( pair < int, int > pii ) {
 		if ( pii.first < this -> tb [ pii.second ]. size ( )  && - 1 < pii.first ) {
 
 			#ifdef DEBUGGING
-			cout << "We have reason to believe that this tile is valid.\n";
+			//cout << "We have reason to believe that this tile is valid.\n";
 			#endif // DEBUGGING
 
 			return true;
@@ -275,13 +275,13 @@ bool board::isValidTile ( tile * t ) {
 
 	#ifdef DEBUGGING
 
-	cout << "Is " << t << " a valid tile?\n";
+	//cout << "Is " << t << " a valid tile?\n";
 
-	if ( isValidTile( t -> getCoordinates ( ) ) ) {
+	/*if ( isValidTile( t -> getCoordinates ( ) ) ) {
 		cout << t << " has coordinates [" << t -> getCoordinates ( ).first << ", " << t -> getCoordinates ( ).second << "]\n";
 	} else {
 		cout << t << "did not have valid coordinates.\n";
-	}
+	}*/
 
 	#endif // DEBUGGING
 
@@ -352,6 +352,7 @@ tile * board::getTileRight ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
+    return nullptr;
 
 }
 
@@ -417,6 +418,7 @@ tile * board::getTileUpRight ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
+    return nullptr;
 
 }
 
@@ -482,6 +484,7 @@ tile * board::getTileDownRight ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
+    return nullptr;
 
 }
 
@@ -514,6 +517,7 @@ tile * board::getTileLeft ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
+    return nullptr;
 
 }
 
@@ -569,6 +573,7 @@ tile * board::getTileUpLeft ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
+    return nullptr;
 
 }
 
@@ -633,6 +638,7 @@ tile * board::getTileDownLeft ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
+    return nullptr;
 
 }
 
@@ -818,7 +824,10 @@ bool board::canWalkDownLeft ( tile * t ) {
 
 bool board::canJumpRight ( tile * t ) {
 
-	orgTile = t;
+    if ( !this -> isValidTile ( t ) )
+        return false;
+
+	originalTile = t;
 
 	if ( t -> getContents ( ) == 0 )
 		return false;
@@ -830,7 +839,7 @@ bool board::canJumpRight ( tile * t ) {
 		if ( t == lastTile )
 			break;
 
-		if ( t == nullptr )
+		if ( !this -> isValidTile ( t ) )
 			return false;
 
 		#ifdef DEBUGGING
@@ -845,14 +854,17 @@ bool board::canJumpRight ( tile * t ) {
 
 					#ifdef DEBUGGING
 					cout << "canJumpRight: ["
-						<< orgTile -> getCoordinates ( ).first
+						<< originalTile -> getCoordinates ( ).first
 						<< ", "
-						<< orgTile -> getCoordinates ( ).second
+						<< originalTile -> getCoordinates ( ).second
 						<< "]: could not find a piece to jump over.\n";
 					#endif //DEBUGGING
 
 					return false;
 				}
+
+				if ( t -> getContents ( ) != 0 )
+					return false;
 
 			}
 
@@ -860,9 +872,9 @@ bool board::canJumpRight ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpRight: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -876,9 +888,9 @@ bool board::canJumpRight ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpRight: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can't end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -920,7 +932,10 @@ pair < int, int > board::getCoordJumpRight ( tile * tile ) {
 
 bool board::canJumpUpRight ( tile * t ) {
 
-	orgTile = t;
+    if ( !this -> isValidTile ( t ) )
+        return false;
+
+	originalTile = t;
 
 	if ( t -> getContents ( ) == 0 )
 		return false;
@@ -944,14 +959,17 @@ bool board::canJumpUpRight ( tile * t ) {
 
 					#ifdef DEBUGGING
 					cout << "canJumpUpRight: ["
-						<< orgTile -> getCoordinates ( ).first
+						<< originalTile -> getCoordinates ( ).first
 						<< ", "
-						<< orgTile -> getCoordinates ( ).second
+						<< originalTile -> getCoordinates ( ).second
 						<< "]: could not find a piece to jump over.\n";
 					#endif //DEBUGGING
 
 					return false;
 				}
+
+				if ( t -> getContents ( ) != 0 )
+					return false;
 
 			}
 
@@ -959,9 +977,9 @@ bool board::canJumpUpRight ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpUpRight: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -975,9 +993,9 @@ bool board::canJumpUpRight ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpUpRight: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can't end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1019,7 +1037,10 @@ pair < int, int > board::getCoordJumpUpRight ( tile * tile ) {
 
 bool board::canJumpDownRight ( tile * t ) {
 
-	orgTile = t;
+    if ( !this -> isValidTile ( t ) )
+        return false;
+
+	originalTile = t;
 
 	if ( t -> getContents ( ) == 0 )
 		return false;
@@ -1039,18 +1060,21 @@ bool board::canJumpDownRight ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileDownRight ( t ) ) && t != nullptr ) {
+				if ( ! ( t = this -> getTileDownRight ( t ) ) && t != nullptr  && t -> getContents ( ) == 0 ) {
 
 					#ifdef DEBUGGING
 					cout << "canJumpDownRight: ["
-						<< orgTile -> getCoordinates ( ).first
+						<< originalTile -> getCoordinates ( ).first
 						<< ", "
-						<< orgTile -> getCoordinates ( ).second
+						<< originalTile -> getCoordinates ( ).second
 						<< "]: could not find a piece to jump over.\n";
 					#endif //DEBUGGING
 
 					return false;
 				}
+
+				if ( t -> getContents ( ) != 0 )
+					return false;
 
 			}
 
@@ -1058,9 +1082,9 @@ bool board::canJumpDownRight ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpDownRight: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1074,9 +1098,9 @@ bool board::canJumpDownRight ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpDownRight: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can't end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1118,7 +1142,10 @@ pair < int, int > board::getCoordJumpDownRight ( tile * tile ) {
 
 bool board::canJumpLeft ( tile * t ) {
 
-	orgTile = t;
+    if ( !this -> isValidTile ( t ) )
+        return false;
+
+	originalTile = t;
 
 	if ( t -> getContents ( ) == 0 )
 		return false;
@@ -1142,14 +1169,17 @@ bool board::canJumpLeft ( tile * t ) {
 
 					#ifdef DEBUGGING
 					cout << "canJumpLeft: ["
-						<< orgTile -> getCoordinates ( ).first
+						<< originalTile -> getCoordinates ( ).first
 						<< ", "
-						<< orgTile -> getCoordinates ( ).second
+						<< originalTile -> getCoordinates ( ).second
 						<< "]: could not find a piece to jump over.\n";
 					#endif //DEBUGGING
 
 					return false;
 				}
+
+				if ( t -> getContents ( ) != 0 )
+					return false;
 
 			}
 
@@ -1157,9 +1187,9 @@ bool board::canJumpLeft ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpLeft: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1173,9 +1203,9 @@ bool board::canJumpLeft ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpLeft: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can't end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1217,7 +1247,10 @@ pair < int, int > board::getCoordJumpLeft ( tile * tile ) {
 
 bool board::canJumpUpLeft ( tile * t ) {
 
-	orgTile = t;
+    if ( !this -> isValidTile ( t ) )
+        return false;
+
+	originalTile = t;
 
 	if ( t -> getContents ( ) == 0 )
 		return false;
@@ -1241,14 +1274,17 @@ bool board::canJumpUpLeft ( tile * t ) {
 
 					#ifdef DEBUGGING
 					cout << "canJumpUpLeft: ["
-						<< orgTile -> getCoordinates ( ).first
+						<< originalTile -> getCoordinates ( ).first
 						<< ", "
-						<< orgTile -> getCoordinates ( ).second
+						<< originalTile -> getCoordinates ( ).second
 						<< "]: could not find a piece to jump over.\n";
 					#endif //DEBUGGING
 
 					return false;
 				}
+
+				if ( t -> getContents ( ) != 0 )
+					return false;
 
 			}
 
@@ -1256,9 +1292,9 @@ bool board::canJumpUpLeft ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpUpLeft: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1272,9 +1308,9 @@ bool board::canJumpUpLeft ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpUpLeft: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can't end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1316,7 +1352,10 @@ pair < int, int > board::getCoordJumpUpLeft ( tile * tile ) {
 
 bool board::canJumpDownLeft ( tile * t ) {
 
-	orgTile = t;
+    if ( !this -> isValidTile ( t ) )
+        return false;
+
+	originalTile = t;
 
 	if ( t -> getContents ( ) == 0 )
 		return false;
@@ -1340,14 +1379,17 @@ bool board::canJumpDownLeft ( tile * t ) {
 
 					#ifdef DEBUGGING
 					cout << "canJumpDownLeft: ["
-						<< orgTile -> getCoordinates ( ).first
+						<< originalTile -> getCoordinates ( ).first
 						<< ", "
-						<< orgTile -> getCoordinates ( ).second
+						<< originalTile -> getCoordinates ( ).second
 						<< "]: could not find a piece to jump over.\n";
 					#endif //DEBUGGING
 
 					return false;
 				}
+
+				if ( t -> getContents ( ) != 0 )
+					return false;
 
 			}
 
@@ -1355,9 +1397,9 @@ bool board::canJumpDownLeft ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpDownLeft: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1371,9 +1413,9 @@ bool board::canJumpDownLeft ( tile * t ) {
 
 				#ifdef DEBUGGING
 				cout << "canJumpDownLeft: ["
-					<< orgTile -> getCoordinates ( ).first
+					<< originalTile -> getCoordinates ( ).first
 					<< ", "
-					<< orgTile -> getCoordinates ( ).second
+					<< originalTile -> getCoordinates ( ).second
 					<< "] can't end jump at ["
 					<< t -> getCoordinates ( ).first
 					<< ", "
@@ -1464,6 +1506,11 @@ bool board::canJump ( tile * t, unsigned int direction ) {
 }
 
 bool board::canMove ( tile * t, unsigned int move ) {
+
+    #ifdef DEBUGGING
+    cout << "Can " << t << " move " << move << "?\n";
+    #endif // DEBUGGING
+
 	if ( 1 <= move && move <= 6 )
 		return this -> canWalk ( t, move );
 	else if ( 7 <= move && move <= 12 )
@@ -1570,7 +1617,7 @@ bool board::jumpUpRight ( tile * t ) {
 	if ( this -> canJumpUpRight ( t ) ) {
 		this -> getTile ( this -> getCoordJumpUpRight ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
+                if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
 				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpUpRight ( t ) );
 		}
 		t -> setContents ( 0 );
