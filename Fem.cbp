@@ -309,6 +309,12 @@
 		<Unit filename="include/tile.cpp" />
 		<Unit filename="include/tile.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="neural_networks/layer.cpp" />
+		<Unit filename="neural_networks/layer.h" />
+		<Unit filename="neural_networks/neural_network.cpp" />
+		<Unit filename="neural_networks/neural_network.h" />
+		<Unit filename="neural_networks/neuron.cpp" />
+		<Unit filename="neural_networks/neuron.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

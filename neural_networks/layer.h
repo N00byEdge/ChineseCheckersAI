@@ -3,6 +3,8 @@
 
 #include <includes.h>
 
+#include <neuron.h>
+
 class layer {
 
     public:

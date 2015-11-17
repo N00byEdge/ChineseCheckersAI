@@ -3,6 +3,8 @@
 
 #include <includes.h>
 
+#include <layer.h>
+
 class neural_network {
 
     public:
