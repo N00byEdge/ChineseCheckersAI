@@ -76,7 +76,6 @@
 					<Add directory="agents" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
@@ -125,6 +124,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-std=c++0x" />
+					<Add option="-g" />
 					<Add option="-DDEBUGGING" />
 					<Add directory="../../API/SFML/2.3.1/x86/include" />
 					<Add directory="include" />
@@ -132,7 +132,6 @@
 					<Add directory="agents" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
@@ -181,6 +180,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-std=c++0x" />
+					<Add option="-g" />
 					<Add option="-DINTERFACE" />
 					<Add option="-DDEBUGGING" />
 					<Add directory="../../API/SFML/2.3.1/x86/include" />
@@ -189,7 +189,6 @@
 					<Add directory="agents" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
