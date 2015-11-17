@@ -1,21 +1,22 @@
 #include "agent_scoring.h"
 
-bool randSeeded = false;
+float scoreBoard ( board b, int player ) {
+	float score = 0;
 
-int irand ( int mod ) {
+	for ( int i = 0; i < b.getPlayerTiles ( player ).size ( ); ++ i ) {
 
-	if ( !randSeeded )
-		srand ( time ( NULL ) );
-	randSeeded = true;
+		tile * t = b.getPlayerTiles ( player ) [ i ];
+		int x = t -> getCoordinates ( ).first;
+		int y = t -> getCoordinates ( ).second;
 
-	return rand ( ) % mod;
+		int h = 17 - y;
+		float d = abs ( ( float ) x - b.getMiddleXCoord ( y ) );
 
-}
+		score -= h * h;
+		score -= d * d;
 
-int scoreBoard ( board b, int player ) {
-	int score = 0;
-	for ( int i = 0; i < b.getPlayerTiles ( player ).size ( ); ++ i )
-		score -= ( ( 17 - b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second ) * ( 17 - b.getPlayerTiles ( player ) [ i ] -> getCoordinates ( ).second ) );
+	}
+
 	return score;
 }
 
@@ -166,7 +167,7 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 	cout << "We have " << bestTurns.size ( ) << " best turns, and " << v.size ( ) << " total turns.\n";
 	#endif // DEBUGGING
 
-	t = bestTurns [ irand ( bestTurns.size ( ) ) ];
+	t = bestTurns [ lib::randInt( bestTurns.size ( ) ) ];
 
 	t.rotate ( 6 - boardRotations );
 
