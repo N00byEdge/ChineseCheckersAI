@@ -26,7 +26,8 @@ void board_move::setTileStartCoords ( pair < int, int > pii ) {
 }
 
 pair < int, int > board_move::getTileStartCoords ( ) {
-	return this -> tileStartCoords;
+    if ( this -> tileStartCoords.first && this -> tileStartCoords.second )
+        return this -> tileStartCoords;
 }
 
 void board_move::rotate ( ) {
