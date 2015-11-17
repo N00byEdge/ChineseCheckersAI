@@ -78,5 +78,6 @@ Källor
 bin*
 *.layout
 *.bat
-*.mak
+*.mak*
 *.depend
+*.sh
