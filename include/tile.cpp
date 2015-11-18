@@ -64,10 +64,12 @@ pair < int, int > tile::getCoordinates ( ) {
 
 
     if ( this == nullptr ) {
+
         p.first = -1;
         p.second = -1;
 
         return p;
+
     }
 
     p.first = this -> x;
