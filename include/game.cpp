@@ -10,7 +10,8 @@ void game::startGame ( int numPlayers ) {
 
 	cout << "Available agents:\n"
 		<< "\t1: Human interface agent\n"
-		<< "\t2: Scoring agent\n";
+		<< "\t2: Scoring agent\n"
+		<< "\t3: Randomizing agent\n";
 
 	while ( players.size ( ) < numPlayers ) {
 
@@ -29,6 +30,10 @@ void game::startGame ( int numPlayers ) {
 		} else if ( agentNum == 2 ) {
 
 			this -> players.push_back ( new agent_scoring );
+
+		} else if ( agentNum == 3 ) {
+
+		    this -> players.push_back ( new agent_random );
 
 		} else {
 
