@@ -34,9 +34,7 @@ void board_move::rotate ( ) {
 	auto rotationMap = lib::getCoordTranslationTable ( );
 
 	this -> tileStartCoords = rotationMap [ this -> tileStartCoords ];
-	if ( this -> i % 6 == 5 )
-		i -= 5;
-	else
-		++ i;
-
+	if ( this -> i % 6 == 0 )
+		i -= 6;
+	++ i; 
 }
