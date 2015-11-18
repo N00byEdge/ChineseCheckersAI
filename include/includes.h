@@ -35,4 +35,6 @@
 	#include <lib.h>
 	#endif
 
+    #define endl "\n"
+
 #endif // INCLUDES
