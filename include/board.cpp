@@ -2027,5 +2027,77 @@ int board::rotateForPerspective ( int player ) {
 float board::getMiddleXCoord ( int y ) {
 
 	return ( float ) this -> tb [ y ].size ( ) / 2.0f - 0.5f;
+vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords ) {
 
+    vector < board_turn > allPossibleTurns;
+
+	auto possibleMoves = getPossibleMoves ( t );
+
+	for ( int i = 0; i < possibleMoves.size ( ); ++ i ) {
+
+		if ( 1 < moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 )
+			goto nomove;
+
+		if ( canMove ( possibleMoves [ i ] ) ) {
+
+			for ( int j = 0; j < visitedCoords.size ( ); ++ j ) {
+
+				if ( getMoveCoords ( possibleMoves [ i ] ) == visitedCoords [ j ] )
+					goto nomove;
+
+			}
+
+			board_move mv;
+			mv = possibleMoves [ i ];
+			moves.push_back ( mv );
+
+			board_turn trn;
+			trn.moves = moves;
+			allPossibleTurns.push_back ( trn );
+
+			visitedCoords.push_back ( getMoveCoords ( possibleMoves [ i ] ) );
+			tile * originalTile = t;
+			t = getTile ( getMoveCoords ( mv ) );
+			board originalBoard = *this;
+			move ( mv );
+			board b = *this;
+			auto w = b.findAllPossibleTurns ( t, moves, visitedCoords );
+			b = originalBoard;
+			t = originalTile;
+
+			for ( int k = 0; k < w.size ( ); ++ k )
+                allPossibleTurns.push_back ( w [ k ] );
+
+			moves.erase ( moves.end ( ) - 1 );
+			visitedCoords.erase ( visitedCoords.end ( ) - 1 );
+
+		}
+
+		nomove:
+		if ( 5 ) { }
+
+	}
+
+	return allPossibleTurns;
+
+}
+
+float board::score ( int player ) {
+	float score = 0;
+
+	for ( int i = 0; i < getPlayerTiles ( player ).size ( ); ++ i ) {
+
+		tile * t = getPlayerTiles ( player ) [ i ];
+		int x = t -> getCoordinates ( ).first;
+		int y = t -> getCoordinates ( ).second;
+
+		int h = 17 - y;
+		float d = abs ( ( float ) x - getMiddleXCoord ( y ) );
+
+		score -= h * h;
+		score -= d * d * d;
+
+	}
+
+	return score;
 }

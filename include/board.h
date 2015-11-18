@@ -39,6 +39,10 @@ class board {
 
 		float getMiddleXCoord ( int y );
 
+		float score ( int player );
+
+		vector < board_turn > findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords );
+
 		pair < int, int > getWalkCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getJumpCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getMoveCoords ( board_move move );

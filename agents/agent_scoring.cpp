@@ -1,78 +1,5 @@
 #include "agent_scoring.h"
 
-float scoreBoard ( board b, int player ) {
-	float score = 0;
-
-	for ( int i = 0; i < b.getPlayerTiles ( player ).size ( ); ++ i ) {
-
-		tile * t = b.getPlayerTiles ( player ) [ i ];
-		int x = t -> getCoordinates ( ).first;
-		int y = t -> getCoordinates ( ).second;
-
-		int h = 17 - y;
-		float d = abs ( ( float ) x - b.getMiddleXCoord ( y ) );
-
-		score -= h * h;
-		score -= d * d;
-
-	}
-
-	return score;
-}
-
-vector < board_turn > findAllPossibleTurns ( board b, tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords ) {
-
-    vector < board_turn > allPossibleTurns;
-
-	auto possibleMoves = b.getPossibleMoves ( t );
-
-	for ( int i = 0; i < possibleMoves.size ( ); ++ i ) {
-
-		if ( 1 < moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 )
-			goto nomove;
-
-		if ( b.canMove ( possibleMoves [ i ] ) ) {
-
-			for ( int j = 0; j < visitedCoords.size ( ); ++ j ) {
-
-				if ( b.getMoveCoords ( possibleMoves [ i ] ) == visitedCoords [ j ] )
-					goto nomove;
-
-			}
-
-			board_turn trn;
-			trn.moves = moves;
-			allPossibleTurns.push_back ( trn );
-
-			board_move mv;
-			mv = possibleMoves [ i ];
-			moves.push_back ( mv );
-			visitedCoords.push_back ( b.getMoveCoords ( possibleMoves [ i ] ) );
-			tile * originalTile = t;
-			t = b.getTile ( b.getMoveCoords ( mv ) );
-			board originalBoard = b;
-			b.move ( mv );
-			auto w = findAllPossibleTurns ( b, t, moves, visitedCoords );
-			b = originalBoard;
-			t = originalTile;
-
-			for ( int k = 0; k < w.size ( ); ++ k )
-                allPossibleTurns.push_back ( w [ k ] );
-
-			moves.erase ( moves.end ( ) - 1 );
-			visitedCoords.erase ( visitedCoords.end ( ) - 1 );
-
-		}
-
-		nomove:
-		if ( 5 ) { }
-
-	}
-
-	return allPossibleTurns;
-
-}
-
 vector < board_turn > findAllPossibleTurns ( board b, int player ) {
 
 	vector < board_turn > allPossibleTurns;
@@ -85,7 +12,7 @@ vector < board_turn > findAllPossibleTurns ( board b, int player ) {
 		vector < pair < int, int > > emptyPiiVector;
 		vector < board_turn > emptyTurnVector;
 
-		auto v = findAllPossibleTurns( b, playerTiles [ i ], emptyMoveVector, emptyPiiVector );
+		auto v = b.findAllPossibleTurns( playerTiles [ i ], emptyMoveVector, emptyPiiVector );
 
 		for ( int j = 0; j < v.size ( ); ++ j )
 			allPossibleTurns.push_back ( v [ j ] );
@@ -134,7 +61,7 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 	for ( int i = 0; i < v.size ( ); ++ i ) {
 		board b2 = b;
 		b2.makeTurn ( v [ i ] );
-		boardScores.push_back ( scoreBoard ( b2, player ));
+		boardScores.push_back ( b2.score ( player ) );
 	}
 
 	#ifdef DEBUGGING
