@@ -90,9 +90,7 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	}
 
-	#ifdef DEBUGGING
 	cout << "We have " << bestTurns.size ( ) << " best turns, and " << v.size ( ) << " total turns.\n";
-	#endif // DEBUGGING
 
 	t = bestTurns [ lib::randInt( bestTurns.size ( ) ) ];
 
