@@ -1,6 +1,7 @@
 #ifndef INCLUDES
 #define INCLUDES
 
+	#define deb(x) ( #x ) << " = " << ( x )
 	/* std universal includes */
 
 	#include <algorithm>
