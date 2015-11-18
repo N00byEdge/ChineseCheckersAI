@@ -69,7 +69,7 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 	for ( int i = 0; i < v.size ( ); ++ i ) {
 		cout << i << ": [" << v [ i ].moves [ 0 ].getTileStartCoords ( ).first << ", " << v [ i ].moves [ 0 ].getTileStartCoords ( ).second << "]: ";
 		for ( int j = 0; j < v [ i ].moves.size ( ); ++ j ) {
-			cout << v [ i ].moves [ j ].getRawData ( );
+			cout << v [ i ].moves [ j ].getRawData ( ) << " ";
 		}
 		cout << ", score: " << boardScores [ i ] << endl;
 	}
