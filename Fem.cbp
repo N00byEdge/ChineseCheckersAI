@@ -242,52 +242,37 @@
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-std=c++0x" />
+					<Add option="-DNOLIB" />
 					<Add directory="../../API/SFML/2.3.1/OS X/include" />
-					<Add directory="include" />
 					<Add directory="../../API/Boost/1.59/unix" />
 				</Compiler>
-				<Linker>
-					<Add library="sfml-graphics" />
-					<Add library="sfml-window" />
-					<Add library="sfml-network" />
-					<Add library="sfml-system" />
-					<Add library="boost_atomic" />
-					<Add library="boost_chrono" />
-					<Add library="boost_container" />
-					<Add library="boost_coroutine" />
-					<Add library="boost_date_time" />
-					<Add library="boost_exception" />
-					<Add library="boost_filesystem" />
-					<Add library="boost_graph" />
-					<Add library="boost_iostreams" />
-					<Add library="boost_locale" />
-					<Add library="boost_log" />
-					<Add library="boost_log_setup" />
-					<Add library="boost_math_c99" />
-					<Add library="boost_math_c99f" />
-					<Add library="boost_math_c99l" />
-					<Add library="boost_math_tr1" />
-					<Add library="boost_math_tr1f" />
-					<Add library="boost_math_tr1l" />
-					<Add library="boost_prg_exec_monitor" />
-					<Add library="boost_program_options" />
-					<Add library="boost_python" />
-					<Add library="boost_random" />
-					<Add library="boost_regex" />
-					<Add library="boost_serialization" />
-					<Add library="boost_signals" />
-					<Add library="boost_system" />
-					<Add library="boost_test_exec_monitor" />
-					<Add library="boost_thread" />
-					<Add library="boost_timer" />
-					<Add library="boost_unit_test_framework" />
-					<Add library="boost_wave" />
-					<Add library="boost_wserialization" />
-					<Add directory="../../API/SFML/2.3.1/OS X/lib" />
-					<Add directory="../../API/Boost/1.59/unix/stage/lib" />
-				</Linker>
+			</Target>
+			<Target title="Debug OS X">
+				<Option platforms="Mac;" />
+				<Option output="binUnix/Debug/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="objUnix/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-g" />
+					<Add option="-DNOLIB" />
+					<Add option="-DDEBUGGING" />
+					<Add directory="../../API/SFML/2.3.1/OS X/include" />
+					<Add directory="../../API/Boost/1.59/unix" />
+				</Compiler>
 			</Target>
 		</Build>
+		<VirtualTargets>
+			<Add alias="BuildAllMac" targets="Release OS X;Debug OS X;" />
+			<Add alias="BuildAllWindows" targets="Release Windows x86;Release Windows x86 with interface;Debug Windows x86;Debug Windows x86 with interface;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add directory="neural_networks" />
+			<Add directory="agents" />
+			<Add directory="include" />
+		</Compiler>
 		<Unit filename="agents/agent.cpp" />
 		<Unit filename="agents/agent.h" />
 		<Unit filename="agents/agent_human.cpp" />
@@ -313,6 +298,8 @@
 		<Unit filename="include/includes.h" />
 		<Unit filename="include/lib.cpp" />
 		<Unit filename="include/lib.h" />
+		<Unit filename="include/logger.cpp" />
+		<Unit filename="include/logger.h" />
 		<Unit filename="include/tile.cpp" />
 		<Unit filename="include/tile.h" />
 		<Unit filename="main.cpp" />
