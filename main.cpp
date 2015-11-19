@@ -130,8 +130,11 @@ int main(){
     #ifdef DEBUGGING
     testStuff();
     #else
-    game g;
-    g.startGame ( 2 );
+    int players = 2;
+    cout << "How many players? ";
+    cin >> players;
+    game fem;
+    fem.startGame ( players );
     #endif
     return 0;
 }
