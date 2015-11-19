@@ -2,18 +2,23 @@
 
 void game::startGame ( int numPlayers ) {
 
-	/* Sets the number of players in the game */
-	this -> numPlayers = numPlayers;
+    if ( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) {
 
-	/* Reset the board with the number of players for the game. */
-	this -> masterBoard.resetBoard( this -> numPlayers );
+        this -> numPlayers = numPlayers;
+
+    } else
+
+        this -> numPlayers = 2;
+
+    /* Reset the board with the number of players for the game. */
+	this -> masterBoard.resetBoard ( this -> numPlayers );
 
 	cout << "Available agents:\n"
 		<< "\t1: Human interface agent\n"
 		<< "\t2: Scoring agent\n"
 		<< "\t3: Randomizing agent\n";
 
-	while ( players.size ( ) < numPlayers ) {
+	while ( players.size ( ) < this -> numPlayers ) {
 
 		cout << "Enter the agent number for agent #" << players.size ( ) + 1 << ": ";
 
@@ -46,7 +51,7 @@ void game::startGame ( int numPlayers ) {
 
 	for ( int i = 0;  5; ++ i ) {
 
-		if ( i == numPlayers ) i = 0;
+		if ( i == this -> numPlayers ) i = 0;
 		board_turn t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
 
 		if ( this -> masterBoard.canMakeTurn ( t ) ) {
