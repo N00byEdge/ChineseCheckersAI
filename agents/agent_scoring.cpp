@@ -27,11 +27,11 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	board originalBoard = b;
 
-	int boardRotations = b.rotateForPerspective( player );
-
 	cout << "Player #" << player << "s turn, scoring agent.\n\tBoard:\n\n";
 	b.print ( );
 	cout << endl;
+
+	int boardRotations = b.rotateForPerspective( player );
 
 	/*
 
