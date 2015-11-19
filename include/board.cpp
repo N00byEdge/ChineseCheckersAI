@@ -44,22 +44,62 @@ vector < string > Board2Players =
 "22", // 1
 "2"}; // 0
 
+vector < string > Board4Players =
+
+{"1", // 16
+"11", // 15
+"111", // 14
+"1111", // 13
+"3333000000000", // 12
+"333000000000", // 11
+"33000000000", // 10
+"3000000000", // 9
+"000000000", // 8
+"0000000004", // 7
+"00000000044", // 6
+"000000000444", // 5
+"0000000004444", // 4
+"2222", // 3
+"222", // 2
+"22", // 1
+"2"}; // 0
+
+vector < string > Board6Players =
+
+{"1", // 16
+"11", // 15
+"111", // 14
+"1111", // 13
+"3333000006666", // 12
+"333000000666", // 11
+"33000000066", // 10
+"3000000006", // 9
+"000000000", // 8
+"5000000004", // 7
+"55000000044", // 6
+"555000000444", // 5
+"5555000004444", // 4
+"2222", // 3
+"222", // 2
+"22", // 1
+"2"}; // 0
+
 /*
-            2
-           2 2
-          2 2 2
-         2 2 2 2
-0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0 0
-   0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-         1 1 1 1
-          1 1 1
-           1 1
-            1
+14	            2
+13	           2 2
+12	          2 2 2
+11	         2 2 2 2
+10	0 0 0 0 0 0 0 0 0 0 0 0 0
+9	 0 0 0 0 0 0 0 0 0 0 0 0
+8	  0 0 0 0 0 0 0 0 0 0 0
+7	   0 0 0 0 0 0 0 0 0 0
+6	  0 0 0 0 0 0 0 0 0 0 0
+5	 0 0 0 0 0 0 0 0 0 0 0 0
+4	0 0 0 0 0 0 0 0 0 0 0 0 0
+3	         1 1 1 1
+2	          1 1 1
+1	           1 1
+0	            1
 */
 
 /*
@@ -69,7 +109,7 @@ vector < string > Board2Players =
 
 void board::print ( ) {
 
-	for ( int i = this -> tb.size ( ) - 1; i != -1; -- i ) {
+	for ( int i = tb.size ( ) - 1; i != -1; -- i ) {
     cout << i << "\t ";
         if ( i == 0 || i == tb.size ( ) - 1 ) {
             cout << "            ";
@@ -89,25 +129,26 @@ void board::print ( ) {
             cout << "    ";
         }
 
-		for ( int j = 0; j < this -> tb [ i ].size ( ); ++ j )
+		for ( int j = 0; j < tb [ i ].size ( ); ++ j )
 
-			cout << this -> tb [ i ] [ j ]. getContents ( ) << " ";
+			cout << tb [ i ] [ j ]. getContents ( ) << " ";
 
 		cout << endl;
 
 	}
+	cout<<flush<<endl;
 
 }
 
 void board::printWithCoords ( ) {
 
-	for ( int i = this -> tb.size ( ) - 1; i != -1; -- i ) {
+	for ( int i = tb.size ( ) - 1; i != -1; -- i ) {
 
-		for ( int j = 0; j < this -> tb [ i ].size ( ); ++ j ) {
+		for ( int j = 0; j < tb [ i ].size ( ); ++ j ) {
 
-			pair < int, int > coords = this -> tb [ i ] [ j ].getCoordinates ( );
+			pair < int, int > coords = tb [ i ] [ j ].getCoordinates ( );
 
-			cout << "[" << this -> tb [ i ] [ j ].getCoordinates ( ).first << ", " << this -> tb [ i ] [ j ].getCoordinates ( ).second << "]" << this -> tb [ i ] [ j ]. getContents ( );
+			cout << "[" << tb [ i ] [ j ].getCoordinates ( ).first << ", " << tb [ i ] [ j ].getCoordinates ( ).second << "]" << tb [ i ] [ j ]. getContents ( );
 
 		}
 
@@ -122,11 +163,13 @@ void board::resetBoard ( int numPlayers ) {
 	/* If the number of players is not equal to 2, 3, 4 or 6, we are going to use 2 players. */
 	if( !( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) ) numPlayers = 2;
 
-	this -> numPlayers = numPlayers;
-
 	/* Sets the board to an empty board, defined at the top. */
-	if ( numPlayers == 2 ) board::setBoard ( Board2Players, numPlayers );
-	else board::setBoard ( emptyBoard, numPlayers );
+	if ( numPlayers == 2 ) { board::setBoard ( Board2Players, 2 ); numPlayers = 2; }
+	else if ( numPlayers == 4 ) { board::setBoard ( Board4Players, 4 ); numPlayers = 4; }
+	else if ( numPlayers == 6 ) { board::setBoard ( Board6Players, 6 ); numPlayers = 6; }
+	else { board::setBoard ( Board2Players, 2 ); numPlayers = 2; }
+
+	this -> numPlayers = numPlayers;
 
 }
 
@@ -142,21 +185,21 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 			board [ i ] [ j ] -= 48;
 	}
 
-	this -> b = board;
+	b = board;
 
 	vector < tile > emptyTileVector;
 	vector < tile * > emptyTilePointerVector;
 
 	for ( int i = 0; i < numPlayers + 1; ++ i ) {
 
-		this -> nests.push_back ( emptyTilePointerVector );
-		this -> playerTiles.push_back ( emptyTilePointerVector );
+		nests.push_back ( emptyTilePointerVector );
+		playerTiles.push_back ( emptyTilePointerVector );
 
 	}
 
 	for ( int i = board.size ( ) - 1; i != - 1; -- i ) {
 
-		this -> tb.push_back ( emptyTileVector );
+		tb.push_back ( emptyTileVector );
 
 		for ( int j = 0; j < board [ i ].size ( ); ++ j ) {
 
@@ -177,7 +220,7 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 			cout << "Pushing back tile.\n";
 			#endif // DEBUGGING
 
-			this -> tb [ this -> tb.size ( ) - 1 ].push_back ( t );
+			tb [ tb.size ( ) - 1 ].push_back ( t );
 
 			#ifdef DEBUGGING
 			cout << "Finished pushing back tile.\n";
@@ -194,10 +237,10 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 			pii.first = j;
 			pii.second = i;
 
-			tile * t = this -> getTile ( pii );
+			tile * t = getTile ( pii );
 
-			this -> nests [ t -> getContents ( ) ].push_back ( t );
-			this -> playerTiles [ t -> getContents ( ) ].push_back ( t );
+			nests [ t -> getContents ( ) ].push_back ( t );
+			playerTiles [ t -> getContents ( ) ].push_back ( t );
 
 		}
 
@@ -207,7 +250,7 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 	cout << "Resorting list.\n";
 	#endif // DEBUGGING
 
-	reverse ( this -> tb.begin ( ), this -> tb.end ( ) );
+	reverse ( tb.begin ( ), tb.end ( ) );
 
 	#ifdef DEBUGGING
 	cout << "Finished setting board state.\n";
@@ -217,8 +260,8 @@ void board::setBoard ( vector < string > board, int numPlayers ) {
 tile * board::getTile ( pair < int, int > pii ) {
 
 	//tile t ( pii.first, pii.second, 0 );
-	if ( this -> isValidTile ( pii ) )
-		return & ( this -> tb [ pii.second ] [ pii.first ] );
+	if ( isValidTile ( pii ) )
+		return & ( tb [ pii.second ] [ pii.first ] );
 	else return nullptr;
 
 }
@@ -229,9 +272,9 @@ bool board::isValidTile ( pair < int, int > pii ) {
 	//cout << "Is [" << pii.first << ", " << pii.second << "] a valid tile?\n";
 	#endif // DEBUGGING
 
-	if ( pii.second < this -> tb.size ( ) && - 1 < pii.second ) {
+	if ( pii.second < tb.size ( ) && - 1 < pii.second ) {
 
-		if ( pii.first < this -> tb [ pii.second ]. size ( )  && - 1 < pii.first ) {
+		if ( pii.first < tb [ pii.second ]. size ( )  && - 1 < pii.first ) {
 
 			#ifdef DEBUGGING
 			//cout << "We have reason to believe that this tile is valid.\n";
@@ -285,7 +328,7 @@ bool board::isValidTile ( tile * t ) {
 
 	#endif // DEBUGGING
 
-	return this -> isValidTile ( t -> getCoordinates ( ) );
+	return isValidTile ( t -> getCoordinates ( ) );
 
 }
 
@@ -293,9 +336,9 @@ vector < tile * > board::getPlayerTiles ( int player ) {
 
     vector < tile * > playerTiles;
 
-	/*this -> playerTiles.clear ( );
+	/*playerTiles.clear ( );
 	for ( int i = 0; i < player + 1; ++ i )
-        this -> playerTiles.push_back ( staticEmptyTilePointerVector );*/
+        playerTiles.push_back ( staticEmptyTilePointerVector );*/
 
 	for ( int i = 0; i < tb.size ( ); ++ i ) {
 
@@ -305,9 +348,9 @@ vector < tile * > board::getPlayerTiles ( int player ) {
 			pii.first = j;
 			pii.second = i;
 
-            tile * t = this -> getTile ( pii );
+            tile * t = getTile ( pii );
 
-			//this -> nests [ t -> getContents ( ) ].push_back ( t );
+			//nests [ t -> getContents ( ) ].push_back ( t );
 			if ( t -> getContents ( ) == player )
                 playerTiles.push_back ( t );
 
@@ -340,7 +383,7 @@ tile * board::getTileRight ( pair < int, int> pii ) {
 
 	tile * t = getTile ( pii );
 
-	if ( this -> isValidTile ( t ) )
+	if ( isValidTile ( t ) )
 
 		return t;
 
@@ -348,7 +391,7 @@ tile * board::getTileRight ( pair < int, int> pii ) {
 
 tile * board::getTileRight ( tile * t ) {
 
-	t = this -> getTile ( this -> getCoordRight ( t ) );
+	t = getTile ( getCoordRight ( t ) );
 
 	if( isValidTile ( t ) )
 		return t;
@@ -414,7 +457,7 @@ tile * board::getTileUpRight ( pair < int, int> pii ) {
 
 tile * board::getTileUpRight ( tile * t ) {
 
-	t = this -> getTile ( this -> getCoordUpRight ( t ) );
+	t = getTile ( getCoordUpRight ( t ) );
 
 	if( isValidTile ( t ) )
 		return t;
@@ -480,7 +523,7 @@ tile * board::getTileDownRight ( pair < int, int> pii ) {
 
 tile * board::getTileDownRight ( tile * t ) {
 
-	t = this -> getTile ( this -> getCoordDownRight ( t ) );
+	t = getTile ( getCoordDownRight ( t ) );
 
 	if( isValidTile ( t ) )
 		return t;
@@ -513,7 +556,7 @@ tile * board::getTileLeft ( pair < int, int> pii ) {
 
 tile * board::getTileLeft ( tile * t ) {
 
-	t = this -> getTile ( this -> getCoordLeft ( t ) );
+	t = getTile ( getCoordLeft ( t ) );
 
 	if( isValidTile ( t ) )
 		return t;
@@ -569,7 +612,7 @@ tile * board::getTileUpLeft ( pair < int, int> pii ) {
 
 tile * board::getTileUpLeft ( tile * t ) {
 
-	t = this -> getTile ( this -> getCoordUpLeft ( t ) );
+	t = getTile ( getCoordUpLeft ( t ) );
 
 	if( isValidTile ( t ) )
 		return t;
@@ -634,7 +677,7 @@ tile * board::getTileDownLeft ( pair < int, int> pii ) {
 
 tile * board::getTileDownLeft ( tile * t ) {
 
-	t = this -> getTile ( this -> getCoordDownLeft ( t ) );
+	t = getTile ( getCoordDownLeft ( t ) );
 
 	if( isValidTile ( t ) )
 		return t;
@@ -645,14 +688,14 @@ tile * board::getTileDownLeft ( tile * t ) {
 bool board::canWalkRight ( tile * t ) {
 
 	#ifdef DEBUGGING
-	cout << "Can " << t << " walk right?\n";
+	//cout << "Can " << t << " walk right?\n";
 	#endif // DEBUGGING
 
 	tile * tRight;
 
-	if ( this -> getTileRight( t ) ){
+	if ( getTileRight( t ) ){
 
-		tRight = this -> getTileRight( t );
+		tRight = getTileRight( t );
 
 		if ( tRight == nullptr ) {
 
@@ -675,14 +718,14 @@ bool board::canWalkRight ( tile * t ) {
 bool board::canWalkUpRight ( tile * t ) {
 
 	#ifdef DEBUGGING
-	cout << "Can " << t << " walk upRight?\n";
+	//cout << "Can " << t << " walk upRight?\n";
 	#endif // DEBUGGING
 
 	tile * tUpRight;
 
-	if ( this -> getTileUpRight( t ) ){
+	if ( getTileUpRight( t ) ){
 
-		tUpRight = this -> getTileUpRight( t );
+		tUpRight = getTileUpRight( t );
 
 		if ( tUpRight == nullptr ) {
 
@@ -705,14 +748,14 @@ bool board::canWalkUpRight ( tile * t ) {
 bool board::canWalkDownRight ( tile * t ) {
 
 	#ifdef DEBUGGING
-	cout << "Can " << t << " walk downRight?\n";
+	//cout << "Can " << t << " walk downRight?\n";
 	#endif // DEBUGGING
 
 	tile * tDownRight;
 
-	if ( this -> getTileDownRight( t ) ){
+	if ( getTileDownRight( t ) ){
 
-		tDownRight = this -> getTileDownRight( t );
+		tDownRight = getTileDownRight( t );
 
 		if ( tDownRight == nullptr ) {
 
@@ -735,18 +778,18 @@ bool board::canWalkDownRight ( tile * t ) {
 bool board::canWalkLeft ( tile * t ) {
 
 	#ifdef DEBUGGING
-	cout << "Can " << t << " walk left?\n";
+	//cout << "Can " << t << " walk left?\n";
 	#endif // DEBUGGING
 
 	tile * tLeft;
 
-	if ( this -> getTileLeft( t ) ){
+	if ( getTileLeft( t ) ){
 
-		tLeft = this -> getTileLeft( t );
+		tLeft = getTileLeft( t );
 
 		if ( tLeft == nullptr ) {
 
-			#ifdef DEBUGGING
+			#ifdef DEBUGGINGn
 			cout << "canWalkLeft: null pointer. Terminating.\n";
 			#endif //DEBUGGING
 
@@ -765,14 +808,14 @@ bool board::canWalkLeft ( tile * t ) {
 bool board::canWalkUpLeft ( tile * t ) {
 
 	#ifdef DEBUGGING
-	cout << "Can " << t << " walk upLeft?\n";
+	//cout << "Can " << t << " walk upLeft?\n";
 	#endif // DEBUGGING
 
 	tile * tUpLeft;
 
-	if ( this -> getTileUpLeft( t ) ){
+	if ( getTileUpLeft( t ) ){
 
-		tUpLeft = this -> getTileUpLeft( t );
+		tUpLeft = getTileUpLeft( t );
 
 		if ( tUpLeft == nullptr ) {
 
@@ -795,14 +838,14 @@ bool board::canWalkUpLeft ( tile * t ) {
 bool board::canWalkDownLeft ( tile * t ) {
 
 	#ifdef DEBUGGING
-	cout << "Can " << t << " walk downLeft?\n";
+	//cout << "Can " << t << " walk downLeft?\n";
 	#endif // DEBUGGING
 
 	tile * tDownLeft;
 
-	if ( this -> getTileDownLeft( t ) ){
+	if ( getTileDownLeft( t ) ){
 
-		tDownLeft = this -> getTileDownLeft( t );
+		tDownLeft = getTileDownLeft( t );
 
 		if ( tDownLeft == nullptr ) {
 
@@ -824,7 +867,7 @@ bool board::canWalkDownLeft ( tile * t ) {
 
 bool board::canJumpRight ( tile * t ) {
 
-    if ( !this -> isValidTile ( t ) )
+    if ( !isValidTile ( t ) )
         return false;
 
 	originalTile = t;
@@ -834,12 +877,12 @@ bool board::canJumpRight ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileRight ( t ) ); ++ i ) {
+	for ( int i = 0; ( t = getTileRight ( t ) ); ++ i ) {
 
 		if ( t == lastTile )
 			break;
 
-		if ( !this -> isValidTile ( t ) )
+		if ( !isValidTile ( t ) )
 			return false;
 
 		#ifdef DEBUGGING
@@ -850,7 +893,8 @@ bool board::canJumpRight ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileRight ( t ) ) && t != nullptr ) {
+				if ( ! ( t = getTileRight ( t ) ) && t != nullptr ) {
+
 
 					#ifdef DEBUGGING
 					cout << "canJumpRight: ["
@@ -915,12 +959,12 @@ pair < int, int > board::getCoordJumpRight ( tile * tile ) {
 
 	pair < int, int > pii;
 
-	for ( int i = 0; tile = this -> getTileRight ( tile ); ++ i ) {
+	for ( int i = 0; tile = getTileRight ( tile ); ++ i ) {
 
 		if ( 1 <= tile -> getContents ( ) && tile -> getContents ( ) <= 6 ) {
 
 			for ( int j = - 1; j < i; ++ j )
-				tile = this -> getTileRight ( tile );
+				tile = getTileRight ( tile );
 
 			return tile -> getCoordinates ( );
 
@@ -932,7 +976,7 @@ pair < int, int > board::getCoordJumpRight ( tile * tile ) {
 
 bool board::canJumpUpRight ( tile * t ) {
 
-    if ( !this -> isValidTile ( t ) )
+    if ( !isValidTile ( t ) )
         return false;
 
 	originalTile = t;
@@ -942,7 +986,7 @@ bool board::canJumpUpRight ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileUpRight ( t ) ) && t != nullptr; ++ i ) {
+	for ( int i = 0; ( t = getTileUpRight ( t ) ) && t != nullptr; ++ i ) {
 
 		if ( t == lastTile )
 			break;
@@ -955,7 +999,8 @@ bool board::canJumpUpRight ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileUpRight ( t ) ) && t != nullptr ) {
+				if ( ! ( t = getTileUpRight ( t ) ) && t != nullptr ) {
+
 
 					#ifdef DEBUGGING
 					cout << "canJumpUpRight: ["
@@ -1020,12 +1065,12 @@ pair < int, int > board::getCoordJumpUpRight ( tile * tile ) {
 
 	pair < int, int > pii;
 
-	for ( int i = 0; tile = this -> getTileUpRight ( tile ); ++ i ) {
+	for ( int i = 0; tile = getTileUpRight ( tile ); ++ i ) {
 
 		if ( 1 <= tile -> getContents ( ) && tile -> getContents ( ) <= 6 ) {
 
 			for ( int j = - 1; j < i; ++ j )
-				tile = this -> getTileUpRight ( tile );
+				tile = getTileUpRight ( tile );
 
 			return tile -> getCoordinates ( );
 
@@ -1037,7 +1082,7 @@ pair < int, int > board::getCoordJumpUpRight ( tile * tile ) {
 
 bool board::canJumpDownRight ( tile * t ) {
 
-    if ( !this -> isValidTile ( t ) )
+    if ( !isValidTile ( t ) )
         return false;
 
 	originalTile = t;
@@ -1047,7 +1092,7 @@ bool board::canJumpDownRight ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileDownRight ( t ) ) && t != nullptr; ++ i ) {
+	for ( int i = 0; ( t = getTileDownRight ( t ) ) && t != nullptr; ++ i ) {
 
 		if ( t == lastTile )
 			break;
@@ -1060,7 +1105,8 @@ bool board::canJumpDownRight ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileDownRight ( t ) ) && t != nullptr  && t -> getContents ( ) == 0 ) {
+				if ( ! ( t = getTileDownRight ( t ) ) && t != nullptr  && t -> getContents ( ) == 0 ) {
+
 
 					#ifdef DEBUGGING
 					cout << "canJumpDownRight: ["
@@ -1125,12 +1171,12 @@ pair < int, int > board::getCoordJumpDownRight ( tile * tile ) {
 
 	pair < int, int > pii;
 
-	for ( int i = 0; tile = this -> getTileDownRight ( tile ); ++ i ) {
+	for ( int i = 0; tile = getTileDownRight ( tile ); ++ i ) {
 
 		if ( 1 <= tile -> getContents ( ) && tile -> getContents ( ) <= 6 ) {
 
 			for ( int j = - 1; j < i; ++ j )
-				tile = this -> getTileDownRight ( tile );
+				tile = getTileDownRight ( tile );
 
 			return tile -> getCoordinates ( );
 
@@ -1142,7 +1188,7 @@ pair < int, int > board::getCoordJumpDownRight ( tile * tile ) {
 
 bool board::canJumpLeft ( tile * t ) {
 
-    if ( !this -> isValidTile ( t ) )
+    if ( !isValidTile ( t ) )
         return false;
 
 	originalTile = t;
@@ -1152,7 +1198,7 @@ bool board::canJumpLeft ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileLeft ( t ) ) && t != nullptr; ++ i ) {
+	for ( int i = 0; ( t = getTileLeft ( t ) ) && t != nullptr; ++ i ) {
 
 		if ( t == lastTile )
 			break;
@@ -1165,7 +1211,8 @@ bool board::canJumpLeft ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileLeft ( t ) ) && t != nullptr ) {
+				if ( ! ( t = getTileLeft ( t ) ) && t != nullptr ) {
+
 
 					#ifdef DEBUGGING
 					cout << "canJumpLeft: ["
@@ -1230,12 +1277,12 @@ pair < int, int > board::getCoordJumpLeft ( tile * tile ) {
 
 	pair < int, int > pii;
 
-	for ( int i = 0; tile = this -> getTileLeft ( tile ); ++ i ) {
+	for ( int i = 0; tile = getTileLeft ( tile ); ++ i ) {
 
 		if ( 1 <= tile -> getContents ( ) && tile -> getContents ( ) <= 6 ) {
 
 			for ( int j = - 1; j < i; ++ j )
-				tile = this -> getTileLeft ( tile );
+				tile = getTileLeft ( tile );
 
 			return tile -> getCoordinates ( );
 
@@ -1247,7 +1294,7 @@ pair < int, int > board::getCoordJumpLeft ( tile * tile ) {
 
 bool board::canJumpUpLeft ( tile * t ) {
 
-    if ( !this -> isValidTile ( t ) )
+    if ( !isValidTile ( t ) )
         return false;
 
 	originalTile = t;
@@ -1257,7 +1304,7 @@ bool board::canJumpUpLeft ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileUpLeft ( t ) ) && t != nullptr; ++ i ) {
+	for ( int i = 0; ( t = getTileUpLeft ( t ) ) && t != nullptr; ++ i ) {
 
 		if ( t == lastTile )
 			break;
@@ -1270,7 +1317,8 @@ bool board::canJumpUpLeft ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileUpLeft ( t ) ) && t != nullptr ) {
+				if ( ! ( t = getTileUpLeft ( t ) ) && t != nullptr ) {
+
 
 					#ifdef DEBUGGING
 					cout << "canJumpUpLeft: ["
@@ -1335,12 +1383,12 @@ pair < int, int > board::getCoordJumpUpLeft ( tile * tile ) {
 
 	pair < int, int > pii;
 
-	for ( int i = 0; tile = this -> getTileUpLeft ( tile ); ++ i ) {
+	for ( int i = 0; tile = getTileUpLeft ( tile ); ++ i ) {
 
 		if ( 1 <= tile -> getContents ( ) && tile -> getContents ( ) <= 6 ) {
 
 			for ( int j = - 1; j < i; ++ j )
-				tile = this -> getTileUpLeft ( tile );
+				tile = getTileUpLeft ( tile );
 
 			return tile -> getCoordinates ( );
 
@@ -1352,7 +1400,7 @@ pair < int, int > board::getCoordJumpUpLeft ( tile * tile ) {
 
 bool board::canJumpDownLeft ( tile * t ) {
 
-    if ( !this -> isValidTile ( t ) )
+    if ( !isValidTile ( t ) )
         return false;
 
 	originalTile = t;
@@ -1362,7 +1410,7 @@ bool board::canJumpDownLeft ( tile * t ) {
 
 	tile * lastTile = t;
 
-	for ( int i = 0; ( t = this -> getTileDownLeft ( t ) ) && t != nullptr; ++ i ) {
+	for ( int i = 0; ( t = getTileDownLeft ( t ) ) && t != nullptr; ++ i ) {
 
 		if ( t == lastTile )
 			break;
@@ -1375,7 +1423,8 @@ bool board::canJumpDownLeft ( tile * t ) {
 
 			for ( int j = - 1; j < i; ++ j ) {
 
-				if ( ! ( t = this -> getTileDownLeft ( t ) ) && t != nullptr ) {
+				if ( ! ( t = getTileDownLeft ( t ) ) && t != nullptr ) {
+
 
 					#ifdef DEBUGGING
 					cout << "canJumpDownLeft: ["
@@ -1440,12 +1489,12 @@ pair < int, int > board::getCoordJumpDownLeft ( tile * tile ) {
 
 	pair < int, int > pii;
 
-	for ( int i = 0; tile = this -> getTileDownLeft ( tile ); ++ i ) {
+	for ( int i = 0; tile = getTileDownLeft ( tile ); ++ i ) {
 
 		if ( 1 <= tile -> getContents ( ) && tile -> getContents ( ) <= 6 ) {
 
 			for ( int j = - 1; j < i; ++ j )
-				tile = this -> getTileDownLeft ( tile );
+				tile = getTileDownLeft ( tile );
 
 			return tile -> getCoordinates ( );
 
@@ -1458,22 +1507,22 @@ pair < int, int > board::getCoordJumpDownLeft ( tile * tile ) {
 bool board::canWalk ( tile * t, unsigned int direction ) {
 
     if ( direction == 1 )
-		return this -> canWalkRight ( t );
+		return canWalkRight ( t );
 
 	else if ( direction == 2 )
-		return this -> canWalkDownRight ( t );
+		return canWalkDownRight ( t );
 
 	else if ( direction == 3 )
-		return this -> canWalkDownLeft ( t );
+		return canWalkDownLeft ( t );
 
 	else if ( direction == 4 )
-		return this -> canWalkLeft ( t );
+		return canWalkLeft ( t );
 
 	else if ( direction == 5 )
-		return this -> canWalkUpLeft ( t );
+		return canWalkUpLeft ( t );
 
 	else if ( direction == 6 )
-		return this -> canWalkUpRight ( t );
+		return canWalkUpRight ( t );
 
 	else
 		return false;
@@ -1483,22 +1532,22 @@ bool board::canWalk ( tile * t, unsigned int direction ) {
 bool board::canJump ( tile * t, unsigned int direction ) {
 
 	if ( direction == 1 )
-		return this -> canJumpRight ( t );
+		return canJumpRight ( t );
 
 	else if ( direction == 2 )
-		return this -> canJumpDownRight ( t );
+		return canJumpDownRight ( t );
 
 	else if ( direction == 3 )
-		return this -> canJumpDownLeft ( t );
+		return canJumpDownLeft ( t );
 
 	else if ( direction == 4 )
-		return this -> canJumpLeft ( t );
+		return canJumpLeft ( t );
 
 	else if ( direction == 5 )
-		return this -> canJumpUpLeft ( t );
+		return canJumpUpLeft ( t );
 
 	else if ( direction == 6 )
-		return this -> canJumpUpRight ( t );
+		return canJumpUpRight ( t );
 
 	else
 		return false;
@@ -1512,9 +1561,9 @@ bool board::canMove ( tile * t, unsigned int move ) {
     #endif // DEBUGGING
 
 	if ( 1 <= move && move <= 6 )
-		return this -> canWalk ( t, move );
+		return canWalk ( t, move );
 	else if ( 7 <= move && move <= 12 )
-		return this -> canJump ( t, move - 6 );
+		return canJump ( t, move - 6 );
 	else
 		return false;
 }
@@ -1524,17 +1573,17 @@ bool board::canMove ( board_move m ) {
 	tile * t;
 
 	if ( t = getTile ( m.getTileStartCoords ( ) ) )
-		return this -> canMove ( this -> getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
+		return canMove ( getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
 
 	return false;
 }
 
 bool board::walkRight ( tile * t ) {
-	if ( this -> canWalkRight ( t ) ) {
-		this -> getTileRight ( t ) -> setContents ( t -> getContents ( ) );
+	if ( canWalkRight ( t ) ) {
+		getTileRight ( t ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileRight ( t );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTileRight ( t );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1542,11 +1591,11 @@ bool board::walkRight ( tile * t ) {
 }
 
 bool board::walkUpRight ( tile * t ) {
-	if ( this -> canWalkUpRight ( t ) ) {
-		this -> getTileUpRight ( t ) -> setContents ( t -> getContents ( ) );
+	if ( canWalkUpRight ( t ) ) {
+		getTileUpRight ( t ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileUpRight ( t );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTileUpRight ( t );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1554,11 +1603,11 @@ bool board::walkUpRight ( tile * t ) {
 }
 
 bool board::walkDownRight ( tile * t ) {
-	if ( this -> canWalkDownRight ( t ) ) {
-		this -> getTileDownRight ( t ) -> setContents ( t -> getContents ( ) );
+	if ( canWalkDownRight ( t ) ) {
+		getTileDownRight ( t ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileDownRight ( t );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTileDownRight ( t );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1566,11 +1615,11 @@ bool board::walkDownRight ( tile * t ) {
 }
 
 bool board::walkLeft ( tile * t ) {
-	if ( this -> canWalkLeft ( t ) ) {
-		this -> getTileLeft ( t ) -> setContents ( t -> getContents ( ) );
+	if ( canWalkLeft ( t ) ) {
+		getTileLeft ( t ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileLeft ( t );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTileLeft ( t );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1578,11 +1627,11 @@ bool board::walkLeft ( tile * t ) {
 }
 
 bool board::walkUpLeft ( tile * t ) {
-	if ( this -> canWalkUpLeft ( t ) ) {
-		this -> getTileUpLeft ( t ) -> setContents ( t -> getContents ( ) );
+	if ( canWalkUpLeft ( t ) ) {
+		getTileUpLeft ( t ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileUpLeft ( t );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTileUpLeft ( t );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1590,11 +1639,11 @@ bool board::walkUpLeft ( tile * t ) {
 }
 
 bool board::walkDownLeft ( tile * t ) {
-	if ( this -> canWalkDownLeft ( t ) ) {
-		this -> getTileDownLeft ( t ) -> setContents ( t -> getContents ( ) );
+	if ( canWalkDownLeft ( t ) ) {
+		getTileDownLeft ( t ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTileDownLeft ( t );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTileDownLeft ( t );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1602,11 +1651,11 @@ bool board::walkDownLeft ( tile * t ) {
 }
 
 bool board::jumpRight ( tile * t ) {
-	if ( this -> canJumpRight ( t ) ) {
-		this -> getTile ( this -> getCoordJumpRight ( t ) ) -> setContents ( t -> getContents ( ) );
+	if ( canJumpRight ( t ) ) {
+		getTile ( getCoordJumpRight ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpRight ( t ) );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpRight ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1614,11 +1663,11 @@ bool board::jumpRight ( tile * t ) {
 }
 
 bool board::jumpUpRight ( tile * t ) {
-	if ( this -> canJumpUpRight ( t ) ) {
-		this -> getTile ( this -> getCoordJumpUpRight ( t ) ) -> setContents ( t -> getContents ( ) );
+	if ( canJumpUpRight ( t ) ) {
+		getTile ( getCoordJumpUpRight ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-                if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpUpRight ( t ) );
+                if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpUpRight ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1626,11 +1675,11 @@ bool board::jumpUpRight ( tile * t ) {
 }
 
 bool board::jumpDownRight ( tile * t ) {
-	if ( this -> canJumpDownRight ( t ) ) {
-		this -> getTile ( this -> getCoordJumpDownRight ( t ) ) -> setContents ( t -> getContents ( ) );
+	if ( canJumpDownRight ( t ) ) {
+		getTile ( getCoordJumpDownRight ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDownRight ( t ) );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpDownRight ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1638,11 +1687,11 @@ bool board::jumpDownRight ( tile * t ) {
 }
 
 bool board::jumpLeft ( tile * t ) {
-	if ( this -> canJumpLeft ( t ) ) {
-		this -> getTile ( this -> getCoordJumpLeft ( t ) ) -> setContents ( t -> getContents ( ) );
+	if ( canJumpLeft ( t ) ) {
+		getTile ( getCoordJumpLeft ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpLeft ( t ) );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpLeft ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1650,11 +1699,11 @@ bool board::jumpLeft ( tile * t ) {
 }
 
 bool board::jumpUpLeft ( tile * t ) {
-	if ( this -> canJumpUpLeft ( t ) ) {
-		this -> getTile ( this -> getCoordJumpUpLeft ( t ) ) -> setContents ( t -> getContents ( ) );
+	if ( canJumpUpLeft ( t ) ) {
+		getTile ( getCoordJumpUpLeft ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpUpLeft ( t ) );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpUpLeft ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1662,11 +1711,11 @@ bool board::jumpUpLeft ( tile * t ) {
 }
 
 bool board::jumpDownLeft ( tile * t ) {
-	if ( this -> canJumpDownLeft ( t ) ) {
-		this -> getTile ( this -> getCoordJumpDownLeft ( t ) ) -> setContents ( t -> getContents ( ) );
+	if ( canJumpDownLeft ( t ) ) {
+		getTile ( getCoordJumpDownLeft ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-			if ( this -> playerTiles [ t -> getContents ( ) ] [ i ] == t )
-				this -> playerTiles [ t -> getContents ( ) ] [ i ] = this -> getTile ( this -> getCoordJumpDownLeft ( t ) );
+			if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpDownLeft ( t ) );
 		}
 		t -> setContents ( 0 );
 		return true;
@@ -1678,22 +1727,22 @@ pair < int, int > board::getWalkCoords ( tile * t, unsigned int direction ) {
 	switch ( direction ) {
 
 		case 1:
-			return this -> getCoordRight ( t );
+			return getCoordRight ( t );
 
 		case 2:
-			return this -> getCoordDownRight ( t );
+			return getCoordDownRight ( t );
 
 		case 3:
-			return this -> getCoordDownLeft ( t );
+			return getCoordDownLeft ( t );
 
 		case 4:
-			return this -> getCoordLeft ( t );
+			return getCoordLeft ( t );
 
 		case 5:
-			return this -> getCoordUpLeft ( t );
+			return getCoordUpLeft ( t );
 
 		case 6:
-			return this -> getCoordUpRight ( t );
+			return getCoordUpRight ( t );
 
 	}
 }
@@ -1703,22 +1752,22 @@ pair < int, int > board::getJumpCoords ( tile * t, unsigned int direction ) {
 	switch ( direction ) {
 
 		case 1:
-			return this -> getCoordJumpRight ( t );
+			return getCoordJumpRight ( t );
 
 		case 2:
-			return this -> getCoordJumpDownRight ( t );
+			return getCoordJumpDownRight ( t );
 
 		case 3:
-			return this -> getCoordJumpDownLeft ( t );
+			return getCoordJumpDownLeft ( t );
 
 		case 4:
-			return this -> getCoordJumpLeft ( t );
+			return getCoordJumpLeft ( t );
 
 		case 5:
-			return this -> getCoordJumpUpLeft ( t );
+			return getCoordJumpUpLeft ( t );
 
 		case 6:
-			return this -> getCoordJumpUpRight ( t );
+			return getCoordJumpUpRight ( t );
 
 	}
 }
@@ -1726,9 +1775,9 @@ pair < int, int > board::getJumpCoords ( tile * t, unsigned int direction ) {
 pair < int, int > board::getMoveCoords ( board_move m ) {
 
 	if ( 1 <= m.getRawData ( ) && m.getRawData ( ) <= 6 )
-		return this -> getWalkCoords ( this -> getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
+		return getWalkCoords ( getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
 	else if ( 7 <= m.getRawData ( ) && m.getRawData ( ) <= 12 )
-		return this -> getJumpCoords ( this -> getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) - 6 );
+		return getJumpCoords ( getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) - 6 );
 
 }
 
@@ -1737,22 +1786,22 @@ bool board::walk ( tile * t, unsigned int direction ) {
 	switch ( direction ) {
 
 		case 1:
-			return this -> walkRight ( t );
+			return walkRight ( t );
 
 		case 2:
-			return this -> walkDownRight ( t );
+			return walkDownRight ( t );
 
 		case 3:
-			return this -> walkDownLeft ( t );
+			return walkDownLeft ( t );
 
 		case 4:
-			return this -> walkLeft ( t );
+			return walkLeft ( t );
 
 		case 5:
-			return this -> walkUpLeft ( t );
+			return walkUpLeft ( t );
 
 		case 6:
-			return this -> walkUpRight ( t );
+			return walkUpRight ( t );
 
 		default:
 			return false;
@@ -1765,22 +1814,22 @@ bool board::jump ( tile * t, unsigned int direction ) {
 	switch ( direction ) {
 
 		case 1:
-			return this -> jumpRight ( t );
+			return jumpRight ( t );
 
 		case 2:
-			return this -> jumpDownRight ( t );
+			return jumpDownRight ( t );
 
 		case 3:
-			return this -> jumpDownLeft ( t );
+			return jumpDownLeft ( t );
 
 		case 4:
-			return this -> jumpLeft ( t );
+			return jumpLeft ( t );
 
 		case 5:
-			return this -> jumpUpLeft ( t );
+			return jumpUpLeft ( t );
 
 		case 6:
-			return this -> jumpUpRight ( t );
+			return jumpUpRight ( t );
 
 		default:
 			return false;
@@ -1790,15 +1839,15 @@ bool board::jump ( tile * t, unsigned int direction ) {
 
 bool board::move ( tile * t, unsigned int move ) {
 	if ( 1 <= move && move <= 6 )
-		return this -> walk ( t, move );
+		return walk ( t, move );
 	else if ( 7 <= move && move <= 12 )
-		return this -> jump ( t, move - 6 );
+		return jump ( t, move - 6 );
 	else
 		return false;
 }
 
 bool board::move ( board_move m ) {
-	return this -> move ( this -> getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
+	return move ( getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
 }
 
 vector < board_move > board::getPossibleMoves ( tile * t ) {
@@ -1809,7 +1858,7 @@ vector < board_move > board::getPossibleMoves ( tile * t ) {
 
 	vector < board_move > r;
 
-	if ( ! this -> isValidTile ( t ) )
+	if ( ! isValidTile ( t ) )
 		return r;
 
 	if ( t -> getContents ( ) == 0 )
@@ -1820,7 +1869,7 @@ vector < board_move > board::getPossibleMoves ( tile * t ) {
 	m.setTileStartCoords ( t -> getCoordinates ( ) );
 
 	for ( int i = 1; i <= 12; ++ i ) {
-		if ( this -> canMove ( t, i ) ) {
+		if ( canMove ( t, i ) ) {
 			m.setRawData ( i );
 			r.push_back ( m );
 		}
@@ -1839,7 +1888,7 @@ vector < board_move > board::getPossibleMoves ( ) {
 
 		for ( int j = 0; j < tb [ i ].size ( ); ++ j ) {
 
-			vector < board_move > temp = this -> getPossibleMoves ( & tb [ i ] [ j ] );
+			vector < board_move > temp = getPossibleMoves ( & tb [ i ] [ j ] );
 
 			for ( int k = 0; k < temp.size ( ); ++ k )
 				r.push_back ( temp [ k ] );
@@ -1866,7 +1915,7 @@ bool board::makeTurn ( board_turn trn ) {
 	if ( trn.moves.size ( ) == 1 ) {
 
 		/* If the turn only is one move, do that move */
-		return this -> move ( trn.moves [ 0 ] );
+		return move ( trn.moves [ 0 ] );
 
 	} else if ( trn.moves.size ( ) == 0 ) {
 
@@ -1920,14 +1969,14 @@ void board::rotate ( ) {
 
 	#ifdef DEBUGGING
 	cout << "Rotating board:\n";
-	this -> print ( );
+	print ( );
 	#endif //DEBUGGING
 
 	auto rotationMap = lib::getCoordTranslationTable ( );
 
 	pair < int, int > pii1, pii2;
 
-	auto tb2 = this -> tb;
+	auto tb2 = tb;
 
 	for ( int i = 0; i < tb.size ( ); ++ i ) {
 
@@ -1946,26 +1995,26 @@ void board::rotate ( ) {
 
 	/* Save board changes */
 
-	for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
-		for ( int j = 0; j < this -> tb [ i ].size ( ); ++ j )
-			this -> tb [ i ] [ j ] = tb2 [ i ] [ j ];
+	for ( int i = 0; i < tb.size ( ); ++ i ) {
+		for ( int j = 0; j < tb [ i ].size ( ); ++ j )
+			tb [ i ] [ j ] = tb2 [ i ] [ j ];
 	}
 
-	for ( int i = 0; i < this -> playerTiles.size ( ); ++ i ) {
+	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
 
-		for ( int j = 0; j < this -> playerTiles [ i ].size ( ); ++ j ) {
+		for ( int j = 0; j < playerTiles [ i ].size ( ); ++ j ) {
 
-			this -> playerTiles [ i ] [ j ] = this -> getTile ( rotationMap [ playerTiles [ i ] [ j ] -> getCoordinates ( ) ] );
+			playerTiles [ i ] [ j ] = getTile ( rotationMap [ playerTiles [ i ] [ j ] -> getCoordinates ( ) ] );
 
 		}
 
 	}
 
-	for ( int i = 0; i < this -> nests.size ( ); ++ i ) {
+	for ( int i = 0; i < nests.size ( ); ++ i ) {
 
-		for ( int j = 0; j < this -> nests [ i ].size ( ); ++ j ) {
+		for ( int j = 0; j < nests [ i ].size ( ); ++ j ) {
 
-			this -> nests [ i ] [ j ] = this -> getTile ( rotationMap [ nests [ i ] [ j ] -> getCoordinates ( ) ] );
+			nests [ i ] [ j ] = getTile ( rotationMap [ nests [ i ] [ j ] -> getCoordinates ( ) ] );
 
 		}
 
@@ -1973,7 +2022,7 @@ void board::rotate ( ) {
 
 	#ifdef DEBUGGING
 	cout << "Rotated board:\n";
-	this -> print ( );
+	print ( );
 	#endif //DEBUGGING
 
 }
@@ -1981,7 +2030,7 @@ void board::rotate ( ) {
 void board::rotate ( int steps ) {
 
 	for ( int i = 0; i < steps % 6; ++ i )
-		this -> rotate ( );
+		rotate ( );
 
 }
 
@@ -2010,23 +2059,27 @@ int board::rotateForPerspective ( int player ) {
 
 			#ifdef DEBUGGING
 			cout << "This board needs to be rotated again, "
-				<< "nests [ player ] [ 0 ] -> getCoordinates ( ).second = "
-				<< nests [ player ] [ 0 ] -> getCoordinates ( ).second
+				<< deb ( nests [ player ] [ 0 ] -> getCoordinates ( ).second )
 				<< endl;
 			#endif //DEBUGGING
 
-			this -> rotate ( );
+			rotate ( );
 			++ rotations;
 
 		}
 
 	}
 
+	return rotations;
+
 }
 
 float board::getMiddleXCoord ( int y ) {
 
-	return ( float ) this -> tb [ y ].size ( ) / 2.0f - 0.5f;
+	return ( float ) tb [ y ].size ( ) / 2.0f - 0.5f;
+
+}
+
 vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords ) {
 
     vector < board_turn > allPossibleTurns;
@@ -2035,8 +2088,12 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
 
 	for ( int i = 0; i < possibleMoves.size ( ); ++ i ) {
 
-		if ( 1 < moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 )
-			goto nomove;
+		if ( 0 < moves.size ( ) ) {
+
+            if ( possibleMoves [ i ].getRawData ( ) <= 6 || moves [ moves.size ( ) - 1 ].getRawData ( ) <= 6 )
+                goto nomove;
+
+		}
 
 		if ( canMove ( possibleMoves [ i ] ) ) {
 
