@@ -14,6 +14,8 @@ namespace lib {
     int randInt ( );
     int randInt ( int mod );
 
+    long double phi ( long double v );
+
 }
 
 #endif // LIB

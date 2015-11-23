@@ -235,3 +235,8 @@ map < pair < int, int >, pair < int, int > > lib::getCoordTranslationTable ( ) {
 	return coordTranslationTable;
 
 }
+long double lib::phi ( long double v ) {
+
+	return pow ( 1 + exp ( -v ), -1 );
+
+}
