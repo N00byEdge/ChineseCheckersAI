@@ -18,4 +18,6 @@ namespace lib {
 
 }
 
+template < class T, class A > ostream & operator<< ( ostream &, const vector < T, A > &);
+
 #endif // LIB

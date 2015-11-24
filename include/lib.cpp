@@ -240,3 +240,18 @@ long double lib::phi ( long double v ) {
 	return pow ( 1 + exp ( -v ), -1 );
 
 }
+template < class T, class A > ostream & operator<< ( ostream & os , const vector < T, A > & v ) {
+
+    os << "{";
+
+    for ( size_t i = 0; i < v.size ( ); ++ i ) {
+        os << v [ i ];
+        if ( i != v.size ( ) - 1 )
+            os << ", ";
+    }
+
+    os << "}\n";
+
+    return os;
+
+}
