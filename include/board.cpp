@@ -1953,7 +1953,7 @@ bool board::makeTurn ( board_turn trn ) {
 	board dummyBoard;
 
 	for ( int i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
-		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) );
+		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) )
 			return false;
 		if ( !dummyBoard.move ( trn.moves [ i ] ) )
 			return false;
