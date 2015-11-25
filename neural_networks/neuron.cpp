@@ -2,75 +2,35 @@
 
 ostream & operator<< ( ostream & os, const neuron & n ) {
 
-	vector < pair < long double, long double > > rawInputs = n.getRawInputs ( );
+	os << "\t\t" << n.weights.size ( ) << "\n";
 
-	os << "\t\t" << rawInputs.size ( ) << "\n";
+	os << "\t\t" << n.bias << " ";
 
-	if ( 0 < rawInputs.size ( ) )
-		os << "\t\t\t";
+	for ( int i = 0; i < n.weights.size ( ); ++ i ) {
 
-	for ( int i = 0; i < rawInputs.size ( ); ++ i ) {
-		os << rawInputs [ i ].first << " " << rawInputs [ i ].second << " ";
-	}
+		os << n.weights [ i ] << " ";
 
-	if ( 0 < rawInputs.size ( ) )
-		os << "\n";
-
-	os << "\t\t" << n.getBias ( ) << " ";
-
-    vector < pair < neuron * , long double > > neuronInputs = n.getInputNeurons ( );
-
-	for ( int i = 0; i < neuronInputs.size ( ); ++ i ) {
-		os << neuronInputs [ i ].first << " ";
-	}
-
-	os << "\n";
-
-	return os;
+	} os << "\n";
 
 }
 
-long double randWeight ( ) {
+istream & operator>> ( istream & is , neuron & n ) {
 
-	return
-		( long double )
-			( lib::randInt ( ) )
+	int nWeights;
 
-		/
+	is >> nWeights;
 
-		( long double )
-			( std::numeric_limits < int >::max ( ) );
+	is >> n.bias;
 
-}
+	n.weights.clear ( );
 
-neuron::neuron ( vector < neuron * > lastLayer, istream & is ) {
-
-	int n = 0;
-
-	is >> n;
-
-	for ( int i = 0; i < n; ++ i ) {
-
-		long double input, weight;
-
-		is >> input >> weight;
-
-		this -> addRawInputWithWeight ( input, weight );
-
-	}
-
-	long double bias;
-	is >> bias;
-
-	this -> bias = bias;
-
-	for ( int i = 0; i < lastLayer.size ( ); ++ i ) {
+	for ( int i = 0; i < nWeights; ++ i ) {
 
 		long double weight;
 
 		is >> weight;
 
-		this -> addNeuronWithWeight ( lastLayer [ i ], weight );
+		n.weights.push_back ( weight );
 
 	}
 
@@ -78,88 +38,26 @@ neuron::neuron ( vector < neuron * > lastLayer, istream & is ) {
 
 neuron::neuron ( ) {
 
-    this -> setBias ( 1 );
+    this -> bias = 0;
 
 }
 
-long double neuron::value ( ) {
+long double neuron::run ( vector < long double > input ) {
 
-	long double ld = 0;
+	if ( input.size ( ) == weights.size ( ) ) {
 
-	for ( int i = 0; i < neuronInputs.size ( ); ++ i )
+		long double ld = 0;
 
-		ld += this -> neuronInputs [ i ].second * this -> neuronInputs [ i ].first -> value ( );
+		for ( int i = 0; i < input.size ( ); ++ i ) {
 
-	for ( int i = 0; i < rawInputs.size ( ); ++ i )
+			ld += input [ i ] * weights [ i ];
 
-		ld += this -> rawInputs [ i ].second * this -> rawInputs [ i ].first;
+		}
 
-	ld += this -> bias;
+		ld += this -> bias;
 
-	return ld;
+		return lib::phi ( ld );
 
-}
-
-void neuron::addRawInput ( long double ld ) {
-
-	return this -> addRawInputWithWeight ( ld, 1 );
-
-}
-
-void neuron::addRawInputWithWeight ( long double input, long double weight ) {
-
-	pair < long double, long double > pldld = { input, weight };
-
- 	this -> rawInputs.push_back ( pldld );
-
-}
-
-vector < pair < long double, long double > > neuron::getRawInputs ( ) const {
-
-	return this -> rawInputs;
-
-}
-
-void neuron::setRawInputs ( vector < pair < long double, long double > > vpldld ) {
-
-	this -> rawInputs = vpldld;
-
-}
-
-void neuron::addNeuron ( neuron * n ) {
-
-	return this -> addNeuronWithWeight ( n, 1 );
-
-}
-
-void neuron::addNeuronWithWeight ( neuron * n, long double weight ) {
-
-	pair < neuron *, long double > pnld = { n, weight };
-
-	this -> neuronInputs.push_back ( pnld );
-
-}
-
-vector < pair < neuron *, long double > > neuron::getInputNeurons ( ) const {
-
-	return this -> neuronInputs;
-
-}
-
-void neuron::setInputNeurons ( vector < pair < neuron *, long double > > vpnld ) {
-
-	this -> neuronInputs = vpnld;
-
-}
-
-long double neuron::getBias ( ) const {
-
-	return this -> bias;
-
-}
-
-void neuron::setBias ( long double bias ) {
-
-	this -> bias = bias;
+	} return 0.0l;
 
 }

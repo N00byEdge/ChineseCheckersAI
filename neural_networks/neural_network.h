@@ -7,14 +7,25 @@
 
 class neural_network {
 
-    public:
+	public:
 
-    protected:
+		neural_network ( );
 
-    private:
+		neural_network ( istream & is );
 
-    	vector < layer >  layers;
+		//neural_network ( string filename );
+
+		vector < long double > run ( vector < long double > input );
+
+		vector < layer >  layers;
+
+	protected:
+
+	private:
 
 };
+
+ostream & operator<< ( ostream &, const neural_network & );
+istream & operator>> ( istream &, neural_network & );
 
 #endif // NEURAL_NETWORK

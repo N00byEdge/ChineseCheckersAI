@@ -7,81 +7,21 @@ class neuron {
 
 	public:
 
-		neuron ( vector < neuron * > lastLayer, istream & is );
 		neuron ( );
 
-		long double value ( );
+		long double run ( vector < long double > input );
 
-		/* Raw input functions, only used for first layer */
+		vector < long double > weights;
 
-		void addRawInput (
-			long double input
-		);
-
-		void addRawInputWithWeight (
-			long double input,
-			long double weight
-		);
-
-		vector <
-			pair <
-				long double,
-				long double
-			>
-		>   getRawInputs ( ) const;
-
-		void setRawInputs (
-			vector <
-				pair <
-					long double,
-					long double
-				>
-			>
-		vpinputweight );
-
-		/* Neuron input functions */
-
-		void addNeuron (
-			neuron *
-		);
-
-		void addNeuronWithWeight (
-			neuron * neuron,
-			long double weight
-		);
-
-		vector <
-			pair <
-				neuron *,
-				long double
-			>
-		>	getInputNeurons ( ) const;
-
-		void setInputNeurons (
-			vector <
-				pair <
-					neuron *,
-					long double
-				>
-			>
-		);
-
-		void setBias ( long double bias );
-
-		long double getBias ( ) const;
+		long double bias;
 
 	protected:
 
 	private:
 
-		vector < pair < neuron *, long double > > neuronInputs;
-
-		vector < pair < long double, long double > > rawInputs;
-
-		long double bias;
-
 };
 
 ostream & operator<< ( ostream &, const neuron & );
+istream & operator>> ( istream &, neuron & );
 
 #endif // NEURON

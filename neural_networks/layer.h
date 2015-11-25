@@ -9,12 +9,17 @@ class layer {
 
     public:
 
+        vector < long double > run ( vector < long double > input, int nLayer );
+
+        vector < neuron > neurons;
+
     protected:
 
     private:
 
-    	vector < neuron > neurons;
-
 };
+
+ostream & operator<< ( ostream &, const layer & );
+istream & operator>> ( istream &, layer & );
 
 #endif // LAYER
