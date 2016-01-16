@@ -235,8 +235,155 @@ map < pair < int, int >, pair < int, int > > lib::getCoordTranslationTable ( ) {
 	return coordTranslationTable;
 
 }
+
 long double lib::phi ( long double v ) {
 
-	return pow ( 1 + exp ( -v ), -1 );
+	return pow ( 1.0L + exp ( -v ), -1.0L );
+
+}
+
+vector < vector < long double > > lib::matrixMultiplication ( vector < vector < long double > > & v1, vector < vector < long double > > & v2 ) {
+
+	vector < vector < long double > > result;
+
+	for ( size_t row = 0; row < v1.size ( ); ++ row ) {
+
+		result.push_back ( * new vector < long double > );
+
+		for ( size_t column = 0; column < v1.size ( ); ++ column ) {
+
+			result [ row ].push_back ( 0 );
+
+			for ( size_t inner = 0; inner < v2.size ( ); ++ inner ) result [ row ] [ column ] += v1 [ row ] [ inner ] * v2 [ inner ] [ column ];
+
+		}
+
+	}
+
+}
+
+vector < long double > lib::matrixVectorMultiplication ( vector < vector < long double > > & v1, vector < long double > & v2 ) {
+
+	vector < long double > result ( v1.size ( ), 0 );
+
+	for ( size_t i = 0; i < v1.size ( ); ++ i ) {
+
+		for ( size_t k = 0; k < v2.size ( ) && k < v1 [ i ].size ( ); ++ k )
+			result [ i ] += v1 [ i ] [ k ] * v2 [ k ];
+
+	}
+
+	return result;
+
+}
+
+vector < long double > lib::vectorPairMul ( vector < long double > & v1, vector < long double > & v2 ) {
+
+	vector < long double > result;
+
+	for ( size_t i = 0; i < v1.size ( ) && i < v2.size ( ); ++ i )
+		result.push_back ( v1 [ i ] * v2 [ i ] );
+
+	return result;
+
+}
+
+vector < vector < long double > > lib::matrixAdd ( vector < vector < long double > > & v1, vector < vector < long double > > & v2 ) {
+
+	vector < vector < long double > > result;
+
+	for ( size_t i = 0; i < v1.size ( ) && i < v2.size ( ); ++ i ) {
+
+		result.push_back ( * new vector < long double > );
+
+		for ( size_t j = 0; j < v1 [ i ].size ( ) && j < v2 [ i ].size ( ); ++ j )
+			result [ i ].push_back ( v1 [ i ] [ j ] + v2 [ i ] [ j ] );
+
+	}
+
+	return result;
+
+}
+
+
+vector < vector < long double > > lib::matrixMulCoefficient ( long double k, vector < vector < long double > > & v ) {
+
+	vector < vector < long double > > result ( v.size ( ), * new vector < long double > );
+
+	for ( size_t i = 0; i < v.size ( ); ++ i )
+
+		for ( size_t j = 0; j < v [ i ].size ( ); ++ j )
+            result [ i ].push_back ( k * v [ i ] [ j ] );
+
+	return result;
+
+}
+
+vector < vector < long double > > lib::transpose ( vector < vector < long double > > & v ) {
+
+	vector < vector < long double > > result;
+
+	if ( v.size ( ) < 1 ) return result;
+
+	for ( size_t i = 0; i < v [ 0 ].size ( ); ++ i ) result.push_back ( * new vector < long double > );
+
+	for ( size_t i = 0; i < v.size ( ); ++ i ) {
+
+		for ( size_t j = 0; j < v [ i ].size ( ); ++ j )
+			result [ j ].push_back ( v [ i ] [ j ] );
+
+	}
+
+	return result;
+
+}
+
+long double lib::scalarProduct ( vector < long double > & v1, vector < long double > & v2 ) {
+
+	long double result = 0;
+
+	for ( size_t i = 0; i < v1.size ( ) && i < v2.size ( ); ++ i )
+		result += v1 [ i ] * v2 [ i ];
+
+	return result;
+
+}
+
+vector < vector < long double > > lib::vectorsToMatrix ( vector < long double > & v1, vector < long double > & v2 ) {
+
+	 vector < vector < long double > > result;
+
+	 for ( size_t i = 0; i < v1.size ( ); ++ i ) {
+
+		 result.push_back ( * new vector < long double > );
+
+		 for ( size_t j = 0; j < v2.size ( ); ++ j )
+		 	result [ i ].push_back ( v1 [ i ] * v2 [ j ] );
+
+	 }
+
+	 return result;
+
+}
+
+vector < vector < vector < long double > > > lib::tensorAdd ( vector < vector < vector < long double > > > & v1, vector < vector < vector < long double > > > & v2 ) {
+
+	vector < vector < vector < long double > > > result;
+
+	for ( size_t i = 0; i < v1.size ( ); ++ i ) {
+
+		result.push_back ( * new vector < vector < long double > > );
+
+		for ( size_t j = 0; j < v1 [ i ].size ( ); ++ j ) {
+
+			result [ i ].push_back ( * new vector < long double > );
+
+			for ( size_t k = 0; k < v1 [ i ] [ j ].size ( ); ++ k ) result [ i ] [ j ].push_back ( v1 [ i ] [ j ] [ k ] + v2 [ i ] [ j ] [ k ] );
+
+		}
+
+	}
+
+	return result;
 
 }
