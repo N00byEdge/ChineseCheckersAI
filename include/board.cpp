@@ -2124,6 +2124,7 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
                 allPossibleTurns.push_back ( w [ k ] );
 
 			moves.erase ( moves.end ( ) - 1 );
+			visited [ tileToInt ( getTile ( getMoveCoords ( possibleMoves [ i ] ) ) ) ] = false;
 
 		}
 
