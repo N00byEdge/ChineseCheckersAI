@@ -2147,10 +2147,14 @@ float board::score ( int player ) {
 		int y = t -> getCoordinates ( ).second;
 
 		int h = 17 - y;
-		float d = abs ( ( float ) x - getMiddleXCoord ( y ) );
+		int d = abs ( x - getMiddleXCoord ( y ) );
 
-		score -= h * h;
-		score -= d * d * d;
+		score -= h * h * h;
+		score -= d * d;
+
+        #ifdef DEBUGGING
+		cout << deb ( x ) << ", " << deb ( y ) << ", " << deb ( h ) << ", " << deb ( d ) << "\n";
+		#endif
 
 	}
 
