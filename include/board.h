@@ -41,7 +41,12 @@ class board {
 
 		float score ( int player );
 
-		vector < board_turn > findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords );
+		tile * intToTile ( int in );
+
+        int tileToInt ( tile * t );
+
+		vector < board_turn > findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > visited );
+		vector < board_turn > findAllPossibleTurns ( int player );
 
 		pair < int, int > getWalkCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getJumpCoords ( tile * tile, unsigned int direction );

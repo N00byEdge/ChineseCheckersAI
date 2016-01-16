@@ -2160,6 +2160,26 @@ float board::score ( int player ) {
 
 	return score;
 }
+
+vector < board_turn > board::findAllPossibleTurns ( int player ) {
+
+	vector < board_turn > allPossibleTurns;
+
+	vector < tile * > playerTiles = this -> getPlayerTiles ( player );
+
+	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
+
+		vector < board_turn > v = this -> findAllPossibleTurns ( playerTiles [ i ], *new vector < board_move > , *new vector < bool > ( 121, false ) );
+
+		for ( int j = 0; j < v.size ( ); ++ j )
+			allPossibleTurns.push_back ( v [ j ] );
+
+	}
+
+	return allPossibleTurns;
+
+}
+
 bool board::hasFilledOpposingNest ( int player ) {
 
     for ( int i = 0; i < this -> nests [ player ].size ( ); ++ i ) {
