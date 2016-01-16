@@ -7,13 +7,12 @@ class neuron {
 
 	public:
 
-		neuron ( );
-
 		long double run ( vector < long double > input );
+		long double runNoPhi ( vector < long double > input );
 
+		vector < long double > getWeights ( );
+		
 		vector < long double > weights;
-
-		long double bias;
 
 	protected:
 

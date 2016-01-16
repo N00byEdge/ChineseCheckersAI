@@ -30,22 +30,46 @@ istream & operator>> ( istream & is, layer & l ) {
 
 }
 
-vector < long double > layer::run ( vector < long double > input, int nLayer ) {
+vector < long double > layer::run ( vector < long double > input ) {
 
     vector < long double > output;
 
-    for ( int i = 0; i < this -> neurons.size ( ); ++ i ) {
+    input.push_back ( 1.0L );
 
-        if ( nLayer == 0 ) {
-
-            vector < long double > in = { input [ i ] };
-
-            output.push_back ( this -> neurons [ i ].run ( in ) );
-
-        } else output.push_back ( this -> neurons [ i ].run ( input ) );
-
-    }
+    for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].run ( input ) );
 
     return output;
+
+}
+
+vector < long double > layer::runNoPhi ( vector < long double > input ) {
+
+    vector < long double > output;
+
+    input.push_back ( 1.0L );
+
+    for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].runNoPhi ( input ) );
+
+    return output;
+
+}
+
+vector < vector < long double > > layer::getWeights ( ) {
+
+	vector < vector < long double > > result;
+
+	for ( size_t i = 0; i < neurons.size ( ); ++ i ) {
+
+		result.push_back ( neurons [ i ].getWeights ( ) );
+
+	}
+
+	return result;
+
+}
+
+void layer::setWeights ( vector < vector < long double > > & v ) {
+
+	for ( size_t i = 0; i < neurons.size ( ); ++ i ) neurons [ i ].weights = v [ i ];
 
 }

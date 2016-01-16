@@ -4,7 +4,7 @@ ostream & operator<< ( ostream & os, const neuron & n ) {
 
 	os << "\t\t" << n.weights.size ( ) << "\n";
 
-	os << "\t\t" << n.bias << " ";
+	os << "\t\t";
 
 	for ( int i = 0; i < n.weights.size ( ); ++ i ) {
 
@@ -20,8 +20,6 @@ istream & operator>> ( istream & is , neuron & n ) {
 
 	is >> nWeights;
 
-	is >> n.bias;
-
 	n.weights.clear ( );
 
 	for ( int i = 0; i < nWeights; ++ i ) {
@@ -33,12 +31,6 @@ istream & operator>> ( istream & is , neuron & n ) {
 		n.weights.push_back ( weight );
 
 	}
-
-}
-
-neuron::neuron ( ) {
-
-    this -> bias = 0;
 
 }
 
@@ -54,10 +46,34 @@ long double neuron::run ( vector < long double > input ) {
 
 		}
 
-		ld += this -> bias;
+        cout << ld << endl;
 
 		return lib::phi ( ld );
 
 	} return 0.0l;
+
+}
+
+long double neuron::runNoPhi ( vector < long double > input ) {
+
+	if ( input.size ( ) == weights.size ( ) ) {
+
+		long double ld = 0;
+
+		for ( int i = 0; i < input.size ( ); ++ i ) {
+
+			ld += input [ i ] * weights [ i ];
+
+		}
+
+		return ld;
+
+	} return 0.0l;
+
+}
+
+vector < long double > neuron::getWeights ( ) {
+
+	return weights;
 
 }

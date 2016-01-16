@@ -9,10 +9,14 @@ class layer {
 
     public:
 
-        vector < long double > run ( vector < long double > input, int nLayer );
+        vector < long double > run ( vector < long double > input );
+        vector < long double > runNoPhi ( vector < long double > input );
 
         vector < neuron > neurons;
-
+		
+		vector < vector < long double > > getWeights ( );
+		void setWeights ( vector < vector < long double > > & );
+		
     protected:
 
     private:
