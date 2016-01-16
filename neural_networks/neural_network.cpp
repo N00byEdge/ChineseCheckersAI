@@ -46,20 +46,14 @@ vector < long double > neural_network::run ( vector < long double > input ) {
 
 }
 
+
 neural_network::neural_network ( ) { }
 
 neural_network::neural_network ( istream & is ) {
 
-	is >> *this;
+	is >> * this;
 
 }
 
-/*neural_network::neural_network ( string filename ) {
 
-	ifstream inFile;
-	inFile.open ( filename );
-	if ( inFile.is_open ( ) )
-		inFile >> *this;
-	inFile.close ( );
 
-}*/
