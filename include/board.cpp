@@ -388,6 +388,7 @@ vector < tile * > board::getPlayerTiles ( int player ) {
 
 	if ( player < playerTiles.size ( ) )
 		return playerTiles;
+    return *new vector < tile * >;
 
 }
 
