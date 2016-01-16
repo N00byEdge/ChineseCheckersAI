@@ -51,6 +51,7 @@ class board {
 		pair < int, int > getWalkCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getJumpCoords ( tile * tile, unsigned int direction );
 		pair < int, int > getMoveCoords ( board_move move );
+		pair < int, int > getTurnCoords ( board_turn turn );
 
 		pair < int, int > getCoordRight ( pair < int, int> coordinates );
 		pair < int, int > getCoordRight ( tile * tile );

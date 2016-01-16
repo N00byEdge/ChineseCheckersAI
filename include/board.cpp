@@ -1781,6 +1781,18 @@ pair < int, int > board::getMoveCoords ( board_move m ) {
 
 }
 
+pair < int, int > board::getTurnCoords ( board_turn t ) {
+
+    board dummyBoard = * this;
+
+    auto t2 = t;
+    t2.moves.erase ( t2.moves.begin ( ) + t2.moves.size ( ) - 1 );
+
+    dummyBoard.makeTurn ( t2 );
+    return dummyBoard.getMoveCoords ( t.moves [ t.moves.size ( ) - 1 ] );
+
+}
+
 bool board::walk ( tile * t, unsigned int direction ) {
 
 	switch ( direction ) {
