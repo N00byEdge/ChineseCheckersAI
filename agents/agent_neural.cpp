@@ -2,7 +2,7 @@
 
 board_turn agent_neural::doTurn ( board b, int player ) {
 
-	/* 
+	/*
 
 		This will be called when the agents needs to make a move.
 
@@ -20,16 +20,13 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
 	board_turn t;
 
-	while ( whatever ) {
+	vector < long double > indata ( 121, 0 );
+	for ( size_t i = 0; i < indata.size ( ); ++ i ) indata [ i ] = b.intToTile ( i ) -> getContents ( );
 
-		board_move m;
-
-		// Do your logic here
-
-		t.moves.push_back ( m );
-
-	}	
+    auto outdata = nn.run ( indata );
 
 	return t;
 
 }
+
+agent_neural::agent_neural ( istream is ): nn ( is ) { }
