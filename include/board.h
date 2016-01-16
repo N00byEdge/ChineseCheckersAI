@@ -23,6 +23,8 @@ class board {
 		bool makeTurn ( board_turn );
 		bool canMakeTurn ( board_turn );
 
+		bool hasFilledOpposingNest ( int player );
+
 		vector < board_move > getPossibleMoves ( );
 		vector < board_move > getPossibleMoves ( tile * tile );
 
