@@ -14,7 +14,7 @@ class board_move {
 
 		unsigned int getDirection ( );
 
-		void setRawData ( int );
+		void setRawData ( unsigned int );
 		int getRawData ( );
 
 		void setTileStartCoords ( pair < int, int > );
@@ -27,8 +27,8 @@ class board_move {
 	private:
 
 		pair < int, int > tileStartCoords;
-	
-		int i = 0;
+
+		unsigned int i = 0;
 };
 
 #endif // BOARD_MOVE

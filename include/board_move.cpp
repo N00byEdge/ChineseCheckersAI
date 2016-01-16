@@ -13,7 +13,7 @@ unsigned int board_move::getDirection ( ) {
     return 0;
 }
 
-void board_move::setRawData ( int i ) {
+void board_move::setRawData ( unsigned int i ) {
     this -> i = i;
 }
 
@@ -36,5 +36,5 @@ void board_move::rotate ( ) {
 	this -> tileStartCoords = rotationMap [ this -> tileStartCoords ];
 	if ( this -> i % 6 == 0 )
 		i -= 6;
-	++ i; 
+	++ i;
 }
