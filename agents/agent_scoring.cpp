@@ -8,11 +8,9 @@ vector < board_turn > findAllPossibleTurns ( board b, int player ) {
 
 	for ( int i = 0; i < playerTiles.size ( ); ++ i ) {
 
-		vector < board_move > emptyMoveVector;
-		vector < pair < int, int > > emptyPiiVector;
-		vector < board_turn > emptyTurnVector;
+		vector < bool > visited ( 121, false );
 
-		auto v = b.findAllPossibleTurns( playerTiles [ i ], emptyMoveVector, emptyPiiVector );
+		auto v = b.findAllPossibleTurns( playerTiles [ i ], * new vector < board_move >, visited );
 
 		for ( int j = 0; j < v.size ( ); ++ j )
 			allPossibleTurns.push_back ( v [ j ] );
@@ -57,7 +55,18 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	vector < board_turn > v = findAllPossibleTurns ( b, player );
 
-	vector < int > boardScores;
+	for ( int i = 0; i < v.size ( ); ++ i  ) {
+
+        if ( !b.canMakeTurn ( v [ i ] ) ) {
+
+            v.erase ( v.begin ( ) + i );
+            -- i;
+
+        }
+
+	}
+
+	vector < float > boardScores;
 	for ( int i = 0; i < v.size ( ); ++ i ) {
 		board b2 = b;
 		b2.makeTurn ( v [ i ] );
@@ -75,7 +84,7 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 	}
 	#endif // DEBUGGING
 
-	int bestScore = std::numeric_limits < int >::min ( );
+	float bestScore = -5e35f;
 	vector < board_turn > bestTurns;
 
 	for ( int i = 0; i < v.size ( ); ++ i ) {
