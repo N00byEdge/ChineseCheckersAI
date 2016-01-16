@@ -139,7 +139,6 @@
 		<Unit filename="agents/agent_human.cpp" />
 		<Unit filename="agents/agent_human.h" />
 		<Unit filename="agents/agent_neural.cpp">
-			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
 		<Unit filename="agents/agent_neural.h" />
