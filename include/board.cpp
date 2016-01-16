@@ -266,6 +266,34 @@ tile * board::getTile ( pair < int, int > pii ) {
 
 }
 
+tile * board::intToTile ( int in ) {
+
+    if ( in <= 121 ) {
+
+        for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
+
+            if ( in < this -> tb [ i ].size ( ) )
+                return & this -> tb [ i ] [ in ];
+            else in -= this -> tb [ i ].size ( );
+
+        }
+
+    }
+
+}
+
+int board::tileToInt ( tile * t ) {
+
+    int r = 0;
+
+    for ( int i = 0; i < t -> getCoordinates ( ).second; ++ i )
+        r += this -> tb [ i ].size ( );
+    r += t -> getCoordinates ( ).first;
+
+    return r;
+
+}
+
 bool board::isValidTile ( pair < int, int > pii ) {
 
 	#ifdef DEBUGGING
