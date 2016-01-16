@@ -16,7 +16,7 @@
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-std=c++0x" />
-					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="%SFML64232%/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
 					<Add directory="neural_networks" />
@@ -26,6 +26,7 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
 					<Add library="sfml-system" />
+					<Add directory="%SFML64232%/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release Windows x86 with interface">
@@ -38,7 +39,7 @@
 				<Compiler>
 					<Add option="-std=c++0x" />
 					<Add option="-DINTERFACE" />
-					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="%SFML64232%/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
 					<Add directory="neural_networks" />
@@ -48,6 +49,7 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
 					<Add library="sfml-system" />
+					<Add directory="%SFML64232%/lib" />
 				</Linker>
 			</Target>
 			<Target title="Debug Windows x86">
@@ -60,7 +62,7 @@
 				<Compiler>
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
-					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="%SFML64232%/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
 					<Add directory="neural_networks" />
@@ -70,6 +72,7 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
 					<Add library="sfml-system" />
+					<Add directory="%SFML64232%/lib" />
 				</Linker>
 			</Target>
 			<Target title="Debug Windows x86 with interface">
@@ -83,7 +86,7 @@
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
 					<Add option="-DINTERFACE" />
-					<Add directory="../../API/SFML/2.3.1/x86/include" />
+					<Add directory="%SFML64232%/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
 					<Add directory="neural_networks" />
@@ -93,6 +96,7 @@
 					<Add library="sfml-window" />
 					<Add library="sfml-network" />
 					<Add library="sfml-system" />
+					<Add directory="%SFML64232%/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release OS X">
