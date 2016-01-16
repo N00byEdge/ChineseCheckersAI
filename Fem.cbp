@@ -60,7 +60,6 @@
 				<Compiler>
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
-					<Add option="-DDEBUGGING" />
 					<Add directory="../../API/SFML/2.3.1/x86/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
@@ -84,7 +83,6 @@
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
 					<Add option="-DINTERFACE" />
-					<Add option="-DDEBUGGING" />
 					<Add directory="../../API/SFML/2.3.1/x86/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
@@ -121,7 +119,6 @@
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
 					<Add option="-DNOLIB" />
-					<Add option="-DDEBUGGING" />
 					<Add directory="../../API/SFML/2.3.1/OS X/include" />
 				</Compiler>
 			</Target>
