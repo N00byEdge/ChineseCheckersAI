@@ -413,7 +413,6 @@ tile * board::getTileRight ( pair < int, int> pii ) {
 	tile * t = getTile ( pii );
 
 	if ( isValidTile ( t ) )
-
 		return t;
 
 }
