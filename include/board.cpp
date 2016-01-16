@@ -2158,3 +2158,23 @@ float board::score ( int player ) {
 
 	return score;
 }
+bool board::hasFilledOpposingNest ( int player ) {
+
+    for ( int i = 0; i < this -> nests [ player ].size ( ); ++ i ) {
+
+        auto coord = this -> nests [ player ] [ i ] -> getCoordinates ( );
+
+        auto tt = lib::getCoordTranslationTable ( );
+
+        for ( int j = 0; j < 3; ++ j )
+            coord = tt.at ( coord );
+
+		//cout << deb ( this -> getTile ( coord ) -> getContents ( ) != player ) << endl;
+
+        if ( this -> getTile ( coord ) -> getContents ( ) != player ) return false;
+
+    }
+
+    return true;
+
+}
