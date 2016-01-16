@@ -19,11 +19,6 @@
 
 	#ifndef NOLIB
 
-	/* Boost universal includes */
-
-	#include <boost/thread.hpp>
-	#include <boost/date_time.hpp>
-
 	/* SFML universal includes */
 
 	#include <SFML/Graphics.hpp>
