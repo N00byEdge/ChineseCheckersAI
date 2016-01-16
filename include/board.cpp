@@ -2080,7 +2080,7 @@ float board::getMiddleXCoord ( int y ) {
 
 }
 
-vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < pair < int, int > > visitedCoords ) {
+vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > visited ) {
 
     vector < board_turn > allPossibleTurns;
 
@@ -2097,12 +2097,9 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
 
 		if ( canMove ( possibleMoves [ i ] ) ) {
 
-			for ( int j = 0; j < visitedCoords.size ( ); ++ j ) {
 
-				if ( getMoveCoords ( possibleMoves [ i ] ) == visitedCoords [ j ] )
-					goto nomove;
-
-			}
+            if ( visited  [ tileToInt ( getTile ( getMoveCoords ( possibleMoves [ i ] ) ) ) ] )
+                goto nomove;
 
 			board_move mv;
 			mv = possibleMoves [ i ];
@@ -2112,13 +2109,14 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
 			trn.moves = moves;
 			allPossibleTurns.push_back ( trn );
 
-			visitedCoords.push_back ( getMoveCoords ( possibleMoves [ i ] ) );
+			visited [ tileToInt ( getTile ( getMoveCoords ( possibleMoves [ i ] ) ) ) ] = true;
+			//visitedCoords.push_back ( getMoveCoords ( possibleMoves [ i ] ) );
 			tile * originalTile = t;
 			t = getTile ( getMoveCoords ( mv ) );
 			board originalBoard = *this;
 			move ( mv );
 			board b = *this;
-			auto w = b.findAllPossibleTurns ( t, moves, visitedCoords );
+			auto w = b.findAllPossibleTurns ( t, moves, visited );
 			b = originalBoard;
 			t = originalTile;
 
@@ -2126,7 +2124,6 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
                 allPossibleTurns.push_back ( w [ k ] );
 
 			moves.erase ( moves.end ( ) - 1 );
-			visitedCoords.erase ( visitedCoords.end ( ) - 1 );
 
 		}
 
