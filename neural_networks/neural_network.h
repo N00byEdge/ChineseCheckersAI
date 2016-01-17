@@ -19,6 +19,8 @@ class neural_network {
 
 		vector < layer >  layers;
 
+		void learn ( vector < pair < vector < long double >, vector < long double > > > datasets, long double maxError, long double learningSpeed, long long reportFrequency );
+
 	protected:
 
 	private:
