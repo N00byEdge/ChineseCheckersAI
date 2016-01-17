@@ -34,6 +34,7 @@ vector < long double > layer::run ( vector < long double > input ) {
 
     vector < long double > output;
 
+<<<<<<< HEAD
     input.push_back ( 1.0L );
 
     for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].run ( input ) );
@@ -49,10 +50,18 @@ vector < long double > layer::runNoPhi ( vector < long double > input ) {
     input.push_back ( 1.0L );
 
     for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].runNoPhi ( input ) );
+=======
+    for ( int i = 0; i < this -> neurons.size ( ); ++ i ) {
+
+        output.push_back ( this -> neurons [ i ].run ( input ) );
+
+    }
+>>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
     return output;
 
 }
+<<<<<<< HEAD
 
 vector < vector < long double > > layer::getWeights ( ) {
 
@@ -73,3 +82,5 @@ void layer::setWeights ( vector < vector < long double > > & v ) {
 	for ( size_t i = 0; i < neurons.size ( ); ++ i ) neurons [ i ].weights = v [ i ];
 
 }
+=======
+>>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a

@@ -312,6 +312,7 @@ vector < vector < long double > > lib::matrixMulCoefficient ( long double k, vec
 
 	for ( size_t i = 0; i < v.size ( ); ++ i )
 
+<<<<<<< HEAD
 		for ( size_t j = 0; j < v [ i ].size ( ); ++ j )
             result [ i ].push_back ( k * v [ i ] [ j ] );
 
@@ -385,5 +386,21 @@ vector < vector < vector < long double > > > lib::tensorAdd ( vector < vector < 
 	}
 
 	return result;
+=======
+}
+template < class T, class A > ostream & operator<< ( ostream & os , const vector < T, A > & v ) {
+
+    os << "{";
+
+    for ( size_t i = 0; i < v.size ( ); ++ i ) {
+        os << v [ i ];
+        if ( i != v.size ( ) - 1 )
+            os << ", ";
+    }
+
+    os << "}\n";
+
+    return os;
+>>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
 }

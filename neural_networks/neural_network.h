@@ -9,10 +9,19 @@ class neural_network {
 
 	public:
 
+<<<<<<< HEAD
 		neural_network ( );
+=======
+        vector < long double > run ( vector < long double > input );
+
+        vector < layer >  layers;
+
+    protected:
+>>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
 		neural_network ( istream & is );
 
+<<<<<<< HEAD
 		//neural_network ( string filename );
 
 		vector < long double > run ( vector < long double > input );
@@ -25,6 +34,8 @@ class neural_network {
 
 	private:
 
+=======
+>>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 };
 
 ostream & operator<< ( ostream &, const neural_network & );

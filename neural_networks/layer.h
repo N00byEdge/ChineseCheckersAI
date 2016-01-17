@@ -10,6 +10,7 @@ class layer {
     public:
 
         vector < long double > run ( vector < long double > input );
+<<<<<<< HEAD
         vector < long double > runNoPhi ( vector < long double > input );
 
         vector < neuron > neurons;
@@ -17,6 +18,11 @@ class layer {
 		vector < vector < long double > > getWeights ( );
 		void setWeights ( vector < vector < long double > > & );
 		
+=======
+
+        vector < neuron > neurons;
+
+>>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
     protected:
 
     private:
