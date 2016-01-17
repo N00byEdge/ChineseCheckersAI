@@ -2240,3 +2240,16 @@ bool board::hasFilledOpposingNest ( int player ) {
     return true;
 
 }
+
+board_turn board::tilesToTurn ( tile * startTile, tile * endTile ) {
+
+    board_turn t;
+
+    auto possibleTurns = findAllPossibleTurns ( startTile, * new vector < board_move >, * new vector < bool > ( 121 ) );
+
+    for ( size_t i = 0; i < possibleTurns.size ( ); ++ i )
+        if ( getTile ( getTurnCoords ( possibleTurns [ i ] ) ) == endTile ) return possibleTurns [ i ];
+
+    return t;
+
+}

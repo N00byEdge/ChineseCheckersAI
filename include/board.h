@@ -33,6 +33,8 @@ class board {
 		bool isValidTile ( pair < int, int > coordinates );
 		bool isValidTile ( tile * tile );
 
+		board_turn tilesToTurn ( tile * startTile, tile * endTile );
+
 		vector < tile * > getPlayerTiles ( int player );
 
 		void rotate ( ); // rotates the board 1 step
