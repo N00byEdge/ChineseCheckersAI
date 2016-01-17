@@ -140,9 +140,7 @@
 		<Unit filename="agents/agent.h" />
 		<Unit filename="agents/agent_human.cpp" />
 		<Unit filename="agents/agent_human.h" />
-		<Unit filename="agents/agent_neural.cpp">
-			<Option link="0" />
-		</Unit>
+		<Unit filename="agents/agent_neural.cpp" />
 		<Unit filename="agents/agent_neural.h" />
 		<Unit filename="agents/agent_random.cpp" />
 		<Unit filename="agents/agent_random.h" />
