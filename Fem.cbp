@@ -14,7 +14,7 @@
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-O3" />
+					<Add option="-Ofast" />
 					<Add option="-std=c++0x" />
 					<Add directory="%SFML64232%/include" />
 					<Add directory="include" />
@@ -37,6 +37,7 @@
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
+					<Add option="-Ofast" />
 					<Add option="-std=c++0x" />
 					<Add option="-DINTERFACE" />
 					<Add directory="%SFML64232%/include" />
