@@ -5,13 +5,17 @@
 
 #include <layer.h>
 
+#include <fstream>
+
 class neural_network {
 
 	public:
 
-		neural_network ( );
+		neural_network ( string );
 
 		neural_network ( istream & );
+
+		bool init ( string );
 
 		//neural_network ( string filename );
 

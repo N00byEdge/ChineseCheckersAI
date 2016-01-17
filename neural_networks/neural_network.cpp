@@ -48,7 +48,53 @@ vector < long double > neural_network::run ( vector < long double > input ) {
 
 }
 
-neural_network::neural_network ( ) { }
+bool neural_network::init ( string source ) {
+
+    if ( source == "cin" ) {
+
+        cin >> * this;
+        return true;
+
+    } else if ( source == "none" ) {
+
+        return true;
+
+    } else {
+
+        ifstream inputFile;
+        inputFile.open ( source );
+        if ( inputFile.is_open ( ) ) {
+
+            inputFile >> * this;
+
+        } else return false;
+
+        inputFile.close ( );
+
+        return true;
+
+    }
+
+}
+
+neural_network::neural_network ( string source ) {
+
+    if ( source.size ( ) && init ( source ) ) return;
+
+    string input;
+
+    cout << "This neural network has not been initialized. Please enter a neural network source: ";
+
+    while ( true ) {
+
+        getline ( cin, input );
+        if ( init ( input ) ) break;
+
+        cout << "Invalid input; please try again: ";
+
+    }
+
+}
 
 neural_network::neural_network ( istream & is ) {
 

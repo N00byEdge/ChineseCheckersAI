@@ -25,8 +25,12 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
     auto outdata = nn.run ( indata );
 
+    cout << outdata << endl;
+
 	return t;
 
 }
 
-agent_neural::agent_neural ( istream is ): nn ( is ) { }
+agent_neural::agent_neural ( ): nn ( "ask" ) { }
+agent_neural::agent_neural ( istream & is ): nn ( is ) { }
+agent_neural::agent_neural ( ifstream & ifs ): nn ( ifs ) { }
