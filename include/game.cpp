@@ -29,25 +29,25 @@ void game::startGame ( int numPlayers ) {
 		int agentNum;
 		cin >> agentNum;
 
+        switch ( agentNum ) {
 
-		if ( agentNum == 1 ) {
+            case 1:
+                this -> players.push_back ( new agent_human );
 
-			this -> players.push_back ( new agent_human );
+            case 2:
+                this -> players.push_back ( new agent_scoring );
 
-		} else if ( agentNum == 2 ) {
+            case 3:
+                this -> players.push_back ( new agent_random );
 
-			this -> players.push_back ( new agent_scoring );
+            case 4:
+                this -> players.push_back ( new agent_neural );
 
-		} else if ( agentNum == 3 ) {
+            default:
+                cout << "Invalid agent number. Try again: ";
+                goto agentinput;
 
-		    this -> players.push_back ( new agent_random );
-
-		} else {
-
-			cout << "Invalid agent number. Try again: ";
-			goto agentinput;
-
-		}
+        }
 
 	}
 
