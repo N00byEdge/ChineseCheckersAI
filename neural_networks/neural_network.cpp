@@ -38,7 +38,7 @@ vector < long double > neural_network::run ( vector < long double > input ) {
 
 		input.push_back ( 1.0L );
 
-        output = this -> layers [ i ].run ( input );
+        output = layers [ i ].run ( input );
 
         input = output;
 
