@@ -59,8 +59,8 @@ neural_network::neural_network ( istream & is ) {
 void neural_network::learn ( vector < pair < vector < long double >, vector < long double > > > datasets, long double maxError = 1e-7, long double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
     /* Adding a 1 to each datasets input */
-    //for ( size_t ds = 0; ds < datasets.size ( ); ++ ds )
-    //    datasets [ ds ].first.push_back ( 1 );
+    for ( size_t ds = 0; ds < datasets.size ( ); ++ ds )
+        datasets [ ds ].first.push_back ( 1 );
 
     /* Variables */
     vector < long double > divergenceOutdata;
