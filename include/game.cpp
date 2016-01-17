@@ -18,7 +18,8 @@ void game::startGame ( int numPlayers ) {
 	cout << "Available agents:\n"
 		<< "\t1: Human interface agent\n"
 		<< "\t2: Scoring agent\n"
-		<< "\t3: Randomizing agent\n";
+		<< "\t3: Randomizing agent\n"
+		<< "\t4: Neural agent\n";
 
 	while ( players.size ( ) < this -> numPlayers ) {
 
