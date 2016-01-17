@@ -34,15 +34,19 @@ void game::startGame ( int numPlayers ) {
 
             case 1:
                 this -> players.push_back ( new agent_human );
+                break;
 
             case 2:
                 this -> players.push_back ( new agent_scoring );
+                break;
 
             case 3:
                 this -> players.push_back ( new agent_random );
+                break;
 
             case 4:
                 this -> players.push_back ( new agent_neural );
+                break;
 
             default:
                 cout << "Invalid agent number. Try again: ";
