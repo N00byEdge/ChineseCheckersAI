@@ -4,11 +4,7 @@ ostream & operator<< ( ostream & os, const neuron & n ) {
 
 	os << "\t\t" << n.weights.size ( ) << "\n";
 
-<<<<<<< HEAD
 	os << "\t\t";
-=======
-	os << "\t\t" << n.bias << " ";
->>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
 	for ( int i = 0; i < n.weights.size ( ); ++ i ) {
 
@@ -19,7 +15,6 @@ ostream & operator<< ( ostream & os, const neuron & n ) {
 }
 
 istream & operator>> ( istream & is , neuron & n ) {
-<<<<<<< HEAD
 
 	int nWeights;
 
@@ -30,20 +25,6 @@ istream & operator>> ( istream & is , neuron & n ) {
 	for ( int i = 0; i < nWeights; ++ i ) {
 
 		long double weight;
-=======
-
-	int nWeights;
-
-	is >> nWeights;
-
-	is >> n.bias;
-
-	n.weights.clear ( );
-
-	for ( int i = 0; i < nWeights; ++ i ) {
-
-		long long weight;
->>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
 		is >> weight;
 
@@ -55,7 +36,6 @@ istream & operator>> ( istream & is , neuron & n ) {
 
 long double neuron::run ( vector < long double > input ) {
 
-<<<<<<< HEAD
 	if ( input.size ( ) == weights.size ( ) ) {
 
 		long double ld = 0;
@@ -95,25 +75,5 @@ long double neuron::runNoPhi ( vector < long double > input ) {
 vector < long double > neuron::getWeights ( ) {
 
 	return weights;
-=======
-    this -> bias = 0;
-
-}
-
-long double neuron::run ( vector < long double > input ) {
-
-	if ( input.size ( ) == weights.size ( ) ) {
-
-		long long ll = 0;
-
-		for ( int i = 0; i < input.size ( ); ++ i )
-			ll += input [ i ] * weights [ i ];
-
-		ll += bias;
-
-		return ll;
-
-	} return 0.0l;
->>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
 }

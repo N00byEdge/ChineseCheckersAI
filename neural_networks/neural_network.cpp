@@ -36,13 +36,9 @@ vector < long double > neural_network::run ( vector < long double > input ) {
 
     for ( int i = 0; i < layers.size ( ); ++ i ) {
 
-<<<<<<< HEAD
 		input.push_back ( 1.0L );
 
         output = layers [ i ].run ( input );
-=======
-        output = this -> layers [ i ].run ( input );
->>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
 
         input = output;
 
@@ -51,8 +47,6 @@ vector < long double > neural_network::run ( vector < long double > input ) {
     return output;
 
 }
-<<<<<<< HEAD
-
 
 neural_network::neural_network ( ) { }
 
@@ -229,5 +223,3 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 	}
 
 }
-=======
->>>>>>> ecc80213894a6e9499cb1d319b2d7d71f197b65a
