@@ -38,7 +38,12 @@ vector < long double > neural_network::run ( vector < long double > input ) {
 
 		input.push_back ( 1.0L );
 
-        output = layers [ i ].run ( input );
+		vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
+
+        output = ( lib::matrixVectorMultiplication ( layerWeights, input ) );
+
+        for ( size_t o = 0; o < output.size ( ); ++ o )
+            output [ o ] = lib::phi ( output [ o ] );
 
         input = output;
 
