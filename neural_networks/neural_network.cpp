@@ -159,9 +159,9 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 				vector < long double > v;
 				if ( i != 0 ) v = a [ i - 1 ];
 				else		  v = datasets [ ds ].first;
-				vector < vector < long double > > tempMatrix = lib::vectorsToMatrix ( delta [ i ], v );
-				tempMatrix = lib::matrixMulCoefficient ( coeff, tempMatrix );
-				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], tempMatrix );
+				vector < vector < long double > > datasetWeightChange = lib::vectorsToMatrix ( delta [ i ], v );
+				datasetWeightChange = lib::matrixMulCoefficient ( coeff, datasetWeightChange );
+				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], datasetWeightChange );
 
 			}
 

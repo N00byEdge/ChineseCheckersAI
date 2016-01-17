@@ -11,7 +11,7 @@ class neural_network {
 
 		neural_network ( );
 
-		neural_network ( istream & is );
+		neural_network ( istream & );
 
 		//neural_network ( string filename );
 
