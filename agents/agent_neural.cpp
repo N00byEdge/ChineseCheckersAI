@@ -48,5 +48,6 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 }
 
 agent_neural::agent_neural ( ): nn ( "ask" ) { }
+agent_neural::agent_neural ( string str ): nn ( str ) { }
 agent_neural::agent_neural ( istream & is ): nn ( is ) { }
 agent_neural::agent_neural ( ifstream & ifs ): nn ( ifs ) { }
