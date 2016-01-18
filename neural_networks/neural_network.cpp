@@ -196,12 +196,12 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
-				long double coeff = ( long double ) ( - learningSpeed / datasets [ ds ].second.size ( ) );
+				long double learningCoefficient = ( long double ) ( - learningSpeed / datasets.size ( ) );
 				vector < long double > v;
 				if ( i != 0 ) v = a [ i - 1 ];
 				else		  v = datasets [ ds ].first;
 				vector < vector < long double > > datasetWeightChange = lib::vectorsToMatrix ( delta [ i ], v );
-				datasetWeightChange = lib::matrixMulCoefficient ( coeff, datasetWeightChange );
+				datasetWeightChange = lib::matrixMulCoefficient ( learningCoefficient, datasetWeightChange );
 				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], datasetWeightChange );
 
 			}
