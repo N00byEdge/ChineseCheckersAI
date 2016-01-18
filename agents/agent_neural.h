@@ -1,5 +1,4 @@
-#ifndef AGENT_NEURAL
-#define AGENT_NEURAL
+#pragma once
 
 #include <includes.h>
 
@@ -28,5 +27,3 @@ class agent_neural : public agent {
 		neural_network nn;
 
 };
-
-#endif // AGENT_NEURAL

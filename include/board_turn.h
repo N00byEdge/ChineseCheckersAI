@@ -1,5 +1,4 @@
-#ifndef BOARD_TURN
-#define BOARD_TURN
+#pragma once
 
 #include <includes.h>
 
@@ -22,4 +21,3 @@ class board_turn {
 
 };
 
-#endif // BOARD_TURN

@@ -1,5 +1,4 @@
-#ifndef TILE
-#define TILE
+#pragma once
 
 #include <includes.h>
 
@@ -49,5 +48,3 @@ class tile {
         int c = - 1;
 
 };
-
-#endif // TILE

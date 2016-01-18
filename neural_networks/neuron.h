@@ -1,5 +1,4 @@
-#ifndef NEURON
-#define NEURON
+#pragma once
 
 #include <includes.h>
 
@@ -22,5 +21,3 @@ class neuron {
 
 ostream & operator<< ( ostream &, const neuron & );
 istream & operator>> ( istream &, neuron & );
-
-#endif // NEURON

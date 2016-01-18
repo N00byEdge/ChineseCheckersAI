@@ -1,5 +1,4 @@
-#ifndef INCLUDES
-#define INCLUDES
+#pragma once
 
 	#define deb(x) ( #x ) << " = " << ( x )
 	/* std universal includes */
@@ -32,5 +31,3 @@
 	#endif
 
     #define endl "\n"
-
-#endif // INCLUDES

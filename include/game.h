@@ -1,5 +1,4 @@
-#ifndef GAME
-#define GAME
+#pragma once
 
 #include <includes.h>
 #include <include_agents.h>
@@ -33,4 +32,3 @@ class game {
 
 };
 
-#endif // GAME

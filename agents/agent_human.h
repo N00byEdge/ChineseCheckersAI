@@ -1,5 +1,4 @@
-#ifndef AGENT_HUMAN
-#define AGENT_HUMAN
+#pragma once
 
 #include <includes.h>
 
@@ -16,5 +15,3 @@ class agent_human : public agent {
 	private:
 
 };
-
-#endif // AGENT_HUMAN

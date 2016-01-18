@@ -1,5 +1,4 @@
-#ifndef AGENT_RANDOM
-#define AGENT_RANDOM
+#pragma once
 
 #include <agent.h>
 
@@ -15,5 +14,3 @@ class agent_random : public agent {
 	private:
 
 };
-
-#endif // AGENT_RANDOM

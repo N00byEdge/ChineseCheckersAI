@@ -1,5 +1,4 @@
-#ifndef NEURAL_NETWORK
-#define NEURAL_NETWORK
+#pragma once
 
 #include <includes.h>
 
@@ -33,5 +32,3 @@ class neural_network {
 
 ostream & operator<< ( ostream &, const neural_network & );
 istream & operator>> ( istream &, neural_network & );
-
-#endif // NEURAL_NETWORK

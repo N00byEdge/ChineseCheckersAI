@@ -1,5 +1,4 @@
-#ifndef BOARD_MOVE
-#define BOARD_MOVE
+#pragma once
 
 #include <includes.h>
 
@@ -31,4 +30,3 @@ class board_move {
 		unsigned int i = 0;
 };
 
-#endif // BOARD_MOVE

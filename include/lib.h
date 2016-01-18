@@ -1,5 +1,4 @@
-#ifndef LIB
-#define LIB
+#pragma once
 
 #include <includes.h>
 
@@ -33,5 +32,3 @@ namespace lib {
 
 template < typename T > std::ostream & operator<< ( std::ostream & os, const std::vector < T > & v ) { os << "{ "; for ( size_t i = 0; i < v.size ( ); ++ i ) { os << v [ i ]; if ( i != v.size ( ) - 1 ) os << ", "; } os << " }"; return os; }
 template < typename T1, typename T2 > std::ostream & operator<< ( ostream & os, const pair < T1, T2 > p ) { os << "{ " << p.first << ", " << p.second << " }"; return os; }
-
-#endif // LIB

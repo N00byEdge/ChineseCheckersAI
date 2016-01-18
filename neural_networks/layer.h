@@ -1,5 +1,4 @@
-#ifndef LAYER
-#define LAYER
+#pragma once
 
 #include <includes.h>
 
@@ -25,5 +24,3 @@ class layer {
 
 ostream & operator<< ( ostream &, const layer & );
 istream & operator>> ( istream &, layer & );
-
-#endif // LAYER

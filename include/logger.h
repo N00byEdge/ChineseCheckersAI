@@ -1,5 +1,4 @@
-#ifndef LOGGER
-#define LOGGER
+#pragma once
 
 #include <includes.h>
 
@@ -39,5 +38,3 @@ namespace logging {
     vector < logger > loggers;
 
 }
-
-#endif // LOGGER

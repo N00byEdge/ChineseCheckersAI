@@ -1,5 +1,4 @@
-#ifndef AGENT_SCORING
-#define AGENT_SCORING
+#pragma once
 
 #include <includes.h>
 
@@ -19,4 +18,3 @@ class agent_scoring : public agent {
 
 };
 
-#endif // AGENT_SCORING

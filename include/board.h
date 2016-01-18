@@ -1,5 +1,4 @@
-#ifndef BOARD
-#define BOARD
+#pragma once
 
 #include <includes.h>
 
@@ -160,5 +159,3 @@ class board {
 		int numPlayers;
 
 };
-
-#endif // board
