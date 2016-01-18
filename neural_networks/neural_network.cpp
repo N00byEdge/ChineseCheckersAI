@@ -156,8 +156,6 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 				vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
 
-				//cout << deb ( layerWeights ) << endl;
-
 				if ( i != 0 ) z.push_back ( lib::matrixVectorMultiplication ( layerWeights, a [ i - 1 ] ) );
 				else 		  z.push_back ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
 				a.push_back ( z [ z.size ( ) - 1 ] );
