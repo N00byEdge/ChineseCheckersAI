@@ -183,14 +183,12 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			if ( layers.size ( ) < 2 ) goto tooFewLayers;
 
-			for ( size_t i = layers.size ( ) - 2;; ++ i ) {
+			for ( int i = layers.size ( ) - 2; 0 <= i; -- i ) {
 
 				vector < vector < long double > > nextLayerWeights = layers [ i + 1 ].getWeights ( );
 				nextLayerWeights = lib::transpose ( nextLayerWeights );
 				vector < long double > part1 = lib::matrixVectorMultiplication ( nextLayerWeights, delta [ i + 1 ] );
 				delta [ i ] = lib::vectorPairMul ( part1, sigmaPrim [ i ] );
-
-				if ( i == 0 ) break;
 
 			}
 
