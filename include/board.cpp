@@ -1943,6 +1943,8 @@ vector < board_move > board::getPossibleMoves ( ) {
 
 bool board::canMakeTurn ( board_turn trn ) {
 
+	if ( !trn.moves.size ( ) ) return false;
+
 	board deadBoard = * this;
 	return deadBoard.makeTurn ( trn );
 
