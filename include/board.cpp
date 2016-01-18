@@ -2170,8 +2170,7 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
 
 		}
 
-		nomove:
-		if ( 5 ) { }
+		nomove:;
 
 	}
 
