@@ -169,19 +169,13 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			}
 
-			for ( size_t i = 0; i < datasets [ ds ].second.size ( ); ++ i ) {
-
+			for ( size_t i = 0; i < datasets [ ds ].second.size ( ); ++ i )
 				divergenceOutdata [ i ] = a [ a.size ( ) - 1 ] [ i ] - datasets [ ds ].second [ i ];
-
-			}
 
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
-				for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
-
+				for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j )
 					sigmaPrim [ i ].push_back ( lib::phi ( z [ i ] [ j ] ) * ( 1 - lib::phi ( z [ i ] [ j ] ) ) );
-
-				}
 
 			}
 
@@ -249,12 +243,8 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			}
 
-			for ( size_t j = 0; j < datasets [ i ].second.size ( ); ++ j ) {
-
+			for ( size_t j = 0; j < datasets [ i ].second.size ( ); ++ j )
 				error += ( datasets [ i ].second [ j ] - outdata [ j ] ) * ( datasets [ i ].second [ j ] - outdata [ j ] );
-
-			}
-
 
 		}
 
@@ -267,9 +257,8 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
         }
 
-		if ( ! ( reportFrequency == 0 || reportFrequency == -1 ) ) {
-            if ( nLearns % reportFrequency == 0 ) cout << nLearns << " iterations; " << deb ( error ) << endl;
-		}
+		if ( ! ( reportFrequency == 0 || reportFrequency == -1 ) )
+			if ( nLearns % reportFrequency == 0 ) cout << nLearns << " iterations; " << deb ( error ) << endl;
 
 	}
 
