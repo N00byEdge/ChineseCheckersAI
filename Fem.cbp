@@ -129,7 +129,7 @@
 			</Target>
 		</Build>
 		<VirtualTargets>
-			<Add alias="BuildAll" targets="Release Windows x86;Release Windows x86 with interface;Debug Windows x86;Debug Windows x86 with interface;Release OS X;Debug OS X;" />
+			<Add alias="BuildAll" targets="Release Windows x64;Release Windows x64 with interface;Debug Windows x64;Debug Windows x64 with interface;Release OS X;Debug OS X;" />
 		</VirtualTargets>
 		<Compiler>
 			<Add directory="neural_networks" />
