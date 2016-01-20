@@ -2124,57 +2124,42 @@ float board::getMiddleXCoord ( int y ) {
 
 vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > visited ) {
 
-    vector < board_turn > allPossibleTurns;
+    board emulatedBoard = * this;
 
-	auto possibleMoves = getPossibleMoves ( t );
+    for ( size_t i = 0; i < moves.size ( ); ++ i ) emulatedBoard.move ( moves [ i ] );
 
-	for ( int i = 0; i < possibleMoves.size ( ); ++ i ) {
+    vector < board_turn > foundTurns;
 
-		if ( 0 < moves.size ( ) ) {
+    auto possibleMoves = emulatedBoard.getPossibleMoves ( t );
 
-            if ( possibleMoves [ i ].getRawData ( ) <= 6 || moves [ moves.size ( ) - 1 ].getRawData ( ) <= 6 )
-                goto nomove;
+    for ( size_t i = 0; i < possibleMoves.size ( ); ++ i ) {
 
-		}
+        if ( moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 ) continue;
 
-		if ( canMove ( possibleMoves [ i ] ) ) {
+        if ( visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] ) continue;
 
+        visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] = true;
 
-            if ( visited  [ tileToInt ( getTile ( getMoveCoords ( possibleMoves [ i ] ) ) ) ] )
-                goto nomove;
+        board_move mv;
+        mv = possibleMoves [ i ];
+        moves.push_back ( mv );
 
-			board_move mv;
-			mv = possibleMoves [ i ];
-			moves.push_back ( mv );
+        board_turn trn;
+        trn.moves = moves;
+        foundTurns.push_back ( trn );
 
-			board_turn trn;
-			trn.moves = moves;
-			allPossibleTurns.push_back ( trn );
+        board emulatedBoardBackup = emulatedBoard;
+        emulatedBoard.move ( mv );
+        vector < board_turn > moreTurns = emulatedBoard.findAllPossibleTurns ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ), moves, visited );
+        for ( size_t j = 0; j < moreTurns.size ( ); ++ j ) foundTurns.push_back ( moreTurns [ j ] );
 
-			visited [ tileToInt ( getTile ( getMoveCoords ( possibleMoves [ i ] ) ) ) ] = true;
-			//visitedCoords.push_back ( getMoveCoords ( possibleMoves [ i ] ) );
-			tile * originalTile = t;
-			t = getTile ( getMoveCoords ( mv ) );
-			board originalBoard = *this;
-			move ( mv );
-			board b = *this;
-			auto w = b.findAllPossibleTurns ( t, moves, visited );
-			b = originalBoard;
-			t = originalTile;
+        emulatedBoard = emulatedBoardBackup;
+        moves.erase ( moves.end ( ) - 1 );
+        visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] = false;
 
-			for ( int k = 0; k < w.size ( ); ++ k )
-                allPossibleTurns.push_back ( w [ k ] );
+    }
 
-			moves.erase ( moves.end ( ) - 1 );
-			visited [ tileToInt ( getTile ( getMoveCoords ( possibleMoves [ i ] ) ) ) ] = false;
-
-		}
-
-		nomove:;
-
-	}
-
-	return allPossibleTurns;
+    return foundTurns;
 
 }
 
