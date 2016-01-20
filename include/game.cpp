@@ -86,6 +86,16 @@ void game::startGame ( int numPlayers ) {
 			for ( size_t j = 0; j < t.moves.size ( ); ++ j )
                 cout << t.moves [ j ].getTileStartCoords ( ) << ", " << t.moves [ j ].getRawData ( ) << endl;
 
+            goto skipturn;
+
+		}
+
+		for ( size_t j = 0; j < players.size ( ); ++ j ) {
+            auto playerTiles = masterBoard.getPlayerTiles ( j + 1 );
+            gamedata << j << " ";
+            for ( size_t k = 0; k < playerTiles.size ( ); ++ k )
+                gamedata << masterBoard.tileToInt ( playerTiles [ k ] ) << " ";
+            gamedata << "\n";
 		}
 
 		gamedata << i << " " << turn << " " << masterBoard.tileToInt( masterBoard.getTile ( t.moves [ 0 ].getTileStartCoords ( ) ) ) << " " << masterBoard.tileToInt ( masterBoard.getTile ( masterBoard.getTurnCoords ( t ) ) )<< endl;
