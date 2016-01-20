@@ -61,21 +61,17 @@ void game::startGame ( int numPlayers ) {
 	gamedata.open ( "gamedata.txt" );
 	gamedata << numPlayers << endl;
 
-	vector < bool > hasWon ( numPlayers, false );
+	vector < bool > hasWon ( numPlayers + 1, false );
 
 	int turn = 0;
 
 	for ( int i = 0;  5; ++ i ) {
 
-		//cout << hasWon << endl;
-
-		//cout << deb ( masterBoard.hasFilledOpposingNest ( 0 ) ) << ", " << deb ( masterBoard.hasFilledOpposingNest ( 1 ) );
-
 		if ( this -> numPlayers <= i ) { i = 0; ++ turn; }
 
 		board_turn t;
 
-		if ( masterBoard.hasFilledOpposingNest ( i ) ) goto skipturn;
+		if ( masterBoard.hasFilledOpposingNest ( i + 1 ) ) goto skipturn;
 
 		t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
 
@@ -89,8 +85,8 @@ void game::startGame ( int numPlayers ) {
 
 		gamedata << i << " " << turn << " " << masterBoard.tileToInt( masterBoard.getTile ( t.moves [ 0 ].getTileStartCoords ( ) ) ) << " " << masterBoard.tileToInt ( masterBoard.getTile ( masterBoard.getTurnCoords ( t ) ) )<< endl;
 
-		if ( this -> masterBoard.hasFilledOpposingNest ( i ) ) {
-                hasWon [ i ] = true;
+		if ( this -> masterBoard.hasFilledOpposingNest ( i + 1 ) ) {
+                hasWon [ i + 1 ] = true;
                 gamedata << "WIN " << turn << " " << i << endl;
         }
 
@@ -98,7 +94,7 @@ void game::startGame ( int numPlayers ) {
 
         for ( int i = 0; i < numPlayers; ++ i ) {
 
-            if ( not hasWon [ i ] ) goto stillplaying;
+            if ( not hasWon [ i + 1 ] ) goto stillplaying;
 
 		}
 
