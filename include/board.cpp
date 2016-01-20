@@ -136,7 +136,7 @@ void board::print ( ) {
 		cout << endl;
 
 	}
-	cout<<flush<<endl;
+	cout << flush << endl;
 
 }
 
