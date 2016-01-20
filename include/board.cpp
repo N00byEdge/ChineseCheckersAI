@@ -1977,7 +1977,7 @@ bool board::makeTurn ( board_turn trn ) {
 
 	/* If the tile has the same position more than once during a turn, the turn is invalid. */
 
-	vector < pair < int, int > > v;
+	/*vector < pair < int, int > > v;
 
 	for ( int i = 0; i < trn.moves.size ( ); ++ i ) {
 		for ( int j = 0; j < v.size ( ); ++ j ) {
@@ -1985,7 +1985,7 @@ bool board::makeTurn ( board_turn trn ) {
 				return false;
 		}
 		v.push_back ( trn.moves [ i ].getTileStartCoords ( ) );
-	}
+	}*/
 
 	/*
 	 * Checking that the tile start coords are right for every move (that the last move would end up in the correct tile).
