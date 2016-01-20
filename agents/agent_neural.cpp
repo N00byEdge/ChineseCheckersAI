@@ -68,7 +68,7 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
 			for ( size_t k = 0; k < possibleTurns.size ( ); ++ k ) {
 
-				if ( b.tileToInt ( b.getTile ( b.getTurnCoords ( possibleTurns [ k ] ) ) ) == j && bestScore < sortedOutdata [ i ].first + sortedOutdata [ j ].first ) {
+				if ( b.tileToInt ( b.getTile ( b.getTurnCoords ( possibleTurns [ k ] ) ) ) == j && bestScore < sortedOutdata [ i ].first + sortedOutdata [ j ].first && b.canMakeTurn( possibleTurns [ k ] ) ) {
 
                     bestTurn = possibleTurns [ k ];
                     bestScore = sortedOutdata [ i ].first + sortedOutdata [ j ].first;
