@@ -244,7 +244,7 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 		}
 
-		//error /= 2 * datasets.size ( );
+		error /= 2 * datasets.size ( );
 
         if ( error < maxError ) {
 
