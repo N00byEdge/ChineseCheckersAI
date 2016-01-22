@@ -388,6 +388,56 @@ vector < vector < vector < long double > > > lib::tensorAdd ( vector < vector < 
 
 }
 
+vector < pair < vector < long double >, vector < long double > > > lib::getDatasets ( istream & is ) {
+
+    vector < pair < vector < long double >, vector < long double > > > datasets;
+
+    int temp;
+	string in;
+
+    while ( getline ( is , in ) ) {
+
+		if ( !in.size ( ) ) break;
+
+		stringstream ss;
+		ss.str ( in );
+
+        datasets.push_back ( { {}, {} } );
+
+        for ( unsigned i = 0; i < 121; ++ i ) {
+
+			ss >> temp;
+            datasets [ datasets.size ( ) - 1 ].first.push_back ( temp );
+
+        }
+
+        for ( unsigned i = 0; i < 121; ++ i ) {
+
+			ss >> temp;
+            datasets [ datasets.size ( ) - 1 ].second.push_back ( temp );
+
+		}
+
+    }
+	
+	return datasets;
+
+}
+
+void lib::printDatasets ( ostream & os, vector < pair < vector < long double >, vector < long double > > > datasets ) {
+
+    for ( size_t i = 0; i < datasets.size ( ); ++ i ) {
+
+        for ( size_t j = 0; j < datasets [ i ].first .size ( ); ++ j ) os << datasets [ i ].first  [ j ] << " ";
+        for ( size_t j = 0; j < datasets [ i ].second.size ( ); ++ j ) os << datasets [ i ].second [ j ] << " ";
+        os << "\n";
+
+    }
+
+    os << flush;
+
+}
+
 long double lib::intToIndata ( int i, int player ) {
 
     switch ( i ) {
