@@ -1,7 +1,10 @@
 #include <includes.h>
 
 #include <game.h>
+#include <neural_network.h>
 
+#include <lib.h>
+#include <fstream>
 
 int main ( ) {
 
