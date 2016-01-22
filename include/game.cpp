@@ -30,6 +30,8 @@ void game::startGame ( int numPlayers ) {
 		int agentNum;
 		cin >> agentNum;
 
+		cin.ignore ( );
+
         switch ( agentNum ) {
 
             case 1:
@@ -45,7 +47,6 @@ void game::startGame ( int numPlayers ) {
                 break;
 
             case 4:
-                cin.ignore ( );
                 this -> players.push_back ( new agent_neural );
                 break;
 
