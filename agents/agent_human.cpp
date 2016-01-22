@@ -1,13 +1,9 @@
 #include "agent_human.h"
 
 	/* Turn member function */
-board_turn agent_human::doTurn ( board b, int player ) {
+    board_turn agent_human::doTurn ( board b, int player ) {
 
 	board originalBoard = b;
-
-	#ifdef DEBUGGING
-	cout << "agent_human: doTurn called.\n";
-	#endif // DEBUGGING
 
 	/*
 
@@ -25,165 +21,137 @@ board_turn agent_human::doTurn ( board b, int player ) {
 
 	*/
 
-	board_turn t;
+	int nRotations = b.rotateForPerspective ( player );
 
-	#ifdef DEBUGGING
-	cout << "Turn constructed.\n";
-	#endif // DEBUGGING
+	board_turn trn;
 
-	board_move m;
-
-	#ifdef DEBUGGING
-	cout << "Move constructed.\n";
-	#endif // DEBUGGING
-
-	pair < int, int > coords;
-
-	#ifdef DEBUGGING
-	cout << "Coordinates constructed.\n";
-	#endif // DEBUGGING
-
-	coords.first = -1;
-	coords.second = -1;
-
-	#ifdef DEBUGGING
-	cout << "Set initial coordinates.\n";
-	#endif // DEBUGGING
-
-	choosetile:
+	board_move mv;
 
 	b.print ( );
 
-	#ifdef DEBUGGING
-	cout << "Printed board.\n";
-	#endif // DEBUGGING
+	tile * chosenTile;
 
 	vector < tile * > playerTiles = b.getPlayerTiles ( player );
 
-	cout << "Your tiles: ";
-	for ( int i = 0; i < playerTiles.size ( ); ++ i )
-		cout << "[" << playerTiles [ i ] -> getCoordinates ( ).first  << ", " << playerTiles [ i ] -> getCoordinates ( ).second << "] ";
-	cout << endl;
+    vector < board_move > madeMoves;
 
-	cout << "Player #" << player << "s turn. Choose a tile:\n";
+    int input;
 
-	cout << "x = ";
-	cin >> coords.first;
-	cout << "y = ";
-	cin >> coords.second;
+    getTile:;
 
-	if ( !b.isValidTile ( coords ) ) {
+    cout << "Player #" << player << "s turn. Choose a tile:\n";
+    for ( int i = 0; i < playerTiles.size ( ); ++ i )
+        cout << i + 1 << ": " << playerTiles [ i ] -> getCoordinates ( ) << endl;
 
-		cout << "Invalid tile.\n";
-		goto choosetile;
+    cin >> input;
 
-	} else if ( b.getTile ( coords ) -> getContents ( ) != player ) {
+    if ( 1 <= input && input <= playerTiles.size ( ) ) {
 
-		cout << "That is not your tile.\n";
-		goto choosetile;
+        chosenTile = playerTiles [ input - 1 ];
 
-	} else {
+    } else {
 
-		vector < board_move > v = b.getPossibleMoves ( b.getTile ( coords ) );
+        cout << "Invalid output. Try again.\n";
+        goto getTile;
 
-		cout << "Possible moves for ["
-			<< coords.first
-			<< ", "
-			<< coords.second
-			<< "]: ";
+    }
 
-		for ( int i = 0; i < v.size ( ); ++ i )
-			cout << v [ i ].getRawData ( ) << " ";
+    vector < board_turn > possibleTurns = b.findAllPossibleTurns ( chosenTile, * new vector < board_move >, * new vector < bool > ( 121, false ) );
 
-		cout << endl;
+	for ( int i = 0; i < possibleTurns.size ( ); ++ i ) {
 
-		if ( !v.size ( ) ) {
+		if ( !b.canMakeTurn ( possibleTurns [ i ] ) ) {
 
-			cout << "No possible moves. Please choose another tile.\n";
+			possibleTurns.erase ( possibleTurns.begin ( ) + i );
+			-- i;
 
-			goto choosetile;
-
-		} else {
-
-			cout << "Make a move: ";
-
-			string in;
-
-			cin >> in;
-
-			if ( in == "resetturn" ) {
-
-				goto choosetile;
-
-			} else {
-
-				m.setRawData( atoi ( in.c_str ( ) ) );
-
-			}
 		}
-	}
-
-	m.setTileStartCoords ( coords );
-	/*board dummyBoard = b;
-
-	vector < pair < int, int > > visitedCoordinates;
-	visitedCoordinates.push_back ( coords );
-
-	if ( dummyBoard.canMove ( m ) ) {
-
-		pair < int, int > moveFinishCoords = dummyBoard.getMoveCoords ( m );
-		tile * moveFinishTile = dummyBoard.getTile ( moveFinishCoords );
-
-		if ( !dummyBoard.move ( m ) ) {
-
-			vector < int > possibleJumps;
-
-			for ( int i = 1; i <= 6; ++ i ) {
-				if ( m.getRawData ( ) != 7 && i != 4 && dummyBoard.canJump ( moveFinishTile, i ) )
-					possibleJumps.push_back ( i );
-
-				if ( m.getRawData ( ) != 8 && i != 5 && dummyBoard.canJump ( moveFinishTile, i ) )
-					possibleJumps.push_back ( i );
-
-				if ( m.getRawData ( ) != 9 && i != 6 && dummyBoard.canJump ( moveFinishTile, i ) )
-					possibleJumps.push_back ( i );
-
-				if ( m.getRawData ( ) != 10 && i != 1 && dummyBoard.canJump ( moveFinishTile, i ) )
-					possibleJumps.push_back ( i );
-
-				if ( m.getRawData ( ) != 11 && i != 2 && dummyBoard.canJump ( moveFinishTile, i ) )
-					possibleJumps.push_back ( i );
-
-				if ( m.getRawData ( ) != 12 && i != 3 && dummyBoard.canJump ( moveFinishTile, i ) )
-					possibleJumps.push_back ( i );
-			}
-
-			if ( possibleJumps.size ( ) ) {
-				cout << "You can jump again. Possible jump directions: ";
-				for ( int i = 0; i < possibleJumps.size ( ); ++ i )
-					cout << possibleJumps [ i ] << " ";
-				cout << endl;
-			}
-		}
-
-	}*/
-
-
-    t.moves.push_back ( m );
-
-	if ( !originalBoard.canMakeTurn ( t ) ) {
-
-		cout << "That is not a valid move.\n";
-		goto choosetile;
-
-	} else {
-
-        if ( 7 <= m.getRawData ( ) && m.getRawData ( ) <= 12 ) {
-
-        }
 
 	}
 
-	return t;
+	getTurn:;
+
+    cout << "Reachable locations:\n";
+
+    for ( int i = 0; i < possibleTurns.size ( ); ++ i )
+        cout << i + 1 << ": " << b.getTurnCoords ( possibleTurns [ i ] ) << endl;
+
+	cin >> input;
+
+	if ( 1 <= input && input <= possibleTurns.size ( ) ) {
+
+		trn = possibleTurns [ input - 1 ];
+
+		if ( shouldWriteData ) {
+
+			datasets.push_back ( { { }, { } } );
+
+			for ( int i = 0; i < 121; ++ i ) {
+
+				datasets [ datasets.size ( ) - 1 ].first.push_back  ( lib::intToIndata ( b.intToTile ( i ) -> getContents ( ), player ) );
+				datasets [ datasets.size ( ) - 1 ].second.push_back ( 0.0L );
+
+			}
+
+			datasets [ datasets.size ( ) - 1 ].second [ b.tileToInt ( chosenTile ) ] = 1;
+			datasets [ datasets.size ( ) - 1 ].second [ b.tileToInt ( b.getTile ( b.getTurnCoords ( trn ) ) ) ] = 1;
+
+			ofstream datasetsStream;
+
+			datasetsStream.open ( datafile );
+
+			lib::printDatasets ( datasetsStream, datasets );
+
+			datasetsStream.close ( );
+
+		}
+
+		trn.rotate ( 6 - nRotations );
+		return trn;
+
+	} else {
+
+        cout << "Invalid output. Try again.\n";
+        goto getTurn;
+
+    }
+
+}
+
+agent_human::agent_human ( ) {
+
+	string askWriteDataInput;
+
+	cout << "Enter a path to write a data file for neural network learning (leave empty to skip): ";
+    getline ( cin, askWriteDataInput );
+
+    for ( size_t i = 0; i < askWriteDataInput.size ( ); ++ i ) askWriteDataInput [ i ] = tolower ( askWriteDataInput [ i ] );
+
+	if ( askWriteDataInput.size ( ) ) {
+
+		shouldWriteData = true;
+		datafile = askWriteDataInput;
+
+		ifstream datasetsfile;
+
+        datasetsfile.open ( datafile );
+
+        if ( datasetsfile.is_open ( ) ) datasets = lib::getDatasets ( datasetsfile );
+
+		datasetsfile.close ( );
+
+	}
+
+}
+
+agent_human::~agent_human ( ) {
+
+	ofstream datasetsfile;
+
+	datasetsfile.open ( datafile );
+
+	if ( datasetsfile.is_open ( ) ) lib::printDatasets ( datasetsfile, datasets );
+
+	datasetsfile.close ( );
 
 }
