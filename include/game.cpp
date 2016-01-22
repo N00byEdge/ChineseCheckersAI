@@ -95,6 +95,9 @@ void game::startGame ( int numPlayers ) {
 			for ( size_t j = 0; j < t.moves.size ( ); ++ j )
                 cout << t.moves [ j ].getTileStartCoords ( ) << ", " << t.moves [ j ].getRawData ( ) << endl;
 
+            cout << "Press enter to continue... ";
+            cin.ignore ( );
+
             goto skipturn;
 
 		}
