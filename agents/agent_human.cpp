@@ -58,6 +58,13 @@
 
     vector < board_turn > possibleTurns = b.findAllPossibleTurns ( chosenTile, * new vector < board_move >, * new vector < bool > ( 121, false ) );
 
+	if ( !possibleTurns.size ( ) ) {
+		
+		cout << "No moves for this tile.\n";
+		goto getTile;
+		
+	}
+
 	for ( int i = 0; i < possibleTurns.size ( ); ++ i ) {
 
 		if ( !b.canMakeTurn ( possibleTurns [ i ] ) ) {
