@@ -65,7 +65,7 @@ int main ( ) {
 			cout << "What learning rate should we use? ";
 			long double phi;
 			cin >> phi;
-			
+
 			cout << "How often do we print progress? ";
 			long long reportTime;
 			cin >> reportTime;
@@ -95,7 +95,7 @@ int main ( ) {
 			}
 
 		} else {
-			
+
 			cout << "Could not open dataset file.\n";
 			goto getDatasetFile;
 
