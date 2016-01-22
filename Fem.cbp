@@ -14,8 +14,8 @@
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-Ofast" />
 					<Add option="-std=c++0x" />
+					<Add option="-Ofast" />
 					<Add directory="%SFML64232%/include" />
 					<Add directory="include" />
 					<Add directory="agents" />
@@ -31,8 +31,8 @@
 			</Target>
 			<Target title="Release Windows x64 with interface">
 				<Option platforms="Windows;" />
-				<Option output="bin/Release/Fem" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="bin/ReleaseWithInterface/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseWithInterface/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
@@ -78,8 +78,8 @@
 			</Target>
 			<Target title="Debug Windows x64 with interface">
 				<Option platforms="Windows;" />
-				<Option output="bin/Debug/Fem" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="bin/DebugWithInterface/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/DebugWithInterface/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
