@@ -57,7 +57,6 @@ int main ( ) {
 		if ( datasetFile.is_open ( ) ) {
 
 			auto datasets = lib::getDatasets ( datasetFile );
-			cout << datasets << endl;
 
 			cout << "What is the maximum accepted error? ";
 			long double maxError;
