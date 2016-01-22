@@ -387,3 +387,19 @@ vector < vector < vector < long double > > > lib::tensorAdd ( vector < vector < 
 	return result;
 
 }
+
+long double lib::intToIndata ( int i, int player ) {
+
+    switch ( i ) {
+
+        case 0:
+            return 0.0L;
+
+        default:
+
+            if ( i == player ) return 1.0L;
+            return 0.5L;
+
+    }
+
+}

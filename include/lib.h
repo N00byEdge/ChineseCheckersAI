@@ -27,6 +27,7 @@ namespace lib {
 	vector < vector < long double > > matrixMulCoefficient ( long double, vector < vector < long double > > & );
 	vector < long double > matrixVectorMultiplication ( vector < vector < long double > > &, vector < long double > & );
 	vector < vector < vector < long double > > > tensorAdd ( vector < vector < vector < long double > > > &, vector < vector < vector < long double > > > & );
+	long double intToIndata ( int i, int player );
 
 }
 

@@ -1,21 +1,5 @@
 #include "agent_neural.h"
 
-long double intToIndata ( int i, int player ) {
-
-    switch ( i ) {
-
-        case 0:
-            return 0.0L;
-
-        default:
-
-            if ( i == player ) return 2.0L;
-            return 1.0L;
-
-    }
-
-}
-
 board_turn agent_neural::doTurn ( board b, int player ) {
 
 	/*
@@ -36,13 +20,15 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
 	cout << "Player #" << player << "s turn, neural agent.\n";
 
+	b.print ( );
+
 	auto originalBoard = b;
 	int nRotations = b.rotateForPerspective ( player );
 
 	board_turn t;
 
 	vector < long double > indata ( 121, 0 );
-	for ( size_t i = 0; i < indata.size ( ); ++ i ) indata [ i ] = intToIndata ( b.intToTile ( i ) -> getContents ( ), player );
+	for ( size_t i = 0; i < indata.size ( ); ++ i ) indata [ i ] = lib::intToIndata ( b.intToTile ( i ) -> getContents ( ), player );
 
     auto outdata = nn.run ( indata );
 
