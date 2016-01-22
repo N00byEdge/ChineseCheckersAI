@@ -74,6 +74,14 @@ void game::startGame ( int numPlayers ) {
 
 		if ( masterBoard.hasFilledOpposingNest ( i + 1 ) ) goto skipturn;
 
+		for ( size_t j = 0; j < players.size ( ); ++ j ) {
+            auto playerTiles = masterBoard.getPlayerTiles ( j + 1 );
+            gamedata << j << " ";
+            for ( size_t k = 0; k < playerTiles.size ( ); ++ k )
+                gamedata << masterBoard.tileToInt ( playerTiles [ k ] ) << " ";
+            gamedata << "\n";
+		}
+
 		t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
 
 		if ( this -> masterBoard.canMakeTurn ( t ) ) {
@@ -89,14 +97,6 @@ void game::startGame ( int numPlayers ) {
 
             goto skipturn;
 
-		}
-
-		for ( size_t j = 0; j < players.size ( ); ++ j ) {
-            auto playerTiles = masterBoard.getPlayerTiles ( j + 1 );
-            gamedata << j << " ";
-            for ( size_t k = 0; k < playerTiles.size ( ); ++ k )
-                gamedata << masterBoard.tileToInt ( playerTiles [ k ] ) << " ";
-            gamedata << "\n";
 		}
 
 		gamedata << i << " " << turn << " " << masterBoard.tileToInt( masterBoard.getTile ( t.moves [ 0 ].getTileStartCoords ( ) ) ) << " " << masterBoard.tileToInt ( masterBoard.getTile ( masterBoard.getTurnCoords ( t ) ) )<< endl;
