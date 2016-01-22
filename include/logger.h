@@ -4,27 +4,27 @@
 
 class logger {
 
-    public:
+	public:
 
-        void log ( string s, int loglvl );
-        void logNoEndl ( string s, int loglvl );
+		void log ( string s, int loglvl );
+		void logNoEndl ( string s, int loglvl );
 
-        void setLogLevel ( int loglvl );
-        int getLogLevel ( );
+		void setLogLevel ( int loglvl );
+		int getLogLevel ( );
 
-        void setUseTimePrefix ( bool useTimePrefix );
-        bool getUseTimePrefix ( );
+		void setUseTimePrefix ( bool useTimePrefix );
+		bool getUseTimePrefix ( );
 
-        void addFileOutput ( string filename );
-        void addOstreamOutput ( ostream * );
-        void addStringstreamOutput ( stringstream * );
+		void addFileOutput ( string filename );
+		void addOstreamOutput ( ostream * );
+		void addStringstreamOutput ( stringstream * );
 
-    protected:
+	protected:
 
-    private:
+	private:
 
-        int loglvl;
-        bool useTimePrefix;
+		int loglvl;
+		bool useTimePrefix;
 
 
 
@@ -32,9 +32,9 @@ class logger {
 
 namespace logging {
 
-    void log ( string s, int loglvl );
-    void logNoEndl ( string s, int loglvl );
+	void log ( string s, int loglvl );
+	void logNoEndl ( string s, int loglvl );
 
-    vector < logger > loggers;
+	vector < logger > loggers;
 
 }

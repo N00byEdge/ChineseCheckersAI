@@ -57,12 +57,12 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	for ( int i = 0; i < v.size ( ); ++ i  ) {
 
-        if ( !b.canMakeTurn ( v [ i ] ) ) {
+		if ( !b.canMakeTurn ( v [ i ] ) ) {
 
-            v.erase ( v.begin ( ) + i );
-            -- i;
+			v.erase ( v.begin ( ) + i );
+			-- i;
 
-        }
+		}
 
 	}
 
@@ -88,15 +88,15 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	for ( size_t i = 0; i < v.size ( ); ++ i  ) {
 
-        v [ i ].rotate ( 6 - boardRotations );
+		v [ i ].rotate ( 6 - boardRotations );
 
-        if ( !originalBoard.canMakeTurn ( v [ i ] ) ) {
+		if ( !originalBoard.canMakeTurn ( v [ i ] ) ) {
 
-            v.erase ( v.begin ( ) + i );
-            boardScores.erase ( boardScores.begin ( ) + i );
-            -- i;
+			v.erase ( v.begin ( ) + i );
+			boardScores.erase ( boardScores.begin ( ) + i );
+			-- i;
 
-        }
+		}
 
 	}
 

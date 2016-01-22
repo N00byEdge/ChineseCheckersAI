@@ -6,15 +6,15 @@
 
 class agent {
 
-    public:
+	public:
 
-        agent ( );
+		agent ( );
 
-        virtual ~agent ( );
+		virtual ~agent ( );
 
-        virtual board_turn doTurn ( board, int );
+		virtual board_turn doTurn ( board, int );
 
-    protected:
+	protected:
 
-    private:
+	private:
 };

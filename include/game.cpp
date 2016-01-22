@@ -4,15 +4,15 @@
 
 void game::startGame ( int numPlayers ) {
 
-    if ( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) {
+	if ( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) {
 
-        this -> numPlayers = numPlayers;
+		this -> numPlayers = numPlayers;
 
-    } else
+	} else
 
-        this -> numPlayers = 2;
+		this -> numPlayers = 2;
 
-    /* Reset the board with the number of players for the game. */
+	/* Reset the board with the number of players for the game. */
 	this -> masterBoard.resetBoard ( this -> numPlayers );
 
 	cout << "Available agents:\n"
@@ -32,29 +32,29 @@ void game::startGame ( int numPlayers ) {
 
 		cin.ignore ( );
 
-        switch ( agentNum ) {
+		switch ( agentNum ) {
 
-            case 1:
-                this -> players.push_back ( new agent_human );
-                break;
+			case 1:
+				this -> players.push_back ( new agent_human );
+				break;
 
-            case 2:
-                this -> players.push_back ( new agent_scoring );
-                break;
+			case 2:
+				this -> players.push_back ( new agent_scoring );
+				break;
 
-            case 3:
-                this -> players.push_back ( new agent_random );
-                break;
+			case 3:
+				this -> players.push_back ( new agent_random );
+				break;
 
-            case 4:
-                this -> players.push_back ( new agent_neural );
-                break;
+			case 4:
+				this -> players.push_back ( new agent_neural );
+				break;
 
-            default:
-                cout << "Invalid agent number. Try again: ";
-                goto agentinput;
+			default:
+				cout << "Invalid agent number. Try again: ";
+				goto agentinput;
 
-        }
+		}
 
 	}
 
@@ -75,11 +75,11 @@ void game::startGame ( int numPlayers ) {
 		if ( masterBoard.hasFilledOpposingNest ( i + 1 ) ) goto skipturn;
 
 		for ( size_t j = 0; j < players.size ( ); ++ j ) {
-            auto playerTiles = masterBoard.getPlayerTiles ( j + 1 );
-            gamedata << j << " ";
-            for ( size_t k = 0; k < playerTiles.size ( ); ++ k )
-                gamedata << masterBoard.tileToInt ( playerTiles [ k ] ) << " ";
-            gamedata << "\n";
+			auto playerTiles = masterBoard.getPlayerTiles ( j + 1 );
+			gamedata << j << " ";
+			for ( size_t k = 0; k < playerTiles.size ( ); ++ k )
+				gamedata << masterBoard.tileToInt ( playerTiles [ k ] ) << " ";
+			gamedata << "\n";
 		}
 
 		t = players [ i ] -> doTurn ( this -> masterBoard, i + 1 );
@@ -93,27 +93,27 @@ void game::startGame ( int numPlayers ) {
 
 			cout << t.moves.size ( ) << " moves:\n";
 			for ( size_t j = 0; j < t.moves.size ( ); ++ j )
-                cout << t.moves [ j ].getTileStartCoords ( ) << ", " << t.moves [ j ].getRawData ( ) << endl;
+				cout << t.moves [ j ].getTileStartCoords ( ) << ", " << t.moves [ j ].getRawData ( ) << endl;
 
-            cout << "Press enter to continue... ";
-            cin.ignore ( );
+			cout << "Press enter to continue... ";
+			cin.ignore ( );
 
-            goto skipturn;
+			goto skipturn;
 
 		}
 
 		gamedata << i << " " << turn << " " << masterBoard.tileToInt( masterBoard.getTile ( t.moves [ 0 ].getTileStartCoords ( ) ) ) << " " << masterBoard.tileToInt ( masterBoard.getTile ( masterBoard.getTurnCoords ( t ) ) )<< endl;
 
 		if ( this -> masterBoard.hasFilledOpposingNest ( i + 1 ) ) {
-                hasWon [ i + 1 ] = true;
-                gamedata << "WIN " << turn << " " << i << endl;
-        }
+				hasWon [ i + 1 ] = true;
+				gamedata << "WIN " << turn << " " << i << endl;
+		}
 
 		skipturn:;
 
-        for ( int i = 0; i < numPlayers; ++ i ) {
+		for ( int i = 0; i < numPlayers; ++ i ) {
 
-            if ( not hasWon [ i + 1 ] ) goto stillplaying;
+			if ( not hasWon [ i + 1 ] ) goto stillplaying;
 
 		}
 

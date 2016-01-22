@@ -1,7 +1,7 @@
 #include "agent_human.h"
 
 	/* Turn member function */
-    board_turn agent_human::doTurn ( board b, int player ) {
+	board_turn agent_human::doTurn ( board b, int player ) {
 
 	board originalBoard = b;
 
@@ -33,30 +33,30 @@
 
 	vector < tile * > playerTiles = b.getPlayerTiles ( player );
 
-    vector < board_move > madeMoves;
+	vector < board_move > madeMoves;
 
-    int input;
+	int input;
 
-    getTile:;
+	getTile:;
 
-    cout << "Player #" << player << "s turn. Choose a tile:\n";
-    for ( int i = 0; i < playerTiles.size ( ); ++ i )
-        cout << i + 1 << ": " << playerTiles [ i ] -> getCoordinates ( ) << endl;
+	cout << "Player #" << player << "s turn. Choose a tile:\n";
+	for ( int i = 0; i < playerTiles.size ( ); ++ i )
+		cout << i + 1 << ": " << playerTiles [ i ] -> getCoordinates ( ) << endl;
 
-    cin >> input;
+	cin >> input;
 
-    if ( 1 <= input && input <= playerTiles.size ( ) ) {
+	if ( 1 <= input && input <= playerTiles.size ( ) ) {
 
-        chosenTile = playerTiles [ input - 1 ];
+		chosenTile = playerTiles [ input - 1 ];
 
-    } else {
+	} else {
 
-        cout << "Invalid output. Try again.\n";
-        goto getTile;
+		cout << "Invalid output. Try again.\n";
+		goto getTile;
 
-    }
+	}
 
-    vector < board_turn > possibleTurns = b.findAllPossibleTurns ( chosenTile, * new vector < board_move >, * new vector < bool > ( 121, false ) );
+	vector < board_turn > possibleTurns = b.findAllPossibleTurns ( chosenTile, * new vector < board_move >, * new vector < bool > ( 121, false ) );
 
 	if ( !possibleTurns.size ( ) ) {
 		
@@ -78,10 +78,10 @@
 
 	getTurn:;
 
-    cout << "Reachable locations:\n";
+	cout << "Reachable locations:\n";
 
-    for ( int i = 0; i < possibleTurns.size ( ); ++ i )
-        cout << i + 1 << ": " << b.getTurnCoords ( possibleTurns [ i ] ) << endl;
+	for ( int i = 0; i < possibleTurns.size ( ); ++ i )
+		cout << i + 1 << ": " << b.getTurnCoords ( possibleTurns [ i ] ) << endl;
 
 	cin >> input;
 
@@ -118,10 +118,10 @@
 
 	} else {
 
-        cout << "Invalid output. Try again.\n";
-        goto getTurn;
+		cout << "Invalid output. Try again.\n";
+		goto getTurn;
 
-    }
+	}
 
 }
 
@@ -130,9 +130,9 @@ agent_human::agent_human ( ) {
 	string askWriteDataInput;
 
 	cout << "Enter a path to write a data file for neural network learning (leave empty to skip): ";
-    getline ( cin, askWriteDataInput );
+	getline ( cin, askWriteDataInput );
 
-    for ( size_t i = 0; i < askWriteDataInput.size ( ); ++ i ) askWriteDataInput [ i ] = tolower ( askWriteDataInput [ i ] );
+	for ( size_t i = 0; i < askWriteDataInput.size ( ); ++ i ) askWriteDataInput [ i ] = tolower ( askWriteDataInput [ i ] );
 
 	if ( askWriteDataInput.size ( ) ) {
 
@@ -141,9 +141,9 @@ agent_human::agent_human ( ) {
 
 		ifstream datasetsfile;
 
-        datasetsfile.open ( datafile );
+		datasetsfile.open ( datafile );
 
-        if ( datasetsfile.is_open ( ) ) datasets = lib::getDatasets ( datasetsfile );
+		if ( datasetsfile.is_open ( ) ) datasets = lib::getDatasets ( datasetsfile );
 
 		datasetsfile.close ( );
 

@@ -30,4 +30,4 @@
 	#include <lib.h>
 	#endif
 
-    #define endl "\n"
+	#define endl "\n"

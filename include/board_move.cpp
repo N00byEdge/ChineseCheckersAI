@@ -1,24 +1,24 @@
 #include "board_move.h"
 
 bool board_move::didJump ( ) {
-    return !( 1 <= this -> i && this -> i <= 6 );
+	return !( 1 <= this -> i && this -> i <= 6 );
 }
 
 bool board_move::didWalk ( ) {
-    return !( 7 <= this -> i && this -> i <= 12 );
+	return !( 7 <= this -> i && this -> i <= 12 );
 }
 
 unsigned int board_move::getDirection ( ) {
-    if ( 1 <= this -> i && this -> i <= 12 ) return ( ( this -> i - 1 ) % 6 ) + 1;
-    return 0;
+	if ( 1 <= this -> i && this -> i <= 12 ) return ( ( this -> i - 1 ) % 6 ) + 1;
+	return 0;
 }
 
 void board_move::setRawData ( unsigned int i ) {
-    this -> i = i;
+	this -> i = i;
 }
 
 int board_move::getRawData ( ) {
-    return this -> i;
+	return this -> i;
 }
 
 void board_move::setTileStartCoords ( pair < int, int > pii ) {
@@ -26,7 +26,7 @@ void board_move::setTileStartCoords ( pair < int, int > pii ) {
 }
 
 pair < int, int > board_move::getTileStartCoords ( ) {
-    return this -> tileStartCoords;
+	return this -> tileStartCoords;
 }
 
 void board_move::rotate ( ) {

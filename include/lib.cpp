@@ -6,21 +6,21 @@ bool translationTableGenerated = false;
 bool randSeeded = false;
 
 int lib::randInt ( int mod ) {
-    if ( ! randSeeded ) {
-        srand ( time ( NULL ) );
-        randSeeded = true;
-    }
+	if ( ! randSeeded ) {
+		srand ( time ( NULL ) );
+		randSeeded = true;
+	}
 
-    return rand ( ) % mod;
+	return rand ( ) % mod;
 }
 
 int lib::randInt ( ) {
-    if ( ! randSeeded ) {
-        srand ( time ( NULL ) );
-        randSeeded = true;
-    }
+	if ( ! randSeeded ) {
+		srand ( time ( NULL ) );
+		randSeeded = true;
+	}
 
-    return rand ( );
+	return rand ( );
 }
 
 void addMap ( int i1, int i2, int i3, int i4 ) {
@@ -310,7 +310,7 @@ vector < vector < long double > > lib::matrixMulCoefficient ( long double k, vec
 	for ( size_t i = 0; i < v.size ( ); ++ i )
 
 		for ( size_t j = 0; j < v [ i ].size ( ); ++ j )
-            result [ i ].push_back ( k * v [ i ] [ j ] );
+			result [ i ].push_back ( k * v [ i ] [ j ] );
 
 	return result;
 
@@ -355,7 +355,7 @@ vector < vector < long double > > lib::vectorsToMatrix ( vector < long double > 
 		 result.push_back ( * new vector < long double > );
 
 		 for ( size_t j = 0; j < v2.size ( ); ++ j )
-		 	result [ i ].push_back ( v1 [ i ] * v2 [ j ] );
+			result [ i ].push_back ( v1 [ i ] * v2 [ j ] );
 
 	 }
 
@@ -387,35 +387,35 @@ vector < vector < vector < long double > > > lib::tensorAdd ( vector < vector < 
 
 vector < pair < vector < long double >, vector < long double > > > lib::getDatasets ( istream & is ) {
 
-    vector < pair < vector < long double >, vector < long double > > > datasets;
+	vector < pair < vector < long double >, vector < long double > > > datasets;
 
-    int temp;
+	int temp;
 	string in;
 
-    while ( getline ( is , in ) ) {
+	while ( getline ( is , in ) ) {
 
 		if ( !in.size ( ) ) break;
 
 		stringstream ss;
 		ss.str ( in );
 
-        datasets.push_back ( { {}, {} } );
+		datasets.push_back ( { {}, {} } );
 
-        for ( unsigned i = 0; i < 121; ++ i ) {
-
-			ss >> temp;
-            datasets [ datasets.size ( ) - 1 ].first.push_back ( temp );
-
-        }
-
-        for ( unsigned i = 0; i < 121; ++ i ) {
+		for ( unsigned i = 0; i < 121; ++ i ) {
 
 			ss >> temp;
-            datasets [ datasets.size ( ) - 1 ].second.push_back ( temp );
+			datasets [ datasets.size ( ) - 1 ].first.push_back ( temp );
 
 		}
 
-    }
+		for ( unsigned i = 0; i < 121; ++ i ) {
+
+			ss >> temp;
+			datasets [ datasets.size ( ) - 1 ].second.push_back ( temp );
+
+		}
+
+	}
 
 	return datasets;
 
@@ -423,30 +423,30 @@ vector < pair < vector < long double >, vector < long double > > > lib::getDatas
 
 void lib::printDatasets ( ostream & os, vector < pair < vector < long double >, vector < long double > > > datasets ) {
 
-    for ( size_t i = 0; i < datasets.size ( ); ++ i ) {
+	for ( size_t i = 0; i < datasets.size ( ); ++ i ) {
 
-        for ( size_t j = 0; j < datasets [ i ].first .size ( ); ++ j ) os << datasets [ i ].first  [ j ] << " ";
-        for ( size_t j = 0; j < datasets [ i ].second.size ( ); ++ j ) os << datasets [ i ].second [ j ] << " ";
-        os << "\n";
+		for ( size_t j = 0; j < datasets [ i ].first .size ( ); ++ j ) os << datasets [ i ].first  [ j ] << " ";
+		for ( size_t j = 0; j < datasets [ i ].second.size ( ); ++ j ) os << datasets [ i ].second [ j ] << " ";
+		os << "\n";
 
-    }
+	}
 
-    os << flush;
+	os << flush;
 
 }
 
 long double lib::intToIndata ( int i, int player ) {
 
-    switch ( i ) {
+	switch ( i ) {
 
-        case 0:
-            return 0.0L;
+		case 0:
+			return 0.0L;
 
-        default:
+		default:
 
-            if ( i == player ) return 1.0L;
-            return 0.5L;
+			if ( i == player ) return 1.0L;
+			return 0.5L;
 
-    }
+	}
 
 }

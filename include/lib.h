@@ -8,12 +8,12 @@ namespace lib {
 
 	map < pair < int, int >, pair < int, int > > getCoordTranslationTable ( );
 
-    int charToInt ( char );
+	int charToInt ( char );
 
-    int randInt ( );
-    int randInt ( int mod );
+	int randInt ( );
+	int randInt ( int mod );
 
-    long double phi ( long double v );
+	long double phi ( long double v );
 
 	vector < long double > matrixMul ( vector < vector < long double > > &, vector < long double > & );
 

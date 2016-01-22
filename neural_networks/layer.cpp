@@ -2,55 +2,55 @@
 
 ostream & operator<< ( ostream & os, const layer & l ) {
 
-    os << "\t" << l.neurons.size ( ) << "\n";
+	os << "\t" << l.neurons.size ( ) << "\n";
 
-    for ( int i = 0; i < l.neurons.size ( ); ++ i  )
-        os << l.neurons [ i ];
+	for ( int i = 0; i < l.neurons.size ( ); ++ i  )
+		os << l.neurons [ i ];
 
-    return os;
+	return os;
 
 }
 
 istream & operator>> ( istream & is, layer & l ) {
 
-    int nNeurons;
+	int nNeurons;
 
-    is >> nNeurons;
+	is >> nNeurons;
 
-    l.neurons.clear ( );
+	l.neurons.clear ( );
 
-    for ( int i = 0; i < nNeurons; ++ i ) {
+	for ( int i = 0; i < nNeurons; ++ i ) {
 
-        l.neurons.push_back ( neuron ( ) );
-        is >> l.neurons [ l.neurons.size ( ) - 1 ];
+		l.neurons.push_back ( neuron ( ) );
+		is >> l.neurons [ l.neurons.size ( ) - 1 ];
 
-    }
+	}
 
-    return is;
+	return is;
 
 }
 
 vector < long double > layer::run ( vector < long double > input ) {
 
-    vector < long double > output;
+	vector < long double > output;
 
-    input.push_back ( 1.0L );
+	input.push_back ( 1.0L );
 
-    for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].run ( input ) );
+	for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].run ( input ) );
 
-    return output;
+	return output;
 
 }
 
 vector < long double > layer::runNoPhi ( vector < long double > input ) {
 
-    vector < long double > output;
+	vector < long double > output;
 
-    input.push_back ( 1.0L );
+	input.push_back ( 1.0L );
 
-    for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].runNoPhi ( input ) );
+	for ( int i = 0; i < neurons.size ( ); ++ i ) output.push_back ( neurons [ i ].runNoPhi ( input ) );
 
-    return output;
+	return output;
 
 }
 

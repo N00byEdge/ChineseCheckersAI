@@ -2,102 +2,102 @@
 
 ostream & operator<< ( ostream & os, const neural_network & n ) {
 
-    os << n.layers.size ( ) << "\n";
+	os << n.layers.size ( ) << "\n";
 
-    for ( int i = 0; i < n.layers.size ( ); ++ i )
-        os << n.layers [ i ];
+	for ( int i = 0; i < n.layers.size ( ); ++ i )
+		os << n.layers [ i ];
 
-    return os;
+	return os;
 
 }
 
 istream & operator>> ( istream & is, neural_network & n ) {
 
-    n.layers.clear ( );
+	n.layers.clear ( );
 
-    int nLayers;
+	int nLayers;
 
-    is >> nLayers;
+	is >> nLayers;
 
-    for ( int i = 0; i < nLayers; ++ i ) {
+	for ( int i = 0; i < nLayers; ++ i ) {
 
-        n.layers.push_back ( layer ( ) );
-        is >> n.layers [ n.layers.size ( ) - 1 ];
+		n.layers.push_back ( layer ( ) );
+		is >> n.layers [ n.layers.size ( ) - 1 ];
 
-    }
+	}
 
-    return is;
+	return is;
 
 }
 
 vector < long double > neural_network::run ( vector < long double > input ) {
 
-    vector < long double > output;
+	vector < long double > output;
 
-    for ( int i = 0; i < layers.size ( ); ++ i ) {
+	for ( int i = 0; i < layers.size ( ); ++ i ) {
 
 		input.push_back ( 1.0L );
 
 		vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
 
-        output = ( lib::matrixVectorMultiplication ( layerWeights, input ) );
+		output = ( lib::matrixVectorMultiplication ( layerWeights, input ) );
 
-        for ( size_t o = 0; o < output.size ( ); ++ o )
-            output [ o ] = lib::phi ( output [ o ] );
+		for ( size_t o = 0; o < output.size ( ); ++ o )
+			output [ o ] = lib::phi ( output [ o ] );
 
-        input = output;
+		input = output;
 
-    }
+	}
 
-    return output;
+	return output;
 
 }
 
 bool neural_network::init ( string source ) {
 
-    if ( source == "cin" ) {
+	if ( source == "cin" ) {
 
-        cin >> * this;
-        return true;
+		cin >> * this;
+		return true;
 
-    } else if ( source == "none" ) {
+	} else if ( source == "none" ) {
 
-        return true;
+		return true;
 
-    } else {
+	} else {
 
-        ifstream inputFile;
-        inputFile.open ( source );
-        if ( inputFile.is_open ( ) ) {
+		ifstream inputFile;
+		inputFile.open ( source );
+		if ( inputFile.is_open ( ) ) {
 
-            inputFile >> * this;
+			inputFile >> * this;
 
-        } else return false;
+		} else return false;
 
-        inputFile.close ( );
+		inputFile.close ( );
 
-        return true;
+		return true;
 
-    }
+	}
 
 }
 
 neural_network::neural_network ( string source ) {
 
-    if ( source.size ( ) && init ( source ) ) return;
+	if ( source.size ( ) && init ( source ) ) return;
 
-    string input;
+	string input;
 
-    cout << "This neural network has not been initialized. Please enter a neural network source: ";
+	cout << "This neural network has not been initialized. Please enter a neural network source: ";
 
-    while ( true ) {
+	while ( true ) {
 
-        getline ( cin, input );
-        if ( init ( input ) ) break;
+		getline ( cin, input );
+		if ( init ( input ) ) break;
 
-        cout << "Invalid input; please try again: ";
+		cout << "Invalid input; please try again: ";
 
-    }
+	}
 
 }
 
@@ -109,47 +109,47 @@ neural_network::neural_network ( istream & is ) {
 
 void neural_network::learn ( vector < pair < vector < long double >, vector < long double > > > datasets, long double maxError = 1e-7, long double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
-    /* Adding a 1 to each datasets input */
-    for ( size_t ds = 0; ds < datasets.size ( ); ++ ds )
-        datasets [ ds ].first.push_back ( 1 );
+	/* Adding a 1 to each datasets input */
+	for ( size_t ds = 0; ds < datasets.size ( ); ++ ds )
+		datasets [ ds ].first.push_back ( 1 );
 
-    /* Variables */
-    vector < long double > divergenceOutdata;
-    vector < vector < long double > > a;
-    vector < vector < long double > > z;
-    vector < vector < long double > > sigmaPrim;
-    vector < vector < long double > > delta;
-    vector < vector < vector < long double > > > deltaU;
+	/* Variables */
+	vector < long double > divergenceOutdata;
+	vector < vector < long double > > a;
+	vector < vector < long double > > z;
+	vector < vector < long double > > sigmaPrim;
+	vector < vector < long double > > delta;
+	vector < vector < vector < long double > > > deltaU;
 
 	/* Learning loop */
 	for ( long long nLearns = 0;; ++ nLearns ) {
 
-        long double error = 0;
+		long double error = 0;
 
 		/* Comments pending */
 
-        deltaU.clear ( );
+		deltaU.clear ( );
 
 		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
-            deltaU.push_back ( * new vector < vector < long double > > );
+			deltaU.push_back ( * new vector < vector < long double > > );
 
 			for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
 
-                deltaU [ i ].push_back ( * new vector < long double > );
+				deltaU [ i ].push_back ( * new vector < long double > );
 
-                for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) deltaU [ i ] [ j ].push_back ( 0 );
+				for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) deltaU [ i ] [ j ].push_back ( 0 );
 
 			}
 		}
 
 		for ( size_t ds = 0; ds < datasets.size ( ); ++ ds ) {
 
-            a.clear ( );
-            z.clear ( );
-            divergenceOutdata = * new vector < long double > ( datasets [ ds ].second.size ( ), 0 );
-            sigmaPrim = * new vector < vector < long double > > ( layers.size ( ) );
-            delta = * new vector < vector < long double > > ( layers.size ( ) );
+			a.clear ( );
+			z.clear ( );
+			divergenceOutdata = * new vector < long double > ( datasets [ ds ].second.size ( ), 0 );
+			sigmaPrim = * new vector < vector < long double > > ( layers.size ( ) );
+			delta = * new vector < vector < long double > > ( layers.size ( ) );
 
 
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
@@ -157,7 +157,7 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 				vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
 
 				if ( i != 0 ) z.push_back ( lib::matrixVectorMultiplication ( layerWeights, a [ i - 1 ] ) );
-				else 		  z.push_back ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
+				else          z.push_back ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
 				a.push_back ( z [ z.size ( ) - 1 ] );
 
 				for ( size_t j = 0; j < a [ a.size ( ) - 1 ].size ( ); ++ j )
@@ -199,7 +199,7 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 				long double learningCoefficient = ( long double ) ( - learningSpeed / datasets.size ( ) );
 				vector < long double > v;
 				if ( i != 0 ) v = a [ i - 1 ];
-				else		  v = datasets [ ds ].first;
+				else          v = datasets [ ds ].first;
 				vector < vector < long double > > datasetWeightChange = lib::vectorsToMatrix ( delta [ i ], v );
 				datasetWeightChange = lib::matrixMulCoefficient ( learningCoefficient, datasetWeightChange );
 				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], datasetWeightChange );
@@ -229,13 +229,13 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			for ( size_t j = 0; j < layers.size ( ); ++ j ) {
 
-                outdata.push_back ( 1.0L );
+				outdata.push_back ( 1.0L );
 
-                auto layerWeights = layers [ j ].getWeights ( );
+				auto layerWeights = layers [ j ].getWeights ( );
 
-                outdata = lib::matrixVectorMultiplication ( layerWeights, outdata );
+				outdata = lib::matrixVectorMultiplication ( layerWeights, outdata );
 
-                for ( size_t od = 0; od < outdata.size ( ); ++ od ) outdata [ od ] = lib::phi ( outdata [ od ] );
+				for ( size_t od = 0; od < outdata.size ( ); ++ od ) outdata [ od ] = lib::phi ( outdata [ od ] );
 
 			}
 
@@ -246,12 +246,12 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 		error /= 2 * datasets.size ( );
 
-        if ( error < maxError ) {
+		if ( error < maxError ) {
 
-            if ( reportFrequency != -1 ) cout << nLearns << " iterations; error = " << error << endl;
-            break;
+			if ( reportFrequency != -1 ) cout << nLearns << " iterations; error = " << error << endl;
+			break;
 
-        }
+		}
 
 		if ( ! ( reportFrequency == 0 || reportFrequency == -1 ) )
 			if ( nLearns % reportFrequency == 0 ) cout << nLearns << " iterations; " << deb ( error ) << endl;

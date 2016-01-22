@@ -8,27 +8,27 @@
 /* Game class */
 class game {
 
-    public:
+	public:
 
-        board * getBoard();
+		board * getBoard();
 
-        void startGame ( int numPlayers );
+		void startGame ( int numPlayers );
 
-    protected:
+	protected:
 
-    private:
+	private:
 
-        /* The main game board */
-        board masterBoard;
+		/* The main game board */
+		board masterBoard;
 
-        /* A vector containing all of the agents ( players or AI ) */
-        vector < agent * > players;
+		/* A vector containing all of the agents ( players or AI ) */
+		vector < agent * > players;
 
-        /* The number of agents in the game */
-        int numPlayers = 2;
+		/* The number of agents in the game */
+		int numPlayers = 2;
 
-        /* Whose turn it is */
-        int turn = 0;
+		/* Whose turn it is */
+		int turn = 0;
 
 };
 

@@ -46,7 +46,7 @@ long double neuron::run ( vector < long double > input ) {
 
 		}
 
-        cout << ld << endl;
+		cout << ld << endl;
 
 		return lib::phi ( ld );
 

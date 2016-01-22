@@ -110,24 +110,24 @@ vector < string > Board6Players =
 void board::print ( ) {
 
 	for ( int i = tb.size ( ) - 1; i != -1; -- i ) {
-    cout << i << "\t ";
-        if ( i == 0 || i == tb.size ( ) - 1 ) {
-            cout << "            ";
-        } else if ( i == 1 || i == tb.size ( ) - 2 ) {
-            cout << "           ";
-        } else if ( i == 2 || i == tb.size ( ) - 3 ) {
-            cout << "          ";
-        } else if ( i == 3 || i == tb.size ( ) - 4 ) {
-            cout << "         ";
-        } else if ( i == 5 || i == tb.size ( ) - 6 ) {
-            cout << " ";
-        } else if ( i == 6 || i == tb.size ( ) - 7 ) {
-            cout << "  ";
-        } else if ( i == 7 || i == tb.size ( ) - 8 ) {
-            cout << "   ";
-        } else if ( i == 8 ) {
-            cout << "    ";
-        }
+	cout << i << "\t ";
+		if ( i == 0 || i == tb.size ( ) - 1 ) {
+			cout << "            ";
+		} else if ( i == 1 || i == tb.size ( ) - 2 ) {
+			cout << "           ";
+		} else if ( i == 2 || i == tb.size ( ) - 3 ) {
+			cout << "          ";
+		} else if ( i == 3 || i == tb.size ( ) - 4 ) {
+			cout << "         ";
+		} else if ( i == 5 || i == tb.size ( ) - 6 ) {
+			cout << " ";
+		} else if ( i == 6 || i == tb.size ( ) - 7 ) {
+			cout << "  ";
+		} else if ( i == 7 || i == tb.size ( ) - 8 ) {
+			cout << "   ";
+		} else if ( i == 8 ) {
+			cout << "    ";
+		}
 
 		for ( int j = 0; j < tb [ i ].size ( ); ++ j )
 
@@ -268,29 +268,29 @@ tile * board::getTile ( pair < int, int > pii ) {
 
 tile * board::intToTile ( int in ) {
 
-    if ( in <= 121 ) {
+	if ( in <= 121 ) {
 
-        for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
+		for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
 
-            if ( in < this -> tb [ i ].size ( ) )
-                return & this -> tb [ i ] [ in ];
-            else in -= this -> tb [ i ].size ( );
+			if ( in < this -> tb [ i ].size ( ) )
+				return & this -> tb [ i ] [ in ];
+			else in -= this -> tb [ i ].size ( );
 
-        }
+		}
 
-    }
+	}
 
 }
 
 int board::tileToInt ( tile * t ) {
 
-    int r = 0;
+	int r = 0;
 
-    for ( int i = 0; i < t -> getCoordinates ( ).second; ++ i )
-        r += this -> tb [ i ].size ( );
-    r += t -> getCoordinates ( ).first;
+	for ( int i = 0; i < t -> getCoordinates ( ).second; ++ i )
+		r += this -> tb [ i ].size ( );
+	r += t -> getCoordinates ( ).first;
 
-    return r;
+	return r;
 
 }
 
@@ -362,11 +362,11 @@ bool board::isValidTile ( tile * t ) {
 
 vector < tile * > board::getPlayerTiles ( int player ) {
 
-    vector < tile * > playerTiles;
+	vector < tile * > playerTiles;
 
 	/*playerTiles.clear ( );
 	for ( int i = 0; i < player + 1; ++ i )
-        playerTiles.push_back ( staticEmptyTilePointerVector );*/
+		playerTiles.push_back ( staticEmptyTilePointerVector );*/
 
 	for ( int i = 0; i < tb.size ( ); ++ i ) {
 
@@ -376,11 +376,11 @@ vector < tile * > board::getPlayerTiles ( int player ) {
 			pii.first = j;
 			pii.second = i;
 
-            tile * t = getTile ( pii );
+			tile * t = getTile ( pii );
 
 			//nests [ t -> getContents ( ) ].push_back ( t );
 			if ( t -> getContents ( ) == player )
-                playerTiles.push_back ( t );
+				playerTiles.push_back ( t );
 
 		}
 
@@ -388,7 +388,7 @@ vector < tile * > board::getPlayerTiles ( int player ) {
 
 	if ( player < playerTiles.size ( ) )
 		return playerTiles;
-    return *new vector < tile * >;
+	return *new vector < tile * >;
 
 }
 
@@ -423,7 +423,7 @@ tile * board::getTileRight ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -489,7 +489,7 @@ tile * board::getTileUpRight ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -555,7 +555,7 @@ tile * board::getTileDownRight ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -588,7 +588,7 @@ tile * board::getTileLeft ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -644,7 +644,7 @@ tile * board::getTileUpLeft ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -709,7 +709,7 @@ tile * board::getTileDownLeft ( tile * t ) {
 
 	if( isValidTile ( t ) )
 		return t;
-    return nullptr;
+	return nullptr;
 
 }
 
@@ -895,8 +895,8 @@ bool board::canWalkDownLeft ( tile * t ) {
 
 bool board::canJumpRight ( tile * t ) {
 
-    if ( !isValidTile ( t ) )
-        return false;
+	if ( !isValidTile ( t ) )
+		return false;
 
 	originalTile = t;
 
@@ -1004,8 +1004,8 @@ pair < int, int > board::getCoordJumpRight ( tile * tile ) {
 
 bool board::canJumpUpRight ( tile * t ) {
 
-    if ( !isValidTile ( t ) )
-        return false;
+	if ( !isValidTile ( t ) )
+		return false;
 
 	originalTile = t;
 
@@ -1110,8 +1110,8 @@ pair < int, int > board::getCoordJumpUpRight ( tile * tile ) {
 
 bool board::canJumpDownRight ( tile * t ) {
 
-    if ( !isValidTile ( t ) )
-        return false;
+	if ( !isValidTile ( t ) )
+		return false;
 
 	originalTile = t;
 
@@ -1216,8 +1216,8 @@ pair < int, int > board::getCoordJumpDownRight ( tile * tile ) {
 
 bool board::canJumpLeft ( tile * t ) {
 
-    if ( !isValidTile ( t ) )
-        return false;
+	if ( !isValidTile ( t ) )
+		return false;
 
 	originalTile = t;
 
@@ -1322,8 +1322,8 @@ pair < int, int > board::getCoordJumpLeft ( tile * tile ) {
 
 bool board::canJumpUpLeft ( tile * t ) {
 
-    if ( !isValidTile ( t ) )
-        return false;
+	if ( !isValidTile ( t ) )
+		return false;
 
 	originalTile = t;
 
@@ -1428,8 +1428,8 @@ pair < int, int > board::getCoordJumpUpLeft ( tile * tile ) {
 
 bool board::canJumpDownLeft ( tile * t ) {
 
-    if ( !isValidTile ( t ) )
-        return false;
+	if ( !isValidTile ( t ) )
+		return false;
 
 	originalTile = t;
 
@@ -1534,7 +1534,7 @@ pair < int, int > board::getCoordJumpDownLeft ( tile * tile ) {
 
 bool board::canWalk ( tile * t, unsigned int direction ) {
 
-    if ( direction == 1 )
+	if ( direction == 1 )
 		return canWalkRight ( t );
 
 	else if ( direction == 2 )
@@ -1584,9 +1584,9 @@ bool board::canJump ( tile * t, unsigned int direction ) {
 
 bool board::canMove ( tile * t, unsigned int move ) {
 
-    #ifdef DEBUGGING
-    cout << "Can " << t << " move " << move << "?\n";
-    #endif // DEBUGGING
+	#ifdef DEBUGGING
+	cout << "Can " << t << " move " << move << "?\n";
+	#endif // DEBUGGING
 
 	if ( 1 <= move && move <= 6 )
 		return canWalk ( t, move );
@@ -1694,7 +1694,7 @@ bool board::jumpUpRight ( tile * t ) {
 	if ( canJumpUpRight ( t ) ) {
 		getTile ( getCoordJumpUpRight ( t ) ) -> setContents ( t -> getContents ( ) );
 		for ( int i = 0; i < 10; ++ i ) {
-                if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
+				if ( playerTiles [ t -> getContents ( ) ] [ i ] == t )
 				playerTiles [ t -> getContents ( ) ] [ i ] = getTile ( getCoordJumpUpRight ( t ) );
 		}
 		t -> setContents ( 0 );
@@ -1811,13 +1811,13 @@ pair < int, int > board::getMoveCoords ( board_move m ) {
 
 pair < int, int > board::getTurnCoords ( board_turn t ) {
 
-    board dummyBoard = * this;
+	board dummyBoard = * this;
 
-    auto t2 = t;
-    t2.moves.erase ( t2.moves.begin ( ) + t2.moves.size ( ) - 1 );
+	auto t2 = t;
+	t2.moves.erase ( t2.moves.begin ( ) + t2.moves.size ( ) - 1 );
 
-    dummyBoard.makeTurn ( t2 );
-    return dummyBoard.getMoveCoords ( t.moves [ t.moves.size ( ) - 1 ] );
+	dummyBoard.makeTurn ( t2 );
+	return dummyBoard.getMoveCoords ( t.moves [ t.moves.size ( ) - 1 ] );
 
 }
 
@@ -2124,42 +2124,42 @@ float board::getMiddleXCoord ( int y ) {
 
 vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > visited ) {
 
-    board emulatedBoard = * this;
+	board emulatedBoard = * this;
 
-    for ( size_t i = 0; i < moves.size ( ); ++ i ) emulatedBoard.move ( moves [ i ] );
+	for ( size_t i = 0; i < moves.size ( ); ++ i ) emulatedBoard.move ( moves [ i ] );
 
-    vector < board_turn > foundTurns;
+	vector < board_turn > foundTurns;
 
-    auto possibleMoves = emulatedBoard.getPossibleMoves ( t );
+	auto possibleMoves = emulatedBoard.getPossibleMoves ( t );
 
-    for ( size_t i = 0; i < possibleMoves.size ( ); ++ i ) {
+	for ( size_t i = 0; i < possibleMoves.size ( ); ++ i ) {
 
-        if ( moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 ) continue;
+		if ( moves.size ( ) && possibleMoves [ i ].getRawData ( ) <= 6 ) continue;
 
-        if ( visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] ) continue;
+		if ( visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] ) continue;
 
-        visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] = true;
+		visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] = true;
 
-        board_move mv;
-        mv = possibleMoves [ i ];
-        moves.push_back ( mv );
+		board_move mv;
+		mv = possibleMoves [ i ];
+		moves.push_back ( mv );
 
-        board_turn trn;
-        trn.moves = moves;
-        foundTurns.push_back ( trn );
+		board_turn trn;
+		trn.moves = moves;
+		foundTurns.push_back ( trn );
 
-        board emulatedBoardBackup = emulatedBoard;
-        emulatedBoard.move ( mv );
-        vector < board_turn > moreTurns = emulatedBoard.findAllPossibleTurns ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ), moves, visited );
-        for ( size_t j = 0; j < moreTurns.size ( ); ++ j ) foundTurns.push_back ( moreTurns [ j ] );
+		board emulatedBoardBackup = emulatedBoard;
+		emulatedBoard.move ( mv );
+		vector < board_turn > moreTurns = emulatedBoard.findAllPossibleTurns ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ), moves, visited );
+		for ( size_t j = 0; j < moreTurns.size ( ); ++ j ) foundTurns.push_back ( moreTurns [ j ] );
 
-        emulatedBoard = emulatedBoardBackup;
-        moves.erase ( moves.end ( ) - 1 );
-        visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] = false;
+		emulatedBoard = emulatedBoardBackup;
+		moves.erase ( moves.end ( ) - 1 );
+		visited [ emulatedBoard.tileToInt ( emulatedBoard.getTile ( emulatedBoard.getMoveCoords ( possibleMoves [ i ] ) ) ) ] = false;
 
-    }
+	}
 
-    return foundTurns;
+	return foundTurns;
 
 }
 
@@ -2178,7 +2178,7 @@ float board::score ( int player ) {
 		score -= h * h * h;
 		score -= d * d;
 
-        #ifdef DEBUGGING
+		#ifdef DEBUGGING
 		cout << deb ( x ) << ", " << deb ( y ) << ", " << deb ( h ) << ", " << deb ( d ) << "\n";
 		#endif
 
@@ -2208,34 +2208,34 @@ vector < board_turn > board::findAllPossibleTurns ( int player ) {
 
 bool board::hasFilledOpposingNest ( int player ) {
 
-    for ( int i = 0; i < this -> nests [ player ].size ( ); ++ i ) {
+	for ( int i = 0; i < this -> nests [ player ].size ( ); ++ i ) {
 
-        auto coord = this -> nests [ player ] [ i ] -> getCoordinates ( );
+		auto coord = this -> nests [ player ] [ i ] -> getCoordinates ( );
 
-        auto tt = lib::getCoordTranslationTable ( );
+		auto tt = lib::getCoordTranslationTable ( );
 
-        for ( int j = 0; j < 3; ++ j )
-            coord = tt.at ( coord );
+		for ( int j = 0; j < 3; ++ j )
+			coord = tt.at ( coord );
 
 		//cout << deb ( this -> getTile ( coord ) -> getContents ( ) != player ) << endl;
 
-        if ( this -> getTile ( coord ) -> getContents ( ) != player ) return false;
+		if ( this -> getTile ( coord ) -> getContents ( ) != player ) return false;
 
-    }
+	}
 
-    return true;
+	return true;
 
 }
 
 board_turn board::tilesToTurn ( tile * startTile, tile * endTile ) {
 
-    board_turn t;
+	board_turn t;
 
-    auto possibleTurns = findAllPossibleTurns ( startTile, * new vector < board_move >, * new vector < bool > ( 121 ) );
+	auto possibleTurns = findAllPossibleTurns ( startTile, * new vector < board_move >, * new vector < bool > ( 121 ) );
 
-    for ( size_t i = 0; i < possibleTurns.size ( ); ++ i )
-        if ( getTile ( getTurnCoords ( possibleTurns [ i ] ) ) == endTile ) return possibleTurns [ i ];
+	for ( size_t i = 0; i < possibleTurns.size ( ); ++ i )
+		if ( getTile ( getTurnCoords ( possibleTurns [ i ] ) ) == endTile ) return possibleTurns [ i ];
 
-    return t;
+	return t;
 
 }

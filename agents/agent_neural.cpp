@@ -30,14 +30,14 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 	vector < long double > indata ( 121, 0 );
 	for ( size_t i = 0; i < indata.size ( ); ++ i ) indata [ i ] = lib::intToIndata ( b.intToTile ( i ) -> getContents ( ), player );
 
-    auto outdata = nn.run ( indata );
+	auto outdata = nn.run ( indata );
 
-    vector < pair < long double, int > > sortedOutdata;
+	vector < pair < long double, int > > sortedOutdata;
 
-    for ( size_t i = 0; i < outdata.size ( ); ++ i )
-        sortedOutdata.push_back ( { outdata [ i ], i } );
+	for ( size_t i = 0; i < outdata.size ( ); ++ i )
+		sortedOutdata.push_back ( { outdata [ i ], i } );
 
-    sort ( sortedOutdata.begin ( ), sortedOutdata.end ( ), std::greater < pair < long double, int > > ( ) );
+	sort ( sortedOutdata.begin ( ), sortedOutdata.end ( ), std::greater < pair < long double, int > > ( ) );
 
 	board_turn bestTurn;
 	long double bestScore = 0;
@@ -50,14 +50,14 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
 		for ( size_t j = 0; j < sortedOutdata.size ( ); ++ j ) {
 
-            if ( b.intToTile ( sortedOutdata [ j ].second ) -> getContents ( ) != 0 ) continue;
+			if ( b.intToTile ( sortedOutdata [ j ].second ) -> getContents ( ) != 0 ) continue;
 
 			for ( size_t k = 0; k < possibleTurns.size ( ); ++ k ) {
 
 				if ( b.tileToInt ( b.getTile ( b.getTurnCoords ( possibleTurns [ k ] ) ) ) == j && bestScore < sortedOutdata [ i ].first + sortedOutdata [ j ].first && b.canMakeTurn( possibleTurns [ k ] ) ) {
 
-                    bestTurn = possibleTurns [ k ];
-                    bestScore = sortedOutdata [ i ].first + sortedOutdata [ j ].first;
+					bestTurn = possibleTurns [ k ];
+					bestScore = sortedOutdata [ i ].first + sortedOutdata [ j ].first;
 
 				}
 
@@ -67,7 +67,7 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
 	}
 
-    bestTurn.rotate ( 6 - nRotations );
+	bestTurn.rotate ( 6 - nRotations );
 
 	return bestTurn;
 

@@ -13,8 +13,8 @@ class agent_neural : public agent {
 
 	public:
 
-        agent_neural ( );
-        agent_neural ( string );
+		agent_neural ( );
+		agent_neural ( string );
 		agent_neural ( istream & );
 		agent_neural ( ifstream & );
 
