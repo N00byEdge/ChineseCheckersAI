@@ -28,15 +28,15 @@ int main ( ) {
         win.display();
     }
     #endif
-	
+
 	string networkToTrain;
-	
+
 	getNetworkToTrain:;
-	
+
     cout << "If you want to train a network, please enter the path to the network now: ";
     getline ( cin, networkToTrain );
     if ( networkToTrain.size ( ) ) {
-		
+
 		getDatasetFile:;
 
         cout << "Please enter the path to the dataset that you want to use: ";
@@ -45,12 +45,12 @@ int main ( ) {
 
 		ifstream datasetFile;
 		datasetFile.open ( datasetFilePath );
-		
+
 		if ( !datasetFile.is_open ( ) ) {
-			
+
 			cout << "Could not load network.\n";
 			goto getNetworkToTrain;
-			
+
 		}
 		neural_network nw ( networkToTrain );
 
@@ -98,7 +98,7 @@ int main ( ) {
 			
 			cout << "Could not open dataset file.\n";
 			goto getDatasetFile;
-			
+
 		}
 
 		datasetFile.close ( );
