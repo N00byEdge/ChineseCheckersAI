@@ -84,6 +84,22 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 	}
 	#endif // DEBUGGING
 
+
+
+	for ( size_t i = 0; i < v.size ( ); ++ i  ) {
+
+        v [ i ].rotate ( 6 - boardRotations );
+
+        if ( !originalBoard.canMakeTurn ( v [ i ] ) ) {
+
+            v.erase ( v.begin ( ) + i );
+            boardScores.erase ( boardScores.begin ( ) + i );
+            -- i;
+
+        }
+
+	}
+
 	float bestScore = -5e35f;
 	vector < board_turn > bestTurns;
 
@@ -103,7 +119,7 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	t = bestTurns [ lib::randInt( bestTurns.size ( ) ) ];
 
-	t.rotate ( 6 - boardRotations );
+	if ( !originalBoard.canMakeTurn ( t ) ) cout << "This turn doesn't look valid any more.\n";
 
 	return t;
 
