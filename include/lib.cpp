@@ -42,9 +42,6 @@ int lib::charToInt ( char c ) {
 
 void generateCoordTranslationTable ( ) {
 
-	if ( translationTableGenerated )
-		return;
-
 	translationTableGenerated = true;
 
 	// center tile
@@ -419,7 +416,7 @@ vector < pair < vector < long double >, vector < long double > > > lib::getDatas
 		}
 
     }
-	
+
 	return datasets;
 
 }
