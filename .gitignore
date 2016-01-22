@@ -77,6 +77,8 @@ $RECYCLE.BIN/
 Källor
 bin*
 Neural*
+Datasets*
+Gamedata.txt
 *.layout
 *.bat
 *.mak*
