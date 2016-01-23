@@ -128,7 +128,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release Linux">
-				<Option platforms="Mac;" />
+				<Option platforms="Unix;" />
 				<Option output="binLinux/Release/Fem" prefix_auto="1" extension_auto="1" />
 				<Option object_output="objLinux/Release/" />
 				<Option type="1" />
@@ -148,7 +148,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug Linux">
-				<Option platforms="Mac;" />
+				<Option platforms="Unix;" />
 				<Option output="binLinux/Debug/Fem" prefix_auto="1" extension_auto="1" />
 				<Option object_output="objLinux/Debug/" />
 				<Option type="1" />
