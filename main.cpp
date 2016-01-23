@@ -94,6 +94,8 @@ int main ( ) {
 
 			}
 
+			goto getNetworkToTrain;
+
 		} else {
 
 			cout << "Could not open dataset file.\n";
