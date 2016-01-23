@@ -102,8 +102,8 @@
 			</Target>
 			<Target title="Release OS X">
 				<Option platforms="Mac;" />
-				<Option output="binUnix/Release/Fem" prefix_auto="1" extension_auto="1" />
-				<Option object_output="objUnix/Release/" />
+				<Option output="binMac/Release/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="objMac/Release/" />
 				<Option type="1" />
 				<Option compiler="clang" />
 				<Option use_console_runner="0" />
@@ -115,8 +115,8 @@
 			</Target>
 			<Target title="Debug OS X">
 				<Option platforms="Mac;" />
-				<Option output="binUnix/Debug/Fem" prefix_auto="1" extension_auto="1" />
-				<Option object_output="objUnix/Debug/" />
+				<Option output="binMac/Debug/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="objMac/Debug/" />
 				<Option type="1" />
 				<Option compiler="clang" />
 				<Option use_console_runner="0" />
@@ -127,9 +127,49 @@
 					<Add directory="../../API/SFML/2.3.1/OS X/include" />
 				</Compiler>
 			</Target>
+			<Target title="Release Linux">
+				<Option platforms="Mac;" />
+				<Option output="binLinux/Release/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="objLinux/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-Ofast" />
+					<Add directory="/SFML/include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add directory="/SFML/lib" />
+				</Linker>
+			</Target>
+			<Target title="Debug Linux">
+				<Option platforms="Mac;" />
+				<Option output="binLinux/Debug/Fem" prefix_auto="1" extension_auto="1" />
+				<Option object_output="objLinux/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-g" />
+					<Add directory="/SFML/include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-network-d" />
+					<Add library="sfml-system-d" />
+					<Add directory="/SFML/lib" />
+				</Linker>
+			</Target>
 		</Build>
 		<VirtualTargets>
-			<Add alias="BuildAll" targets="Release Windows x64;Release Windows x64 with interface;Debug Windows x64;Debug Windows x64 with interface;Release OS X;Debug OS X;" />
+			<Add alias="BuildAll" targets="Release Windows x64;Release Windows x64 with interface;Debug Windows x64;Debug Windows x64 with interface;Release OS X;Debug OS X;Release Linux;Debug Linux;" />
 		</VirtualTargets>
 		<Compiler>
 			<Add directory="neural_networks" />
