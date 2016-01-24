@@ -126,8 +126,7 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 		long double error = 0;
 
-		/* Comments pending */
-
+		/* Reset deltaU */
 		deltaU.clear ( );
 
 		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
@@ -142,16 +141,18 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			}
 		}
-
+        
+        /* Loop through datasets*/
 		for ( size_t ds = 0; ds < datasets.size ( ); ++ ds ) {
 
+            /* Clear our so far saved data. We need to clear these vectors we create too (can't be bothered at this moment), they are causing memory leaks */
 			a.clear ( );
 			z.clear ( );
 			divergenceOutdata = * new vector < long double > ( datasets [ ds ].second.size ( ), 0 );
 			sigmaPrim = * new vector < vector < long double > > ( layers.size ( ) );
 			delta = * new vector < vector < long double > > ( layers.size ( ) );
 
-
+            /* Calculate a and z for each layer */
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
 				vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
@@ -166,10 +167,12 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 				if ( not ( i == layers.size ( ) - 1 ) ) a [ a.size ( ) - 1 ].push_back ( 1 );
 
 			}
-
+            
+            /* Calculate phi(z) - y */
 			for ( size_t i = 0; i < datasets [ ds ].second.size ( ); ++ i )
 				divergenceOutdata [ i ] = a [ a.size ( ) - 1 ] [ i ] - datasets [ ds ].second [ i ];
 
+            /* Calculate sigmaPrim ( phi(z)(1-phi(z)) ) */
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
 				for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j )
@@ -177,13 +180,17 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			}
 
+            /* Add a 1 to each sigmaPrim (the bias) */
 			for ( size_t i = 0; i < sigmaPrim.size ( ); ++ i ) sigmaPrim [ i ].push_back ( 1.0L );
 
+            /* Calculate delta for output layer */
 			delta [ layers.size ( ) - 1 ] = lib::vectorPairMul ( divergenceOutdata, sigmaPrim [ layers.size ( ) - 1 ] );
-
+            
+            /* If we have less than 2 layers (3 if we count the input layer), we skip the next loop */
 			if ( layers.size ( ) < 2 ) goto tooFewLayers;
 
-			for ( int i = layers.size ( ) - 2; 0 <= i; -- i ) {
+		    /* Calculate delta for the rest of the layers */
+            for ( int i = layers.size ( ) - 2; 0 <= i; -- i ) {
 
 				vector < vector < long double > > nextLayerWeights = layers [ i + 1 ].getWeights ( );
 				nextLayerWeights = lib::transpose ( nextLayerWeights );
@@ -194,6 +201,7 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 			tooFewLayers:;
 
+            /* Add weight changes to deltaU */
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
 				long double learningCoefficient = ( long double ) ( - learningSpeed / datasets.size ( ) );
@@ -204,13 +212,11 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 				datasetWeightChange = lib::matrixMulCoefficient ( learningCoefficient, datasetWeightChange );
 				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], datasetWeightChange );
 
-			}
-
-
+            }
 
 		}
 
-		/* Update weights */
+		/* Update weights, add deltaU to them */
 		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
 			vector < vector < long double > > weights = layers [ i ].getWeights ( );
@@ -222,7 +228,6 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 		}
 
 		/* Calculate error */
-
 		for ( size_t i = 0; i < datasets.size ( ); ++ i ) {
 
 			vector < long double > outdata = datasets [ i ].first;
@@ -244,8 +249,10 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 		}
 
+        /* Error should be divided by 2 times the number of datasets that we have */
 		error /= 2 * datasets.size ( );
 
+        /* If we have reached our error target, we break and tell the user */
 		if ( error < maxError ) {
 
 			if ( reportFrequency != -1 ) cout << nLearns << " iterations; error = " << error << endl;
@@ -253,6 +260,7 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 		}
 
+        /* If we should report progress at this time, we do so. */
 		if ( ! ( reportFrequency == 0 || reportFrequency == -1 ) )
 			if ( nLearns % reportFrequency == 0 ) cout << nLearns << " iterations; " << deb ( error ) << endl;
 
