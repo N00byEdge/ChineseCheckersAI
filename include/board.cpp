@@ -1985,8 +1985,6 @@ bool board::makeTurn ( board_turn trn ) {
 		visited [ tileToInt ( getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] = true;
 		
 	}
-	
-	if ( visited [ tileToInt ( getTile ( getTurnCoords ( trn ) ) ) ] ) return false;
 
 	/*
 	 * Checking that the tile start coords are right for every move (that the last move would end up in the correct tile).
@@ -1995,12 +1993,17 @@ bool board::makeTurn ( board_turn trn ) {
 
 	board dummyBoard = * this;
 
+	pair < int, int > endCoords;
+
 	for ( int i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
 		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) )
+			endCoords = dummyBoard.getMoveCoords ( trn.moves [ i ] );
 			return false;
 		if ( !dummyBoard.move ( trn.moves [ i ] ) )
 			return false;
 	}
+
+	if ( visited [ tileToInt ( getTile ( endCoords ) ) ] ) return false;
 
 	* this = dummyBoard;
 
