@@ -12,6 +12,8 @@ ostream & operator<< ( ostream & os, const neuron & n ) {
 
 	} os << "\n";
 
+	return os;
+
 }
 
 istream & operator>> ( istream & is , neuron & n ) {
@@ -31,6 +33,8 @@ istream & operator>> ( istream & is , neuron & n ) {
 		n.weights.push_back ( weight );
 
 	}
+
+	return is;
 
 }
 

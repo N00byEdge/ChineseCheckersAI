@@ -268,7 +268,7 @@ tile * board::getTile ( pair < int, int > pii ) {
 
 tile * board::intToTile ( int in ) {
 
-	if ( in <= 121 ) {
+	if ( in <= 120 ) {
 
 		for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
 
@@ -279,6 +279,8 @@ tile * board::intToTile ( int in ) {
 		}
 
 	}
+
+	return 0;
 
 }
 
@@ -2005,6 +2007,8 @@ bool board::makeTurn ( board_turn trn ) {
 	endCoords = dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] );
 
 	if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( endCoords ) ) ] ) return false;
+	
+	if ( !dummyBoard.move ( trn.moves [ trn.moves.size ( ) - 1 ] ) ) return false;
 
 	* this = dummyBoard;
 
