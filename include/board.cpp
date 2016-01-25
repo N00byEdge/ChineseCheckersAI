@@ -1997,13 +1997,14 @@ bool board::makeTurn ( board_turn trn ) {
 
 	for ( int i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
 		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) )
-			endCoords = dummyBoard.getMoveCoords ( trn.moves [ i ] );
 			return false;
 		if ( !dummyBoard.move ( trn.moves [ i ] ) )
 			return false;
 	}
 
-	if ( visited [ tileToInt ( getTile ( endCoords ) ) ] ) return false;
+	endCoords = dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] );
+
+	if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( endCoords ) ) ] ) return false;
 
 	* this = dummyBoard;
 

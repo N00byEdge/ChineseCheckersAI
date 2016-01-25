@@ -75,6 +75,23 @@
 		}
 
 	}
+	
+	vector < bool > hasEndTile ( 121, false );
+	
+	for ( size_t i = 0; i < possibleTurns.size ( ); ++ i ) {
+		
+		if ( hasEndTile [ b.tileToInt ( b.getTile ( b.getTurnCoords ( possibleTurns [ i ] ) ) ) ] ) {
+			
+			possibleTurns.erase ( possibleTurns.begin ( ) + i );
+			-- i;
+			
+		}
+		
+		hasEndTile [ b.tileToInt ( b.getTile ( b.getTurnCoords ( possibleTurns [ i ] ) ) ) ] = true;
+		
+	}
+	
+	
 
 	getTurn:;
 
