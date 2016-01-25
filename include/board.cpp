@@ -1962,7 +1962,7 @@ bool board::makeTurn ( board_turn trn ) {
 	} else if ( trn.moves.size ( ) == 0 ) {
 
 		/* If the turn doesn't contain any moves, don't do anything. */
-		return true;
+		return false;
 
 	}
 
@@ -1970,29 +1970,30 @@ bool board::makeTurn ( board_turn trn ) {
 	/* If the turn contains more than one move, and doesn't contain only jumps, the turn is invalid. */
 	for ( int i = 0; i < trn.moves.size ( ); ++ i ) {
 
-		if ( trn.moves [ 0 ].getRawData ( ) <= 6 )
+		if ( trn.moves [ i ].getRawData ( ) <= 6 )
 			return false;
 
 	}
 
-	/* If the tile has the same position more than once during a turn, the turn is invalid. */
-
-	/*vector < pair < int, int > > v;
-
-	for ( int i = 0; i < trn.moves.size ( ); ++ i ) {
-		for ( int j = 0; j < v.size ( ); ++ j ) {
-			if ( trn.moves [ i ].getTileStartCoords ( ) == v [ j ] )
-				return false;
-		}
-		v.push_back ( trn.moves [ i ].getTileStartCoords ( ) );
-	}*/
+	/* If we end up on the same tile as we started on, return false. */
+	
+	vector < bool > visited ( 121, false );
+	
+	for ( size_t i = 0; i < trn.moves.size ( ); ++ i ) {
+		
+		if ( visited [ tileToInt ( getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] ) return false;
+		visited [ tileToInt ( getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] = true;
+		
+	}
+	
+	if ( visited [ tileToInt ( getTile ( getTurnCoords ( trn ) ) ) ] ) return false;
 
 	/*
 	 * Checking that the tile start coords are right for every move (that the last move would end up in the correct tile).
 	 * Also checks that all moves are valid.
 	 */
 
-	board dummyBoard;
+	board dummyBoard = * this;
 
 	for ( int i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
 		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) )
