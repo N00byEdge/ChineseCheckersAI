@@ -1977,15 +1977,28 @@ bool board::makeTurn ( board_turn trn ) {
 
 	}
 
-	/* If we end up on the same tile as we started on, return false. */
-	
+	/* A vector to store visited status */
 	vector < bool > visited ( 121, false );
-	
-	for ( size_t i = 0; i < trn.moves.size ( ); ++ i ) {
-		
-		if ( visited [ tileToInt ( getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] ) return false;
-		visited [ tileToInt ( getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] = true;
-		
+
+	/* A board that we use until we are sure that the move is valid */
+	board dummyBoard = * this;
+
+	/* Let's loop through the moves */
+	for ( size_t i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
+
+		/* Checking and setting for visited tiles for all but end tile */
+		if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] ) return false;
+			 visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] = true;
+
+		/* Make sure the start coordinates are correct for each move */
+		if ( i < trn.moves.size ( ) - 1 && trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) ) return false;
+
+		/* If we are at the last move, we check visited for that too */
+		if ( i == trn.moves.size ( ) - 1 && visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] ) ) ) ] ) return false;
+
+		/* Try to make the move */
+		if ( !dummyBoard.move ( trn.moves [ i ] ) ) return false;
+
 	}
 
 	/*
@@ -1993,21 +2006,10 @@ bool board::makeTurn ( board_turn trn ) {
 	 * Also checks that all moves are valid.
 	 */
 
-	board dummyBoard = * this;
-
-	pair < int, int > endCoords;
-
-	for ( int i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
-		if ( trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) )
-			return false;
-		if ( !dummyBoard.move ( trn.moves [ i ] ) )
-			return false;
-	}
-
-	endCoords = dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] );
+	auto endCoords = dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] );
 
 	if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( endCoords ) ) ] ) return false;
-	
+
 	if ( !dummyBoard.move ( trn.moves [ trn.moves.size ( ) - 1 ] ) ) return false;
 
 	* this = dummyBoard;
