@@ -1994,7 +1994,7 @@ bool board::makeTurn ( board_turn trn ) {
 		if ( i < trn.moves.size ( ) - 1 && trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) ) return false;
 
 		/* If we are at the last move, we check visited for that too */
-		if ( i == trn.moves.size ( ) - 1 && visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] ) ) ) ] ) return false;
+		if ( i == trn.moves.size ( ) - 1 && visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( dummyBoard.getMoveCoords ( trn.moves [ i ] ) ) ) ] ) return false;
 
 		/* Try to make the move */
 		if ( !dummyBoard.move ( trn.moves [ i ] ) ) return false;
