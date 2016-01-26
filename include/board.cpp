@@ -2001,17 +2001,7 @@ bool board::makeTurn ( board_turn trn ) {
 
 	}
 
-	/*
-	 * Checking that the tile start coords are right for every move (that the last move would end up in the correct tile).
-	 * Also checks that all moves are valid.
-	 */
-
-	auto endCoords = dummyBoard.getMoveCoords ( trn.moves [ trn.moves.size ( ) - 1 ] );
-
-	if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( endCoords ) ) ] ) return false;
-
-	if ( !dummyBoard.move ( trn.moves [ trn.moves.size ( ) - 1 ] ) ) return false;
-
+	/* We flush our temporary board to this one, as the move passed vadility check. */
 	* this = dummyBoard;
 
 	return true;
