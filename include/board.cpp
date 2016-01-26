@@ -2147,7 +2147,7 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
 
 		board_turn trn;
 		trn.moves = moves;
-		if ( emulatedBoard.canMakeTurn ( trn ) )
+		if ( canMakeTurn ( trn ) )
 			foundTurns.push_back ( trn );
 
 		board emulatedBoardBackup = emulatedBoard;
