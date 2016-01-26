@@ -1984,7 +1984,7 @@ bool board::makeTurn ( board_turn trn ) {
 	board dummyBoard = * this;
 
 	/* Let's loop through the moves */
-	for ( size_t i = 0; i < trn.moves.size ( ) - 1; ++ i ) {
+	for ( size_t i = 0; i < trn.moves.size ( ); ++ i ) {
 
 		/* Checking and setting for visited tiles for all but end tile */
 		if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] ) return false;
