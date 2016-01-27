@@ -268,6 +268,8 @@ tile * board::getTile ( pair < int, int > pii ) {
 
 tile * board::intToTile ( int in ) {
 
+    if ( in == -1 ) return nullptr;
+
 	if ( in <= 120 ) {
 
 		for ( int i = 0; i < this -> tb.size ( ); ++ i ) {
@@ -280,7 +282,7 @@ tile * board::intToTile ( int in ) {
 
 	}
 
-	return 0;
+	return nullptr;
 
 }
 
