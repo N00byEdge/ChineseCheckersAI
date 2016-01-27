@@ -48,7 +48,7 @@ class board {
 
 		int tileToInt ( tile * t );
 
-		vector < board_turn > findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > visited );
+		vector < board_turn > findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > & visited );
 		vector < board_turn > findAllPossibleTurns ( int player );
 
 		pair < int, int > getWalkCoords ( tile * tile, unsigned int direction );

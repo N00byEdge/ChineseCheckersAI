@@ -2124,7 +2124,7 @@ float board::getMiddleXCoord ( int y ) {
 
 }
 
-vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > visited ) {
+vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_move > moves, vector < bool > & visited ) {
 
 	board emulatedBoard = * this;
 
