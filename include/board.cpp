@@ -404,6 +404,7 @@ pair < int, int > board::getCoordRight ( pair < int, int > pii ) {
 
 pair < int, int > board::getCoordRight ( tile * t ) {
 
+	if ( t == nullptr ) return  { -1, -1 };
 	return getCoordRight ( t -> getCoordinates ( ) );
 
 }
@@ -472,6 +473,7 @@ pair < int, int > board::getCoordUpRight ( pair < int, int > pii ) {
 
 pair < int, int > board::getCoordUpRight ( tile * t ) {
 
+	if ( t == nullptr ) return  { -1, -1 };
 	return getCoordUpRight ( t -> getCoordinates ( ) );
 
 }
@@ -538,6 +540,7 @@ pair < int, int > board::getCoordDownRight ( pair < int, int > pii ) {
 
 pair < int, int > board::getCoordDownRight ( tile * t ) {
 
+	if ( t == nullptr ) return  { -1, -1 };
 	return getCoordDownRight( t -> getCoordinates ( ) );
 
 }
@@ -571,6 +574,7 @@ pair < int, int > board::getCoordLeft ( pair < int, int > pii ){
 
 pair < int, int > board::getCoordLeft ( tile * t ) {
 
+	if ( t == nullptr ) return  { -1, -1 };
 	return getCoordLeft( t -> getCoordinates ( ) );
 
 }
@@ -627,6 +631,7 @@ pair < int, int > board::getCoordUpLeft ( pair < int, int > pii ) {
 
 pair < int, int > board::getCoordUpLeft ( tile * t ) {
 
+	if ( t == nullptr ) return  { -1, -1 };
 	return getCoordUpLeft ( t -> getCoordinates ( ) );
 
 }
@@ -996,7 +1001,7 @@ pair < int, int > board::getCoordJumpRight ( tile * tile ) {
 			for ( int j = - 1; j < i; ++ j )
 				tile = getTileRight ( tile );
 
-			return tile -> getCoordinates ( );
+			if ( tile != nullptr ) return tile -> getCoordinates ( );
 
 		}
 
@@ -1102,7 +1107,7 @@ pair < int, int > board::getCoordJumpUpRight ( tile * tile ) {
 			for ( int j = - 1; j < i; ++ j )
 				tile = getTileUpRight ( tile );
 
-			return tile -> getCoordinates ( );
+			if ( tile != nullptr ) return tile -> getCoordinates ( );
 
 		}
 
@@ -1208,7 +1213,7 @@ pair < int, int > board::getCoordJumpDownRight ( tile * tile ) {
 			for ( int j = - 1; j < i; ++ j )
 				tile = getTileDownRight ( tile );
 
-			return tile -> getCoordinates ( );
+			if ( tile != nullptr ) return tile -> getCoordinates ( );
 
 		}
 
@@ -1314,7 +1319,7 @@ pair < int, int > board::getCoordJumpLeft ( tile * tile ) {
 			for ( int j = - 1; j < i; ++ j )
 				tile = getTileLeft ( tile );
 
-			return tile -> getCoordinates ( );
+			if ( tile != nullptr ) return tile -> getCoordinates ( );
 
 		}
 
@@ -1420,7 +1425,7 @@ pair < int, int > board::getCoordJumpUpLeft ( tile * tile ) {
 			for ( int j = - 1; j < i; ++ j )
 				tile = getTileUpLeft ( tile );
 
-			return tile -> getCoordinates ( );
+			if ( tile != nullptr ) return tile -> getCoordinates ( );
 
 		}
 
@@ -1526,7 +1531,7 @@ pair < int, int > board::getCoordJumpDownLeft ( tile * tile ) {
 			for ( int j = - 1; j < i; ++ j )
 				tile = getTileDownLeft ( tile );
 
-			return tile -> getCoordinates ( );
+			if ( tile != nullptr ) return tile -> getCoordinates ( );
 
 		}
 
@@ -1945,12 +1950,8 @@ vector < board_move > board::getPossibleMoves ( ) {
 
 bool board::canMakeTurn ( board_turn trn ) {
 
-	if ( !trn.moves.size ( ) ) return false;
-
 	board deadBoard = * this;
 	return deadBoard.makeTurn ( trn );
-
-	return true;
 
 }
 
@@ -2147,8 +2148,8 @@ vector < board_turn > board::findAllPossibleTurns ( tile * t, vector < board_mov
 
 		board_turn trn;
 		trn.moves = moves;
-		if ( canMakeTurn ( trn ) )
-			foundTurns.push_back ( trn );
+
+		foundTurns.push_back ( trn );
 
 		board emulatedBoardBackup = emulatedBoard;
 		emulatedBoard.move ( mv );
