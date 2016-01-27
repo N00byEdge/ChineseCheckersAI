@@ -286,6 +286,8 @@ tile * board::intToTile ( int in ) {
 
 int board::tileToInt ( tile * t ) {
 
+    if ( t == nullptr ) return -1;
+
 	int r = 0;
 
 	for ( int i = 0; i < t -> getCoordinates ( ).second; ++ i )
@@ -1813,6 +1815,8 @@ pair < int, int > board::getMoveCoords ( board_move m ) {
 		return getWalkCoords ( getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) );
 	else if ( 7 <= m.getRawData ( ) && m.getRawData ( ) <= 12 )
 		return getJumpCoords ( getTile ( m.getTileStartCoords ( ) ), m.getRawData ( ) - 6 );
+
+    return { -1, -1 };
 
 }
 
