@@ -8,11 +8,6 @@
 
 int main ( ) {
 
-
-
-
-
-
     #ifdef INTERFACE
     sf::RenderWindow win(sf::VideoMode(200, 200), "Fem");
     sf::CircleShape shape(100.f);
