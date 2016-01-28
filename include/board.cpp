@@ -453,13 +453,13 @@ pair < int, int > board::getCoordUpRight ( pair < int, int > pii ) {
 
 	}
 
-	else if ( 8 <= pii.second && pii.second <= 12 ) {
+	else if ( 8 <= pii.second && pii.second <= 11 ) {
 
 		pii.first ++;
 
 	}
 
-	else if ( pii.second == 13 ) {
+	else if ( pii.second == 12 ) {
 
 		pii.first -= 4;
 
