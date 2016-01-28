@@ -69,7 +69,7 @@ int main ( ) {
 
 			nw.learn ( datasets, maxError, phi, reportTime );
 
-			cout << "Packprop done. Where do you want to save the file? ";
+			cout << "Backprop done. Where do you want to save the file? ";
 			string outfile;
 			getline ( cin, outfile );
 
