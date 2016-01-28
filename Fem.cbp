@@ -193,6 +193,8 @@
 		<Unit filename="include/board_move.h" />
 		<Unit filename="include/board_turn.cpp" />
 		<Unit filename="include/board_turn.h" />
+		<Unit filename="include/database.cpp" />
+		<Unit filename="include/database.h" />
 		<Unit filename="include/game.cpp" />
 		<Unit filename="include/game.h" />
 		<Unit filename="include/includes.h" />
