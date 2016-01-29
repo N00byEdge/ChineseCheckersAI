@@ -65,6 +65,18 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 		}
 
 	}
+	
+	/* Are we feeling lucky? */
+	int unlucky = lib::randInt ( 20 );
+	if ( !unlucky ) {
+		
+		int randomMove = lib::randInt ( v.size ( ) );
+		
+		//cout << "I'm feeling lucky! Let's see what we get!\n";
+		v [ randomMove ].rotate ( 6 - boardRotations );
+		return v [ randomMove ];
+		
+	}
 
 	vector < float > boardScores;
 	for ( int i = 0; i < v.size ( ); ++ i ) {
