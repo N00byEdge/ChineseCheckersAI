@@ -25,9 +25,9 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	board originalBoard = b;
 
-	cout << "Player #" << player << "s turn, scoring agent.\n\tBoard:\n\n";
-	b.print ( );
-	cout << endl;
+	//cout << "Player #" << player << "s turn, scoring agent.\n\tBoard:\n\n";
+	//b.print ( );
+	//cout << endl;
 
 	int boardRotations = b.rotateForPerspective( player );
 
@@ -115,11 +115,11 @@ board_turn agent_scoring::doTurn ( board b, int player ) {
 
 	}
 
-	cout << "We have " << bestTurns.size ( ) << " best turns, and " << v.size ( ) << " total turns.\n";
+	//cout << "We have " << bestTurns.size ( ) << " best turns, and " << v.size ( ) << " total turns.\n";
 
 	t = bestTurns [ lib::randInt( bestTurns.size ( ) ) ];
 
-	if ( !originalBoard.canMakeTurn ( t ) ) cout << "This turn doesn't look valid any more.\n";
+	//if ( !originalBoard.canMakeTurn ( t ) ) cout << "This turn doesn't look valid any more.\n";
 
 	return t;
 
