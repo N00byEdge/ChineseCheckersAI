@@ -659,6 +659,24 @@ tile * board::getTileUpLeft ( tile * t ) {
 
 }
 
+string board::toString ( int player ) {
+	
+	string r;
+	
+	for ( int i = 0; i < 121; ++ i ) {
+		
+		int contents = intToTile ( i ) -> getContents ( );
+		
+		if      ( contents == player ) r.push_back ( 'P' );
+		else if ( contents == 0      ) r.push_back ( '.' );
+		else                           r.push_back ( 'O' );
+		
+	}
+	
+	return r;
+	
+}
+
 pair < int, int > board::getCoordDownLeft ( pair < int, int > pii ) {
 
 	if ( pii.second <= 3 ) {

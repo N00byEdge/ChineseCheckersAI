@@ -19,6 +19,8 @@ class board {
 		*/
 		void resetBoard ( int );
 
+		string toString ( int player );
+
 		bool makeTurn ( board_turn );
 		bool canMakeTurn ( board_turn );
 
