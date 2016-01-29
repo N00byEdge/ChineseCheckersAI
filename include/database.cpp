@@ -14,17 +14,9 @@ bool database::isEnd ( map < string, pair < float, int > >::iterator it ) {
 
 void database::addToDB ( string key, bool val ) {
 
-	map < string, pair < float, int > >::iterator it = m.find ( key );
-	if ( it == m.end ( ) ) {
-
-		m [ key ] = { val, 1 };
-
-	} else {
-
-	    it -> second.first = ( float ) ( ( float ) it -> second.second * ( float ) it -> second.first + ( float ) val ) / ( ( float ) it -> second.second + 1 );
-	    ++ it -> second.second;
-
-	}
+	auto it = m.find ( key );
+	if ( it == m.end ( ) ) m [ key ] = { val, 1 };
+	else it -> second.first = ( float ) ( ( float ) it -> second.second * ( float ) it -> second.first + ( float ) val ) / ( ( float ) ( it -> second.second ++ ) + 1 );
 
 }
 
