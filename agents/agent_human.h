@@ -22,6 +22,6 @@ class agent_human : public agent {
 		bool shouldWriteData = false;
 		string datafile = "";
 
-		vector < pair < vector < long double >, vector < long double > > > datasets;
+		vector < pair < vector < double >, vector < double > > > datasets;
 
 };

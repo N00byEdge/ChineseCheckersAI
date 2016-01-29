@@ -18,15 +18,17 @@ class neural_network {
 
 		//neural_network ( string filename );
 
-		vector < long double > run ( vector < long double > input );
+		vector < double > run ( vector < double > input );
 
 		vector < layer >  layers;
 
-		void learn ( vector < pair < vector < long double >, vector < long double > > > datasets, long double maxError, long double learningSpeed, long long reportFrequency );
+		void learn ( vector < pair < vector < double >, vector < double > > > datasets, double maxError, double learningSpeed, long long reportFrequency );
 
 	protected:
 
 	private:
+	
+		void addToWeights ( vector < vector < vector < double > > > delta );
 
 };
 

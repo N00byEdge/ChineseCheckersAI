@@ -30,15 +30,15 @@ istream & operator>> ( istream & is, neural_network & n ) {
 
 }
 
-vector < long double > neural_network::run ( vector < long double > input ) {
+vector < double > neural_network::run ( vector < double > input ) {
 
-	vector < long double > output;
+	vector < double > output;
 
 	for ( int i = 0; i < layers.size ( ); ++ i ) {
 
 		input.push_back ( 1.0L );
 
-		vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
+		vector < vector < double > > layerWeights = layers [ i ].getWeights ( );
 
 		output = ( lib::matrixVectorMultiplication ( layerWeights, input ) );
 
@@ -107,94 +107,98 @@ neural_network::neural_network ( istream & is ) {
 
 }
 
-void neural_network::learn ( vector < pair < vector < long double >, vector < long double > > > datasets, long double maxError = 1e-7, long double learningSpeed = 0.5, long long reportFrequency = 0 ) {
+void neural_network::learn ( vector < pair < vector < double >, vector < double > > > datasets, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
 	/* Adding a 1 to each datasets input */
 	for ( size_t ds = 0; ds < datasets.size ( ); ++ ds )
 		datasets [ ds ].first.push_back ( 1 );
 
+    if ( !datasets.size ( ) ) return;
+
 	/* Variables */
-	vector < long double > divergenceOutdata;
-	vector < vector < long double > > a;
-	vector < vector < long double > > z;
-	vector < vector < long double > > sigmaPrim;
-	vector < vector < long double > > delta;
-	vector < vector < vector < long double > > > deltaU;
+	vector < double > divergenceOutdata = * new vector < double > ( datasets [ 0 ].second.size ( ), 0 );
+	vector < vector < double > > a ( layers.size ( ) );
+	vector < vector < double > > z ( layers.size ( ) );
+	vector < vector < double > > sigmaPrim ( layers.size ( ) );
+	vector < vector < double > > delta = * new vector < vector < double > > ( layers.size ( ) );
+	vector < vector < vector < double > > > deltaU;
+
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+
+		deltaU.push_back ( * new vector < vector < double > > );
+		sigmaPrim.push_back ( * new vector < double > );
+
+		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
+
+			deltaU [ i ].push_back ( * new vector < double > );
+			sigmaPrim [ i ].push_back ( 0 );
+
+			for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) deltaU [ i ] [ j ].push_back ( 0 );
+
+		}
+		
+	}
 
 	/* Learning loop */
 	for ( long long nLearns = 0;; ++ nLearns ) {
 
-		long double error = 0;
-
-		/* Reset deltaU */
-		deltaU.clear ( );
-
-		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-
-			deltaU.push_back ( * new vector < vector < long double > > );
-
-			for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
-
-				deltaU [ i ].push_back ( * new vector < long double > );
-
-				for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) deltaU [ i ] [ j ].push_back ( 0 );
-
-			}
-		}
-        
+		double error = 0;
+		
         /* Loop through datasets*/
 		for ( size_t ds = 0; ds < datasets.size ( ); ++ ds ) {
 
             /* Clear our so far saved data. We need to clear these vectors we create too (can't be bothered at this moment), they are causing memory leaks */
-			a.clear ( );
-			z.clear ( );
-			divergenceOutdata = * new vector < long double > ( datasets [ ds ].second.size ( ), 0 );
-			sigmaPrim = * new vector < vector < long double > > ( layers.size ( ) );
-			delta = * new vector < vector < long double > > ( layers.size ( ) );
 
             /* Calculate a and z for each layer */
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
-				vector < vector < long double > > layerWeights = layers [ i ].getWeights ( );
+				vector < vector < double > > layerWeights = layers [ i ].getWeights ( );
 
-				if ( i != 0 ) z.push_back ( lib::matrixVectorMultiplication ( layerWeights, a [ i - 1 ] ) );
-				else          z.push_back ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
-				a.push_back ( z [ z.size ( ) - 1 ] );
+				if ( i != 0 ) z [ i ] = ( lib::matrixVectorMultiplication ( layerWeights, a [ i - 1 ] ) );
+				else          z [ i ] = ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
+				a [ i ] = ( z [ i ] );
 
-				for ( size_t j = 0; j < a [ a.size ( ) - 1 ].size ( ); ++ j )
-					a [ a.size ( ) - 1 ] [ j ] = lib::phi ( a [ a.size ( ) - 1 ] [ j ] );
+				for ( size_t j = 0; j < a [ i ].size ( ); ++ j )
+					a [ i ] [ j ] = lib::phi ( a [ i ] [ j ] );
 
-				if ( not ( i == layers.size ( ) - 1 ) ) a [ a.size ( ) - 1 ].push_back ( 1 );
+				if ( not ( i == layers.size ( ) - 1 ) ) a [ i ].push_back ( 1 );
 
 			}
-            
+
             /* Calculate phi(z) - y */
-			for ( size_t i = 0; i < datasets [ ds ].second.size ( ); ++ i )
-				divergenceOutdata [ i ] = a [ a.size ( ) - 1 ] [ i ] - datasets [ ds ].second [ i ];
+			for ( size_t i = 0; i < datasets [ ds ].second.size ( ); ++ i ) {
+
+				divergenceOutdata [ i ] = a [ layers.size ( ) - 1 ] [ i ] - datasets [ ds ].second [ i ];
+
+			}
 
             /* Calculate sigmaPrim ( phi(z)(1-phi(z)) ) */
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
 				for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j )
-					sigmaPrim [ i ].push_back ( lib::phi ( z [ i ] [ j ] ) * ( 1 - lib::phi ( z [ i ] [ j ] ) ) );
+					sigmaPrim [ i ] [ j ] = lib::phi ( z [ i ] [ j ] ) * ( 1 - lib::phi ( z [ i ] [ j ] ) );
 
 			}
 
             /* Add a 1 to each sigmaPrim (the bias) */
-			for ( size_t i = 0; i < sigmaPrim.size ( ); ++ i ) sigmaPrim [ i ].push_back ( 1.0L );
+			for ( size_t i = 0; i < sigmaPrim.size ( ); ++ i ) {
+
+				sigmaPrim [ i ].push_back ( 1.0L );
+				
+			}
 
             /* Calculate delta for output layer */
 			delta [ layers.size ( ) - 1 ] = lib::vectorPairMul ( divergenceOutdata, sigmaPrim [ layers.size ( ) - 1 ] );
-            
+
             /* If we have less than 2 layers (3 if we count the input layer), we skip the next loop */
 			if ( layers.size ( ) < 2 ) goto tooFewLayers;
 
 		    /* Calculate delta for the rest of the layers */
             for ( int i = layers.size ( ) - 2; 0 <= i; -- i ) {
 
-				vector < vector < long double > > nextLayerWeights = layers [ i + 1 ].getWeights ( );
+				vector < vector < double > > nextLayerWeights = layers [ i + 1 ].getWeights ( );
 				nextLayerWeights = lib::transpose ( nextLayerWeights );
-				vector < long double > part1 = lib::matrixVectorMultiplication ( nextLayerWeights, delta [ i + 1 ] );
+				vector < double > part1 = lib::matrixVectorMultiplication ( nextLayerWeights, delta [ i + 1 ] );
 				delta [ i ] = lib::vectorPairMul ( part1, sigmaPrim [ i ] );
 
 			}
@@ -204,11 +208,11 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
             /* Add weight changes to deltaU */
 			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
 
-				long double learningCoefficient = ( long double ) ( - learningSpeed / datasets.size ( ) );
-				vector < long double > v;
+				double learningCoefficient = ( double ) ( - learningSpeed / datasets.size ( ) );
+				vector < double > v;
 				if ( i != 0 ) v = a [ i - 1 ];
 				else          v = datasets [ ds ].first;
-				vector < vector < long double > > datasetWeightChange = lib::vectorsToMatrix ( delta [ i ], v );
+				vector < vector < double > > datasetWeightChange = lib::vectorsToMatrix ( delta [ i ], v );
 				datasetWeightChange = lib::matrixMulCoefficient ( learningCoefficient, datasetWeightChange );
 				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], datasetWeightChange );
 
@@ -218,19 +222,21 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 		/* Update weights, add deltaU to them */
 		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+			
+			addToWeights ( deltaU );
 
-			vector < vector < long double > > weights = layers [ i ].getWeights ( );
+			/*vector < vector < double > > weights = layers [ i ].getWeights ( );
 
 			weights = lib::matrixAdd ( weights, deltaU [ i ] );
 
-			layers [ i ].setWeights ( weights );
+			layers [ i ].setWeights ( weights );*/
 
 		}
 
 		/* Calculate error */
 		for ( size_t i = 0; i < datasets.size ( ); ++ i ) {
 
-			vector < long double > outdata = datasets [ i ].first;
+			vector < double > outdata = datasets [ i ].first;
 
 			for ( size_t j = 0; j < layers.size ( ); ++ j ) {
 
@@ -266,4 +272,22 @@ void neural_network::learn ( vector < pair < vector < long double >, vector < lo
 
 	}
 
+}
+
+void neural_network::addToWeights ( vector < vector < vector < double > > > delta ) {
+	
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+		
+		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
+			
+			for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) {
+				
+				layers [ i ].neurons [ j ].weights [ k ] += delta [ i ] [ j ] [ k ];
+				
+			}
+			
+		}
+		
+	}
+	
 }

@@ -8,13 +8,13 @@ class layer {
 
 	public:
 
-		vector < long double > run ( vector < long double > input );
-		vector < long double > runNoPhi ( vector < long double > input );
+		vector < double > run ( vector < double > input );
+		vector < double > runNoPhi ( vector < double > input );
 
 		vector < neuron > neurons;
 
-		vector < vector < long double > > getWeights ( );
-		void setWeights ( vector < vector < long double > > & );
+		vector < vector < double > > getWeights ( );
+		void setWeights ( vector < vector < double > > & );
 
 	protected:
 

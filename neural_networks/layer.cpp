@@ -30,9 +30,9 @@ istream & operator>> ( istream & is, layer & l ) {
 
 }
 
-vector < long double > layer::run ( vector < long double > input ) {
+vector < double > layer::run ( vector < double > input ) {
 
-	vector < long double > output;
+	vector < double > output;
 
 	input.push_back ( 1.0L );
 
@@ -42,9 +42,9 @@ vector < long double > layer::run ( vector < long double > input ) {
 
 }
 
-vector < long double > layer::runNoPhi ( vector < long double > input ) {
+vector < double > layer::runNoPhi ( vector < double > input ) {
 
-	vector < long double > output;
+	vector < double > output;
 
 	input.push_back ( 1.0L );
 
@@ -54,9 +54,9 @@ vector < long double > layer::runNoPhi ( vector < long double > input ) {
 
 }
 
-vector < vector < long double > > layer::getWeights ( ) {
+vector < vector < double > > layer::getWeights ( ) {
 
-	vector < vector < long double > > result;
+	vector < vector < double > > result;
 
 	for ( size_t i = 0; i < neurons.size ( ); ++ i ) {
 
@@ -68,7 +68,7 @@ vector < vector < long double > > layer::getWeights ( ) {
 
 }
 
-void layer::setWeights ( vector < vector < long double > > & v ) {
+void layer::setWeights ( vector < vector < double > > & v ) {
 
 	for ( size_t i = 0; i < neurons.size ( ); ++ i ) neurons [ i ].weights = v [ i ];
 

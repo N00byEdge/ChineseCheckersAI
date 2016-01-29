@@ -14,23 +14,23 @@ namespace lib {
 	int randInt ( );
 	int randInt ( int mod );
 
-	long double phi ( long double v );
+	double phi ( double v );
 
-	vector < long double > matrixMul ( vector < vector < long double > > &, vector < long double > & );
+	vector < double > matrixMul ( vector < vector < double > > &, vector < double > & );
 
-	vector < vector < long double > > transpose ( vector < vector < long double > > & );
-	vector < long double > vectorPairMul ( vector < long double > &, vector < long double > & );
+	vector < vector < double > > transpose ( vector < vector < double > > & );
+	vector < double > vectorPairMul ( vector < double > &, vector < double > & );
 	template < typename T > vector < T > swapSign ( vector < T > & );
-	long double scalarProduct ( vector < long double > &, vector < long double > & );
-	vector < vector < long double > > vectorsToMatrix ( vector < long double > &, vector < long double > & );
-	vector < vector < long double > > matrixMultiplication ( vector < vector < long double > > &, vector < vector < long double > > & );
-	vector < vector < long double > > matrixAdd ( vector < vector < long double > > &, vector < vector < long double > > & );
-	vector < vector < long double > > matrixMulCoefficient ( long double, vector < vector < long double > > & );
-	vector < long double > matrixVectorMultiplication ( vector < vector < long double > > &, vector < long double > & );
-	vector < vector < vector < long double > > > tensorAdd ( vector < vector < vector < long double > > > &, vector < vector < vector < long double > > > & );
-	vector < pair < vector < long double >, vector < long double > > > getDatasets ( istream & is );
-	void printDatasets ( ostream & os, vector < pair < vector < long double >, vector < long double > > > datasets );
-	long double intToIndata ( int i, int player );
+	double scalarProduct ( vector < double > &, vector < double > & );
+	vector < vector < double > > vectorsToMatrix ( vector < double > &, vector < double > & );
+	vector < vector < double > > matrixMultiplication ( vector < vector < double > > &, vector < vector < double > > & );
+	vector < vector < double > > matrixAdd ( vector < vector < double > > &, vector < vector < double > > & );
+	vector < vector < double > > matrixMulCoefficient ( double, vector < vector < double > > & );
+	vector < double > matrixVectorMultiplication ( vector < vector < double > > &, vector < double > & );
+	vector < vector < vector < double > > > tensorAdd ( vector < vector < vector < double > > > &, vector < vector < vector < double > > > & );
+	vector < pair < vector < double >, vector < double > > > getDatasets ( istream & is );
+	void printDatasets ( ostream & os, vector < pair < vector < double >, vector < double > > > datasets );
+	double intToIndata ( int i, int player );
 
 }
 

@@ -26,7 +26,7 @@ istream & operator>> ( istream & is , neuron & n ) {
 
 	for ( int i = 0; i < nWeights; ++ i ) {
 
-		long double weight;
+		double weight;
 
 		is >> weight;
 
@@ -38,11 +38,11 @@ istream & operator>> ( istream & is , neuron & n ) {
 
 }
 
-long double neuron::run ( vector < long double > input ) {
+double neuron::run ( vector < double > input ) {
 
 	if ( input.size ( ) == weights.size ( ) ) {
 
-		long double ld = 0;
+		double ld = 0;
 
 		for ( int i = 0; i < input.size ( ); ++ i ) {
 
@@ -58,11 +58,11 @@ long double neuron::run ( vector < long double > input ) {
 
 }
 
-long double neuron::runNoPhi ( vector < long double > input ) {
+double neuron::runNoPhi ( vector < double > input ) {
 
 	if ( input.size ( ) == weights.size ( ) ) {
 
-		long double ld = 0;
+		double ld = 0;
 
 		for ( int i = 0; i < input.size ( ); ++ i ) {
 
@@ -76,7 +76,7 @@ long double neuron::runNoPhi ( vector < long double > input ) {
 
 }
 
-vector < long double > neuron::getWeights ( ) {
+vector < double > neuron::getWeights ( ) {
 
 	return weights;
 

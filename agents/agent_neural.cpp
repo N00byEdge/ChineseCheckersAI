@@ -27,7 +27,7 @@ board_turn agent_neural::doTurn ( board b, int player ) {
 
 	board_turn t;
 
-	vector < long double > indata ( 121, 0 );
+	vector < double > indata ( 121, 0 );
 	for ( size_t i = 0; i < indata.size ( ); ++ i ) indata [ i ] = lib::intToIndata ( b.intToTile ( i ) -> getContents ( ), player );
 
 	auto outdata = nn.run ( indata );
