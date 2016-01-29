@@ -2,6 +2,14 @@
 
 #include <fstream>
 
+void game::startGame ( vector < agent * > agents ) {
+	
+	players = agents;
+	
+	startGame ( agents.size ( ) );
+	
+}
+
 void game::startGame ( int numPlayers ) {
 
 	if ( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) {
@@ -11,6 +19,9 @@ void game::startGame ( int numPlayers ) {
 	} else
 
 		this -> numPlayers = 2;
+
+
+	if ( numPlayers <= players.size ( ) ) goto skipagents;
 
 	/* Reset the board with the number of players for the game. */
 	this -> masterBoard.resetBoard ( this -> numPlayers );
@@ -57,6 +68,8 @@ void game::startGame ( int numPlayers ) {
 		}
 
 	}
+	
+	skipagents:;
 
 	std::ofstream gamedata;
 	gamedata.open ( "gamedata.txt" );
