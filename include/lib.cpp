@@ -6,12 +6,14 @@ bool translationTableGenerated = false;
 bool randSeeded = false;
 
 int lib::randInt ( int mod ) {
-	if ( ! randSeeded ) {
-		srand ( time ( NULL ) );
-		randSeeded = true;
-	}
 
-	return rand ( ) % mod;
+	random_device rd;
+    mt19937_64 eng ( rd ( ) );
+
+	uniform_int_distribution < int > dist( 0, mod - 1 );
+
+	return dist ( eng );
+	
 }
 
 int lib::randInt ( ) {
