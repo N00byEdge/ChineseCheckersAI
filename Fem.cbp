@@ -197,6 +197,8 @@
 		<Unit filename="include/database.h" />
 		<Unit filename="include/game.cpp" />
 		<Unit filename="include/game.h" />
+		<Unit filename="include/genetics.cpp" />
+		<Unit filename="include/genetics.h" />
 		<Unit filename="include/includes.h" />
 		<Unit filename="include/lib.cpp" />
 		<Unit filename="include/lib.h" />
