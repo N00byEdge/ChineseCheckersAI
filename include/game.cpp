@@ -2,14 +2,6 @@
 
 #include <fstream>
 
-void game::startGame ( vector < agent * > agents ) {
-	
-	players = agents;
-	
-	startGame ( agents.size ( ) );
-	
-}
-
 void game::startGame ( int numPlayers ) {
 
 	if ( numPlayers == 2 || numPlayers == 4 || numPlayers == 6 ) {
@@ -20,11 +12,10 @@ void game::startGame ( int numPlayers ) {
 
 		this -> numPlayers = 2;
 
-
-	if ( numPlayers <= players.size ( ) ) goto skipagents;
-
 	/* Reset the board with the number of players for the game. */
 	this -> masterBoard.resetBoard ( this -> numPlayers );
+
+	if ( numPlayers <= players.size ( ) ) goto skipagents;
 
 	cout << "Available agents:\n"
 		<< "\t1: Human interface agent\n"
@@ -68,7 +59,7 @@ void game::startGame ( int numPlayers ) {
 		}
 
 	}
-	
+
 	skipagents:;
 
 	std::ofstream gamedata;
@@ -79,11 +70,16 @@ void game::startGame ( int numPlayers ) {
 
 	int turn = 0;
 
+	int firstWinner = - 1;
+	vector < vector < string > > playerBoardStrings ( players.size ( ) );
+
 	for ( int i = 0;  5; ++ i ) {
 
 		if ( this -> numPlayers <= i ) { i = 0; ++ turn; }
 
 		board_turn t;
+
+		board printBoard = masterBoard;
 
 		if ( masterBoard.hasFilledOpposingNest ( i + 1 ) ) goto skipturn;
 
@@ -115,11 +111,13 @@ void game::startGame ( int numPlayers ) {
 
 		}
 
-		gamedata << i << " " << turn << " " << masterBoard.tileToInt( masterBoard.getTile ( t.moves [ 0 ].getTileStartCoords ( ) ) ) << " " << masterBoard.tileToInt ( masterBoard.getTile ( masterBoard.getTurnCoords ( t ) ) )<< endl;
+		printBoard.rotateForPerspective ( i + 1 );
+		playerBoardStrings [ i ].push_back ( printBoard.toString ( i + 1 ) );
 
 		if ( this -> masterBoard.hasFilledOpposingNest ( i + 1 ) ) {
 				hasWon [ i + 1 ] = true;
 				gamedata << "WIN " << turn << " " << i << endl;
+				if ( firstWinner == - 1 ) firstWinner = i;
 		}
 
 		skipturn:;
@@ -135,9 +133,32 @@ void game::startGame ( int numPlayers ) {
 		stillplaying:;
 	}
 
-	gamedata.close ( );
+	for ( size_t i = 0; i < playerBoardStrings.size ( ); ++ i ) {
+
+        bool won = ( i == firstWinner );
+
+        for ( size_t j = 0; j < playerBoardStrings [ i ].size ( ); ++ j ) {
+
+            db.addToDB ( playerBoardStrings [ i ] [ j ], won );
+
+        }
+
+	}
+
+}
+
+void game::startGame ( vector < agent * > agents ) {
+
+	players = agents;
+
+	startGame ( ( int ) agents.size ( ) );
+
 }
 
 board * game::getBoard ( ) {
 	return & ( this -> masterBoard ) ;
 }
+
+game::game ( ): db ( * new database ) { }
+
+game::game ( database & argDB ): db ( argDB ) { }

@@ -4,6 +4,7 @@
 #include <include_agents.h>
 
 #include <board.h>
+#include <database.h>
 
 /* Game class */
 class game {
@@ -12,7 +13,12 @@ class game {
 
 		board * getBoard();
 
+		game ( );
+		game ( database & );
+
 		void startGame ( int numPlayers );
+		void startGame ( vector < agent * > agents );
+
 
 	protected:
 
@@ -20,6 +26,9 @@ class game {
 
 		/* The main game board */
 		board masterBoard;
+
+		/* Database to save the data to */
+		database & db;
 
 		/* A vector containing all of the agents ( players or AI ) */
 		vector < agent * > players;
