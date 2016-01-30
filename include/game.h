@@ -19,6 +19,8 @@ class game {
 		void startGame ( int numPlayers );
 		void startGame ( vector < agent * > agents );
 
+        /* Database to save the data to */
+		database & db;
 
 	protected:
 
@@ -26,9 +28,6 @@ class game {
 
 		/* The main game board */
 		board masterBoard;
-
-		/* Database to save the data to */
-		database & db;
 
 		/* A vector containing all of the agents ( players or AI ) */
 		vector < agent * > players;
