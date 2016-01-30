@@ -5,10 +5,10 @@ map < pair < int, int >, pair < int, int > > coordTranslationTable;
 bool translationTableGenerated = false;
 bool randSeeded = false;
 
-int lib::randInt ( int mod ) {
+random_device rd;
+mt19937_64 eng ( rd ( ) );
 
-	random_device rd;
-    mt19937_64 eng ( rd ( ) );
+int lib::randInt ( int mod ) {
 
 	uniform_int_distribution < int > dist( 0, mod - 1 );
 
