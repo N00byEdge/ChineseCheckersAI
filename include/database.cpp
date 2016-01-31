@@ -63,3 +63,18 @@ istream & operator>> ( istream & is, database & db ) {
 	return is;
 
 }
+
+void operator+= ( database & dbl, const database & dbr ) {
+
+    for ( auto & itr: dbr.m ) {
+
+        auto itl = dbl.m.find ( itr.first );
+        if ( itl == dbl.m.end ( ) ) dbl.m [ itr.first ] = itr.second;
+        else {
+            itl -> second.first = ( float ) ( itl -> second.first * itl -> second.second + itr.second.first * itr.second.second ) / ( itl -> second.second + itr.second.second );
+            itl -> second.second += itr.second.second;
+        }
+
+    }
+
+}

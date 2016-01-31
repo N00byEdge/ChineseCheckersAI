@@ -23,3 +23,4 @@ class database {
 
 ostream & operator<< ( ostream &, database & );
 istream & operator>> ( istream &, database & );
+void operator+= ( database &, const database & );
