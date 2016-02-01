@@ -25,10 +25,7 @@ float database::chanceToWin ( string key ) {
 	auto it = m.find ( key );
 
 	if ( it == m.end ( ) ) return 0.5f;
-
-	else return it -> second.first;
-
-	return 0.5f;
+	return it -> second.first;
 
 }
 
