@@ -19,7 +19,7 @@ class genetics {
 	private:
 	
 		random_device rd;
-		mt19937 eng;
+		mt19937_64 eng;
 		float randomFloat ( float, float );
 
 };
