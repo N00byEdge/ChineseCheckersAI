@@ -21,7 +21,8 @@ void game::startGame ( int numPlayers ) {
 		<< "\t1: Human interface agent\n"
 		<< "\t2: Scoring agent\n"
 		<< "\t3: Randomizing agent\n"
-		<< "\t4: Neural agent\n";
+		<< "\t4: Neural agent\n"
+		<< "\t5: Statistical agent\n";
 
 	while ( players.size ( ) < this -> numPlayers ) {
 
@@ -51,6 +52,10 @@ void game::startGame ( int numPlayers ) {
 			case 4:
 				this -> players.push_back ( new agent_neural );
 				break;
+
+            case 5:
+                this -> players.push_back ( new agent_statistical );
+                break;
 
 			default:
 				cout << "Invalid agent number. Try again: ";

@@ -186,6 +186,8 @@
 		<Unit filename="agents/agent_random.h" />
 		<Unit filename="agents/agent_scoring.cpp" />
 		<Unit filename="agents/agent_scoring.h" />
+		<Unit filename="agents/agent_statistical.cpp" />
+		<Unit filename="agents/agent_statistical.h" />
 		<Unit filename="agents/include_agents.h" />
 		<Unit filename="include/board.cpp" />
 		<Unit filename="include/board.h" />
