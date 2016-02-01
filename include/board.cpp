@@ -2011,12 +2011,12 @@ bool board::makeTurn ( board_turn trn ) {
 	/* Let's loop through the moves */
 	for ( size_t i = 0; i < trn.moves.size ( ); ++ i ) {
 
+        /* If we can't make this move; no, just no */
+        if ( dummyBoard.tileToInt ( dummyBoard.getTile ( dummyBoard.getMoveCoords ( trn.moves [ i ] ) ) ) == -1 ) return false;
+        
 		/* Checking and setting for visited tiles for all but end tile */
 		if ( visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] ) return false;
 			 visited [ dummyBoard.tileToInt ( dummyBoard.getTile ( trn.moves [ i ].getTileStartCoords ( ) ) ) ] = true;
-
-        /* If we can't make this move; no, just no */
-        if ( dummyBoard.tileToInt ( dummyBoard.getTile ( dummyBoard.getMoveCoords ( trn.moves [ i ] ) ) ) == -1 ) return false;
 
 		/* Make sure the start coordinates are correct for each move */
 		if ( i < trn.moves.size ( ) - 1 && trn.moves [ i + 1 ].getTileStartCoords ( ) != dummyBoard.getMoveCoords ( trn.moves [ i ] ) ) return false;
