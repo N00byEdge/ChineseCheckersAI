@@ -107,16 +107,16 @@ neural_network::neural_network ( istream & is ) {
 
 }
 
-void neural_network::learn ( vector < pair < vector < double >, vector < double > > > datasets, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
+void neural_network::learn ( vector < pair < vector < double >, vector < double > > > datasetsArg, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
-	/* Adding a 1 to each datasets input */
-	for ( size_t ds = 0; ds < datasets.size ( ); ++ ds )
-		datasets [ ds ].first.push_back ( 1 );
+	/* Adding a 1 to each datasetsArg input */
+	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
+		datasetsArg [ ds ].first.push_back ( 1 );
 
-    if ( !datasets.size ( ) ) return;
+    if ( !datasetsArg.size ( ) ) return;
 
 	/* Variables */
-	vector < double > divergenceOutdata = * new vector < double > ( datasets [ 0 ].second.size ( ), 0 );
+	vector < double > divergenceOutdata = * new vector < double > ( datasetsArg [ 0 ].second.size ( ), 0 );
 	vector < vector < double > > a ( layers.size ( ) );
 	vector < vector < double > > z ( layers.size ( ) );
 	vector < vector < double > > sigmaPrim ( layers.size ( ) );
@@ -139,8 +139,15 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 		
 	}
 
+	vector < pair < vector < double >, vector < double > > > datasets ( ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ) );
+	cerr << "Training with " << datasets.size ( ) << " datasets.\n";
+
 	/* Learning loop */
 	for ( long long nLearns = 0;; ++ nLearns ) {
+
+		/* Choose ceil ( sqrt ( datasetsArg.size ( ) ) ) random datasets */
+		for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
+            datasets [ i ] = ( datasetsArg [ lib::randInt ( datasets.size ( ) ) ] );
 
 		double error = 0;
 		
