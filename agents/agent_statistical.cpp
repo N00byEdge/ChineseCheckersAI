@@ -20,7 +20,6 @@ board_turn agent_statistical::doTurn ( board b, int player ) {
 
     auto allPossibleTurns = b.findAllPossibleTurns ( player );
 
-    string currentBoardState = b.toString ( player );
     for ( size_t i = 0; i < allPossibleTurns.size ( ); ++ i ) if ( !b.canMakeTurn ( allPossibleTurns [ i ] ) ) allPossibleTurns.erase ( allPossibleTurns.begin ( ) + i -- );
 
     size_t bestTurn;
