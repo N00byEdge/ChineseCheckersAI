@@ -9,9 +9,9 @@ bool operator< ( pair < double, vector < double > > & l, pair < double, vector <
 
 genetics::genetics ( ): eng ( rd ( ) )  { }
 
-float genetics::randomFloat ( float r1, float r2 ) {
+double genetics::randomDouble ( double r1, double r2 ) {
 
-	uniform_real_distribution < float > dist ( r1, r2 );
+	uniform_real_distribution < double > dist ( r1, r2 );
 
 	return dist ( rd );
 
@@ -47,8 +47,8 @@ void genetics::nextGeneration ( ) {
 	for ( size_t i = 0; i < defaultOffspring.size ( ); ++ i ) {
 
 		offspring.push_back ( defaultOffspring );
-		offspring [ offspring.size ( ) - 1 ] [ i ] *= randomFloat ( -1.5f, 1.5f );
-		offspring [ offspring.size ( ) - 1 ] [ i ] += randomFloat ( -0.3f, 0.3f );
+		offspring [ offspring.size ( ) - 1 ] [ i ] *= randomDouble ( -1.5f, 1.5f );
+		offspring [ offspring.size ( ) - 1 ] [ i ] += randomDouble ( -0.3f, 0.3f );
 
 	}
 

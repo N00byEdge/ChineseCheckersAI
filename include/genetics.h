@@ -20,6 +20,6 @@ class genetics {
 	
 		random_device rd;
 		mt19937_64 eng;
-		float randomFloat ( float, float );
+		double randomDouble ( double, double );
 
 };
