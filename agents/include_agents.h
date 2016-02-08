@@ -5,3 +5,4 @@
 #include <agent_random.h>
 #include <agent_neural.h>
 #include <agent_statistical.h>
+#include <agent_polynomial.h>
