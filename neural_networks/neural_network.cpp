@@ -84,6 +84,8 @@ bool neural_network::init ( string source ) {
 
 neural_network::neural_network ( string source ) {
 
+	setThreadVectors ( );
+
 	if ( source.size ( ) && init ( source ) ) return;
 
 	string input;
@@ -103,7 +105,58 @@ neural_network::neural_network ( string source ) {
 
 neural_network::neural_network ( istream & is ) {
 
+	setThreadVectors ( );
+
 	is >> * this;
+
+}
+
+void neural_network::setThreadVectors ( ) {
+
+	workerQueue.resize ( N_THREADS );
+	workerThreads.resize ( N_THREADS );
+	
+	threadDeltaU.resize ( N_THREADS );
+	threadA.resize ( N_THREADS );
+	threadZ.resize ( N_THREADS );
+	threadSigmaPrim.resize ( N_THREADS );
+	threadDelta.resize ( N_THREADS );
+
+	for ( unsigned i = 0; i < N_THREADS; ++ i ) {
+		
+		threadDeltaU    [ i ].resize ( layers.size ( ) );
+		threadA         [ i ].resize ( layers.size ( ) );
+		threadZ         [ i ].resize ( layers.size ( ) );
+		threadSigmaPrim [ i ].resize ( layers.size ( ) );
+		threadDelta     [ i ].resize ( layers.size ( ) );
+
+		for ( size_t j = 0; j < layers.size ( ); ++ j ) {
+			
+			threadDeltaU    [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
+			threadA         [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
+			threadZ         [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
+			threadSigmaPrim [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
+			threadDelta     [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
+			
+			for ( size_t k = 0; k < layers [ i ].neurons.size ( ); ++ k )
+				threadDeltaU [ i ] [ j ] [ k ].resize ( layers [ i ].neurons [ j ].weights.size ( ) );
+			
+		}
+
+	}
+
+}
+
+vector < vector < vector < double > > > * neural_network::workerFunc ( int worker ) {
+
+    if ( !workerQueue [ worker ].size ( ) ) return & threadDeltaU [ worker ];
+
+	pair < vector < double >, vector < double > > * currentDataset = workerQueue [ worker ].back ( );
+	workerQueue [ worker ].pop_back ( );
+	
+	
+
+	return & threadDeltaU [ worker ];
 
 }
 

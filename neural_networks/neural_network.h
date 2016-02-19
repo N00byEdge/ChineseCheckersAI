@@ -4,6 +4,7 @@
 
 #include <layer.h>
 
+#include <thread>
 #include <fstream>
 
 class neural_network {
@@ -29,6 +30,17 @@ class neural_network {
 	private:
 	
 		void addToWeights ( vector < vector < vector < double > > > delta );
+		vector < vector < vector < double > > > * workerFunc ( int );
+		
+		void setThreadVectors ( );
+
+		vector < vector < pair < vector < double >, vector < double > > * > > workerQueue;
+		vector < thread > workerThreads;
+		vector < vector < vector < vector < double > > > > threadDeltaU;
+		vector < vector < vector < double > > > threadA;
+		vector < vector < vector < double > > > threadZ;
+		vector < vector < vector < double > > > threadSigmaPrim;
+		vector < vector < vector < double > > > threadDelta;
 
 };
 
