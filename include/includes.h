@@ -1,5 +1,7 @@
 #pragma once
 
+	#define N_THREADS 32
+
 	#define deb(x) ( #x ) << " = " << ( x )
 	/* std universal includes */
 
