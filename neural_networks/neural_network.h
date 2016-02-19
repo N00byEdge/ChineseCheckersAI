@@ -21,7 +21,7 @@ class neural_network {
 
 		vector < double > run ( vector < double > input );
 
-		vector < layer >  layers;
+		vector < layer > layers;
 
 		void learn ( vector < pair < vector < double >, vector < double > > > datasets, double maxError, double learningSpeed, long long reportFrequency );
 
