@@ -162,11 +162,11 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 void neural_network::learn ( vector < pair < vector < double >, vector < double > > > datasetsArg, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
+	if ( !datasetsArg.size ( ) ) return;
+
 	/* Adding a 1 to each datasetsArg input */
 	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
 		datasetsArg [ ds ].first.push_back ( 1 );
-
-    if ( !datasetsArg.size ( ) ) return;
 
 	/* Variables */
 	vector < double > divergenceOutdata = * new vector < double > ( datasetsArg [ 0 ].second.size ( ), 0 );
