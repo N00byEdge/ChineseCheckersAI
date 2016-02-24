@@ -27,6 +27,7 @@ namespace lib {
 	vector < vector < double > > matrixAdd ( vector < vector < double > > &, vector < vector < double > > & );
 	vector < vector < double > > matrixMulCoefficient ( double, vector < vector < double > > & );
 	vector < double > matrixVectorMultiplication ( vector < vector < double > > &, vector < double > & );
+	vector < double > matrixTransposeVectorMultiplication ( vector < vector < double > > &, vector < double > & );
 	vector < vector < vector < double > > > tensorAdd ( vector < vector < vector < double > > > &, vector < vector < vector < double > > > & );
 	vector < pair < vector < double >, vector < double > > > getDatasets ( istream & is );
 	void printDatasets ( ostream & os, vector < pair < vector < double >, vector < double > > > datasets );

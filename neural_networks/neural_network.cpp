@@ -115,54 +115,105 @@ void neural_network::setThreadVectors ( ) {
 
 	workerQueue.resize ( N_THREADS );
 	workerThreads.resize ( N_THREADS );
-	
-	threadDeltaU.resize ( N_THREADS );
-	threadA.resize ( N_THREADS );
-	threadZ.resize ( N_THREADS );
-	threadSigmaPrim.resize ( N_THREADS );
-	threadDelta.resize ( N_THREADS );
+
+	backpropDeltaU.resize ( N_THREADS );
+	backpropA.resize ( N_THREADS );
+	backpropDivergenceOutdata.resize ( N_THREADS );
 
 	for ( unsigned i = 0; i < N_THREADS; ++ i ) {
-		
-		threadDeltaU    [ i ].resize ( layers.size ( ) );
-		threadA         [ i ].resize ( layers.size ( ) );
-		threadZ         [ i ].resize ( layers.size ( ) );
-		threadSigmaPrim [ i ].resize ( layers.size ( ) );
-		threadDelta     [ i ].resize ( layers.size ( ) );
+
+		backpropDeltaU    [ i ].resize ( layers.size ( ) );
+		backpropA         [ i ].resize ( layers.size ( ) );
 
 		for ( size_t j = 0; j < layers.size ( ); ++ j ) {
-			
-			threadDeltaU    [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
-			threadA         [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
-			threadZ         [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
-			threadSigmaPrim [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
-			threadDelta     [ i ] [ j ].resize ( layers [ i ].neurons.size ( ) );
-			
+
+			if ( j == layers.size ( ) - 1 ) backpropDivergenceOutdata.resize ( layers [ j ].neurons.size ( ) );
+
+			backpropDeltaU    [ i ] [ j ].resize ( layers [ j ].neurons.size ( ) );
+			backpropA         [ i ] [ j ].resize ( layers [ j ].neurons.size ( ) );
+
 			for ( size_t k = 0; k < layers [ i ].neurons.size ( ); ++ k )
-				threadDeltaU [ i ] [ j ] [ k ].resize ( layers [ i ].neurons [ j ].weights.size ( ) );
-			
+				backpropDeltaU [ i ] [ j ] [ k ].resize ( layers [ j ].neurons [ k ].weights.size ( ) );
+
 		}
 
 	}
+
+	backpropZ = backpropA;
+	backpropSigmaPrim = backpropA;
+	backpropDelta = backpropA;
 
 }
 
 vector < vector < vector < double > > > * neural_network::workerFunc ( int worker ) {
 
-    if ( !workerQueue [ worker ].size ( ) ) return & threadDeltaU [ worker ];
+    if ( !workerQueue [ worker ].size ( ) ) return nullptr;
 
 	pair < vector < double >, vector < double > > * currentDataset = workerQueue [ worker ].back ( );
 	workerQueue [ worker ].pop_back ( );
-	
-	
 
-	return & threadDeltaU [ worker ];
+	/* Calculate a and z */
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+
+		if ( i == 0 ) backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights ( ) [ i ], backpropA [ worker ] [ i - 1 ] );
+		else          backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights ( ) [ i ], backpropA [ worker ] [ i - 1 ] );
+
+		for ( size_t j = 0; j < backpropA [ worker ] [ i ].size ( ); ++ j )
+			backpropA [ worker ] [ i ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
+
+		if ( i != layers.size ( ) - 1 ) backpropA [ worker ] [ i ].push_back ( 1 );
+
+	}
+
+	/* Calculate the outdata divergence, phi(z) - y = a - y */
+	for ( size_t i = 0; i < currentDataset -> second.size ( ); ++ i )
+		backpropDivergenceOutdata [ worker ] [ i ] = backpropA [ worker ] [ layers.size ( ) - 1 ] [ i ] - currentDataset -> second [ i ];
+
+	/* Calculate sigmaPrim = a-(1-a) */
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+
+		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j )
+			backpropSigmaPrim [ worker ] [ i ] [ j ] = backpropA [ worker ] [ i ] [ j ] * ( 1 - backpropA [ worker ] [ i ] [ j ] );
+
+	}
+
+	/* Add bias to each sigmaPrim */
+	for ( size_t i = 0; i < backpropSigmaPrim [ worker ].size ( ); ++ i )
+		backpropSigmaPrim [ worker ] [ i ].push_back ( 1 );
+
+	/* Delta for output layer */
+	backpropDelta [ worker ] [ layers.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ layers.size ( ) - 1 ] );
+	
+	/* Delta for all other layers */
+	size_t currentLayer = layers.size ( ) - 2;
+	for ( ; currentLayer >= 0; -- currentLayer ) {
+		vector < double > part1 = lib::matrixTransposeVectorMultiplication ( weights ( ) [ currentLayer + 1 ], backpropDelta [ worker ] [ currentLayer + 1 ] );
+		backpropDelta [ worker ] [ currentLayer ] = lib::vectorPairMul (
+			part1,
+			backpropSigmaPrim [ worker] [ currentLayer ]
+		);
+	}
+	
+	/* Calculate deltaU */
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+		
+		double learningCoefficient = ( double ) ( - learningSpeed / nDatasets );
+		if ( i != 0 ) backpropDeltaU [ worker ] [ i ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ i ], backpropA [ worker ] [ i - 1 ] );
+		else          backpropDeltaU [ worker ] [ i ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ i ], currentDataset -> first );
+		backpropDeltaU [ worker ] [ i ] = lib::matrixMulCoefficient ( learningCoefficient, backpropDeltaU [ worker ] [ i ] );
+		
+	}
+
+	return & backpropDeltaU [ worker ];
 
 }
 
 void neural_network::learn ( vector < pair < vector < double >, vector < double > > > datasetsArg, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
 	if ( !datasetsArg.size ( ) ) return;
+	
+	this -> learningSpeed = learningSpeed;
+	this -> nDatasets = datasetsArg.size ( );
 
 	/* Adding a 1 to each datasetsArg input */
 	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
@@ -203,7 +254,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
             datasets [ i ] = ( datasetsArg [ lib::randInt ( datasets.size ( ) ) ] );
 
 		double error = 0;
-		
+
         /* Loop through datasets*/
 		for ( size_t ds = 0; ds < datasets.size ( ); ++ ds ) {
 
@@ -216,12 +267,11 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 				if ( i != 0 ) z [ i ] = ( lib::matrixVectorMultiplication ( layerWeights, a [ i - 1 ] ) );
 				else          z [ i ] = ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
-				a [ i ] = ( z [ i ] );
 
 				for ( size_t j = 0; j < a [ i ].size ( ); ++ j )
-					a [ i ] [ j ] = lib::phi ( a [ i ] [ j ] );
+					a [ i ] [ j ] = lib::phi ( z [ i ] [ j ] );
 
-				if ( not ( i == layers.size ( ) - 1 ) ) a [ i ].push_back ( 1 );
+				if ( i != layers.size ( ) - 1 ) a [ i ].push_back ( 1 );
 
 			}
 
@@ -244,7 +294,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 			for ( size_t i = 0; i < sigmaPrim.size ( ); ++ i ) {
 
 				sigmaPrim [ i ].push_back ( 1.0L );
-				
+
 			}
 
             /* Calculate delta for output layer */
@@ -282,7 +332,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 		/* Update weights, add deltaU to them */
 		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-			
+
 			addToWeights ( deltaU );
 
 			/*vector < vector < double > > weights = layers [ i ].getWeights ( );
@@ -335,19 +385,47 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 }
 
 void neural_network::addToWeights ( vector < vector < vector < double > > > delta ) {
-	
+
 	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-		
+
 		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
-			
+
 			for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) {
-				
+
 				layers [ i ].neurons [ j ].weights [ k ] += delta [ i ] [ j ] [ k ];
-				
+
 			}
-			
+
 		}
-		
+
 	}
-	
+
+}
+
+void neural_network::remakeWeightCache ( ) {
+
+	weightCache.resize ( layers.size ( ) );
+
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+
+		weightCache [ i ].resize ( layers [ i ].neurons.size ( ) );
+
+		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
+
+			weightCache [ i ] [ j ].resize ( layers [ i ].neurons [ j ].weights.size ( ) );
+
+			for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k )
+				weightCache [ i ] [ j ] [ k ] = layers [ i ].neurons [ j ].weights [ k ];
+
+		}
+
+	}
+
+}
+
+vector < vector < vector < double > > > & neural_network::weights ( ) {
+
+	if ( weightCacheIsOutdated ) remakeWeightCache ( );
+	return weightCache;
+
 }

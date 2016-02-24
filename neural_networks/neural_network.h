@@ -28,19 +28,29 @@ class neural_network {
 	protected:
 
 	private:
-	
+
 		void addToWeights ( vector < vector < vector < double > > > delta );
 		vector < vector < vector < double > > > * workerFunc ( int );
-		
+
+		void remakeWeightCache ( );
+		vector < vector < vector < double > > > weightCache;
+		bool weightCacheIsOutdated = true;
+		vector < vector < vector < double > > > & weights ( );
+
 		void setThreadVectors ( );
 
 		vector < vector < pair < vector < double >, vector < double > > * > > workerQueue;
 		vector < thread > workerThreads;
-		vector < vector < vector < vector < double > > > > threadDeltaU;
-		vector < vector < vector < double > > > threadA;
-		vector < vector < vector < double > > > threadZ;
-		vector < vector < vector < double > > > threadSigmaPrim;
-		vector < vector < vector < double > > > threadDelta;
+		
+		double learningSpeed;
+		int nDatasets;
+		
+		vector < vector < vector < vector < double > > > > backpropDeltaU;
+		vector < vector < vector < double > > > backpropSigmaPrim;
+		vector < vector < vector < double > > > backpropDelta;
+		vector < vector < vector < double > > > backpropA;
+		vector < vector < vector < double > > > backpropZ;
+		vector < vector < double > > backpropDivergenceOutdata;
 
 };
 

@@ -13,7 +13,7 @@ int lib::randInt ( int mod ) {
 	uniform_int_distribution < int > dist( 0, mod - 1 );
 
 	return dist ( eng );
-	
+
 }
 
 int lib::randInt ( ) {
@@ -261,14 +261,29 @@ vector < vector < double > > lib::matrixMultiplication ( vector < vector < doubl
 
 }
 
-vector < double > lib::matrixVectorMultiplication ( vector < vector < double > > & v1, vector < double > & v2 ) {
+vector < double > lib::matrixVectorMultiplication ( vector < vector < double > > & m, vector < double > & v ) {
 
-	vector < double > result ( v1.size ( ), 0 );
+	vector < double > result ( m.size ( ), 0 );
 
-	for ( size_t i = 0; i < v1.size ( ); ++ i ) {
+	for ( size_t i = 0; i < m.size ( ); ++ i ) {
 
-		for ( size_t k = 0; k < v2.size ( ) && k < v1 [ i ].size ( ); ++ k )
-			result [ i ] += v1 [ i ] [ k ] * v2 [ k ];
+		for ( size_t k = 0; k < v.size ( ) && k < m [ i ].size ( ); ++ k )
+			result [ i ] += m [ i ] [ k ] * v [ k ];
+
+	}
+
+	return result;
+
+}
+
+vector < double > lib::matrixTransposeVectorMultiplication ( vector < vector < double > > & m, vector < double > & v ) {
+
+	vector < double > result ( m.size ( ), 0 );
+
+	for ( size_t i = 0; i < m [ 0 ].size ( ); ++ i ) {
+
+		for ( size_t k = 0; k < v.size ( ) && k < m [ i ].size ( ); ++ k )
+			result [ i ] += m [ k ] [ i ] * v [ k ];
 
 	}
 
