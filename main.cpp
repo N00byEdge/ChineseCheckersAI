@@ -34,71 +34,57 @@ int main ( ) {
 
 		getDatasetFile:;
 
-        cout << "Please enter the path to the dataset that you want to use: ";
-		string datasetFilePath;
-		getline ( cin, datasetFilePath );
-
-		ifstream datasetFile;
-		datasetFile.open ( datasetFilePath );
-
-		if ( !datasetFile.is_open ( ) ) {
-
-			cout << "Could not load network.\n";
-			goto getNetworkToTrain;
-
-		}
+        cout << "Please enter the path to the database that you want to use: ";
+		string databaseFilePath;
+		getline ( cin, databaseFilePath );
+		
+		ifstream databaseFile;
+		databaseFile.open ( databaseFilePath );
+		database db;
+		if ( databaseFile.is_open ( ) )
+			databaseFile >> db;
+		
+		databaseFile.close ( );
+		
 		neural_network nw ( networkToTrain );
+		
+		cout << "What is the maximum accepted error? ";
+		long double maxError;
+		cin >> maxError;
 
-		if ( datasetFile.is_open ( ) ) {
+		cout << "What learning rate should we use? ";
+		long double phi;
+		cin >> phi;
 
-			auto datasets = lib::getDatasets ( datasetFile );
+		cout << "How often do we print progress? ";
+		long long reportTime;
+		cin >> reportTime;
 
-			cout << "What is the maximum accepted error? ";
-			long double maxError;
-			cin >> maxError;
+		cin.ignore ( );
 
-			cout << "What learning rate should we use? ";
-			long double phi;
-			cin >> phi;
+		nw.learnDatabase ( db, maxError, phi, reportTime );
 
-			cout << "How often do we print progress? ";
-			long long reportTime;
-			cin >> reportTime;
+		cout << "Backprop done. Where do you want to save the file? ";
+		string outfile;
+		getline ( cin, outfile );
 
-			cin.ignore ( );
+		if ( outfile.size ( ) ) {
 
-			nw.learn ( datasets, maxError, phi, reportTime );
-
-			cout << "Backprop done. Where do you want to save the file? ";
-			string outfile;
-			getline ( cin, outfile );
-
-			if ( outfile.size ( ) ) {
-
-				ofstream outFileStream;
-				outFileStream.open ( outfile );
-				if ( outFileStream.is_open ( ) ) outFileStream << nw;
-				else cout << "Could not write file.\n";
-
-			} else {
-
-				ofstream outFileStream;
-				outFileStream.open ( networkToTrain );
-				if ( outFileStream.is_open ( ) ) outFileStream << nw;
-				else cout << "Could not write file.\n";
-
-			}
-
-			goto getNetworkToTrain;
+			ofstream outFileStream;
+			outFileStream.open ( outfile );
+			if ( outFileStream.is_open ( ) ) outFileStream << nw;
+			else cout << "Could not write file.\n";
 
 		} else {
 
-			cout << "Could not open dataset file.\n";
-			goto getDatasetFile;
+			ofstream outFileStream;
+			outFileStream.open ( networkToTrain );
+			if ( outFileStream.is_open ( ) ) outFileStream << nw;
+			else cout << "Could not write file.\n";
 
 		}
 
-		datasetFile.close ( );
+		goto getNetworkToTrain;
 
     }
     int players = 2;
