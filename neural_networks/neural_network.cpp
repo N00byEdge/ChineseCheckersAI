@@ -111,7 +111,32 @@ neural_network::neural_network ( istream & is ) {
 
 }
 
+void neural_network::clearDeltaU ( ) {
+	
+	for ( auto i: deltaU )
+		for ( auto j: i )
+			for ( auto k: j )
+				k = 0;
+	
+}
+
 void neural_network::setThreadVectors ( ) {
+	
+	deltaU.resize ( layers.size ( ) );
+	
+	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+		
+		deltaU [ i ].resize ( layers [ i ].neurons.size ( ) );
+		
+		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
+			
+			deltaU [ i ] [ j ].resize ( layers [ i ].neurons [ j ].weights.size ( ) );
+			
+			for ( auto v: deltaU [ i ] [ j ] ) v = 0;
+			
+		}
+		
+	}
 
 	workerQueue.resize ( N_THREADS );
 	workerThreads.resize ( N_THREADS );
@@ -120,7 +145,7 @@ void neural_network::setThreadVectors ( ) {
 	backpropA.resize ( N_THREADS );
 	backpropDivergenceOutdata.resize ( N_THREADS );
 
-	for ( unsigned i = 0; i < N_THREADS; ++ i ) {
+	for ( size_t i = 0; i < N_THREADS; ++ i ) {
 
 		backpropDeltaU    [ i ].resize ( layers.size ( ) );
 		backpropA         [ i ].resize ( layers.size ( ) );
@@ -145,12 +170,7 @@ void neural_network::setThreadVectors ( ) {
 
 }
 
-vector < vector < vector < double > > > * neural_network::workerFunc ( int worker ) {
-
-    if ( !workerQueue [ worker ].size ( ) ) return nullptr;
-
-	pair < vector < double >, vector < double > > * currentDataset = workerQueue [ worker ].back ( );
-	workerQueue [ worker ].pop_back ( );
+vector < vector < vector < double > > > * neural_network::workerFunc ( int worker, pair < vector < double >, vector < double > > * currentDataset ) {
 
 	/* Calculate a and z */
 	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
@@ -183,7 +203,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 	/* Delta for output layer */
 	backpropDelta [ worker ] [ layers.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ layers.size ( ) - 1 ] );
-	
+
 	/* Delta for all other layers */
 	size_t currentLayer = layers.size ( ) - 2;
 	for ( ; currentLayer >= 0; -- currentLayer ) {
@@ -193,25 +213,25 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 			backpropSigmaPrim [ worker] [ currentLayer ]
 		);
 	}
-	
+
 	/* Calculate deltaU */
 	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-		
+
 		double learningCoefficient = ( double ) ( - learningSpeed / nDatasets );
 		if ( i != 0 ) backpropDeltaU [ worker ] [ i ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ i ], backpropA [ worker ] [ i - 1 ] );
 		else          backpropDeltaU [ worker ] [ i ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ i ], currentDataset -> first );
 		backpropDeltaU [ worker ] [ i ] = lib::matrixMulCoefficient ( learningCoefficient, backpropDeltaU [ worker ] [ i ] );
-		
+
 	}
 
 	return & backpropDeltaU [ worker ];
 
 }
 
-void neural_network::learn ( vector < pair < vector < double >, vector < double > > > datasetsArg, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
+void neural_network::learn ( vector < pair < vector < double >, vector < double > > > & datasetsArg, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
 
 	if ( !datasetsArg.size ( ) ) return;
-	
+
 	this -> learningSpeed = learningSpeed;
 	this -> nDatasets = datasetsArg.size ( );
 
@@ -219,168 +239,122 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
 		datasetsArg [ ds ].first.push_back ( 1 );
 
-	/* Variables */
-	vector < double > divergenceOutdata = * new vector < double > ( datasetsArg [ 0 ].second.size ( ), 0 );
-	vector < vector < double > > a ( layers.size ( ) );
-	vector < vector < double > > z ( layers.size ( ) );
-	vector < vector < double > > sigmaPrim ( layers.size ( ) );
-	vector < vector < double > > delta = * new vector < vector < double > > ( layers.size ( ) );
-	vector < vector < vector < double > > > deltaU;
+	double error = 0;
 
-	for ( size_t i = 0; i < layers.size ( ); ++ i ) {
+	size_t t = 0;
+	vector < pair < vector < double >, vector < double > > * > datasetsQueue;
 
-		deltaU.push_back ( * new vector < vector < double > > );
-		sigmaPrim.push_back ( * new vector < double > );
+	goto skipbp;
 
-		for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j ) {
+	redoBP:;
 
-			deltaU [ i ].push_back ( * new vector < double > );
-			sigmaPrim [ i ].push_back ( 0 );
+	/* Choose ceil ( sqrt ( datasetsArg.size ( ) ) ) random datasets */
 
-			for ( size_t k = 0; k < layers [ i ].neurons [ j ].weights.size ( ); ++ k ) deltaU [ i ] [ j ].push_back ( 0 );
+	datasetsQueue.clear ( );
+	clearDeltaU ( );
 
-		}
+	cout << "Picking random datasets.\n" << flush;
+
+	for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
+		datasetsQueue.push_back ( & datasetsArg [ lib::randInt ( datasetsArg.size ( ) ) ] );
 		
-	}
+	/* Reset deltaU */
 
-	vector < pair < vector < double >, vector < double > > > datasets ( ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ) );
-	cerr << "Training with " << datasets.size ( ) << " datasets.\n";
+	finishit:;
 
-	/* Learning loop */
-	for ( long long nLearns = 0;; ++ nLearns ) {
+	t = 0;
 
-		/* Choose ceil ( sqrt ( datasetsArg.size ( ) ) ) random datasets */
-		for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
-            datasets [ i ] = ( datasetsArg [ lib::randInt ( datasets.size ( ) ) ] );
+	while ( datasetsQueue.size ( ) && t < N_THREADS ) {
 
-		double error = 0;
+		cout << "Spawning thread " << t << endl;
 
-        /* Loop through datasets*/
-		for ( size_t ds = 0; ds < datasets.size ( ); ++ ds ) {
+		workerThreads [ t ] = move ( thread ( &neural_network::workerFunc, this, t, datasetsQueue.back ( ) ) );
+		datasetsQueue.pop_back ( );
 
-            /* Clear our so far saved data. We need to clear these vectors we create too (can't be bothered at this moment), they are causing memory leaks */
-
-            /* Calculate a and z for each layer */
-			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-
-				vector < vector < double > > layerWeights = layers [ i ].getWeights ( );
-
-				if ( i != 0 ) z [ i ] = ( lib::matrixVectorMultiplication ( layerWeights, a [ i - 1 ] ) );
-				else          z [ i ] = ( lib::matrixVectorMultiplication ( layerWeights, datasets [ ds ].first ) );
-
-				for ( size_t j = 0; j < a [ i ].size ( ); ++ j )
-					a [ i ] [ j ] = lib::phi ( z [ i ] [ j ] );
-
-				if ( i != layers.size ( ) - 1 ) a [ i ].push_back ( 1 );
-
-			}
-
-            /* Calculate phi(z) - y */
-			for ( size_t i = 0; i < datasets [ ds ].second.size ( ); ++ i ) {
-
-				divergenceOutdata [ i ] = a [ layers.size ( ) - 1 ] [ i ] - datasets [ ds ].second [ i ];
-
-			}
-
-            /* Calculate sigmaPrim ( phi(z)(1-phi(z)) ) */
-			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-
-				for ( size_t j = 0; j < layers [ i ].neurons.size ( ); ++ j )
-					sigmaPrim [ i ] [ j ] = lib::phi ( z [ i ] [ j ] ) * ( 1 - lib::phi ( z [ i ] [ j ] ) );
-
-			}
-
-            /* Add a 1 to each sigmaPrim (the bias) */
-			for ( size_t i = 0; i < sigmaPrim.size ( ); ++ i ) {
-
-				sigmaPrim [ i ].push_back ( 1.0L );
-
-			}
-
-            /* Calculate delta for output layer */
-			delta [ layers.size ( ) - 1 ] = lib::vectorPairMul ( divergenceOutdata, sigmaPrim [ layers.size ( ) - 1 ] );
-
-            /* If we have less than 2 layers (3 if we count the input layer), we skip the next loop */
-			if ( layers.size ( ) < 2 ) goto tooFewLayers;
-
-		    /* Calculate delta for the rest of the layers */
-            for ( int i = layers.size ( ) - 2; 0 <= i; -- i ) {
-
-				vector < vector < double > > nextLayerWeights = layers [ i + 1 ].getWeights ( );
-				nextLayerWeights = lib::transpose ( nextLayerWeights );
-				vector < double > part1 = lib::matrixVectorMultiplication ( nextLayerWeights, delta [ i + 1 ] );
-				delta [ i ] = lib::vectorPairMul ( part1, sigmaPrim [ i ] );
-
-			}
-
-			tooFewLayers:;
-
-            /* Add weight changes to deltaU */
-			for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-
-				double learningCoefficient = ( double ) ( - learningSpeed / datasets.size ( ) );
-				vector < double > v;
-				if ( i != 0 ) v = a [ i - 1 ];
-				else          v = datasets [ ds ].first;
-				vector < vector < double > > datasetWeightChange = lib::vectorsToMatrix ( delta [ i ], v );
-				datasetWeightChange = lib::matrixMulCoefficient ( learningCoefficient, datasetWeightChange );
-				deltaU [ i ] = lib::matrixAdd ( deltaU [ i ], datasetWeightChange );
-
-            }
-
-		}
-
-		/* Update weights, add deltaU to them */
-		for ( size_t i = 0; i < layers.size ( ); ++ i ) {
-
-			addToWeights ( deltaU );
-
-			/*vector < vector < double > > weights = layers [ i ].getWeights ( );
-
-			weights = lib::matrixAdd ( weights, deltaU [ i ] );
-
-			layers [ i ].setWeights ( weights );*/
-
-		}
-
-		/* Calculate error */
-		for ( size_t i = 0; i < datasets.size ( ); ++ i ) {
-
-			vector < double > outdata = datasets [ i ].first;
-
-			for ( size_t j = 0; j < layers.size ( ); ++ j ) {
-
-				outdata.push_back ( 1.0L );
-
-				auto layerWeights = layers [ j ].getWeights ( );
-
-				outdata = lib::matrixVectorMultiplication ( layerWeights, outdata );
-
-				for ( size_t od = 0; od < outdata.size ( ); ++ od ) outdata [ od ] = lib::phi ( outdata [ od ] );
-
-			}
-
-			for ( size_t j = 0; j < datasets [ i ].second.size ( ); ++ j )
-				error += ( datasets [ i ].second [ j ] - outdata [ j ] ) * ( datasets [ i ].second [ j ] - outdata [ j ] );
-
-		}
-
-        /* Error should be divided by 2 times the number of datasets that we have */
-		error /= 2 * datasets.size ( );
-
-        /* If we have reached our error target, we break and tell the user */
-		if ( error < maxError ) {
-
-			if ( reportFrequency != -1 ) cout << nLearns << " iterations; error = " << error << endl;
-			break;
-
-		}
-
-        /* If we should report progress at this time, we do so. */
-		if ( ! ( reportFrequency == 0 || reportFrequency == -1 ) )
-			if ( nLearns % reportFrequency == 0 ) cout << nLearns << " iterations; " << deb ( error ) << endl;
+		++ t;
 
 	}
+
+	for ( size_t i = 0; i < t; ++ i ) {
+
+		cout << "Waiting for thread " << i << endl;
+
+		workerThreads [ i ].join ( );
+		deltaU = lib::tensorAdd ( backpropDeltaU [ i ], deltaU );
+
+	}
+
+	if ( datasetsQueue.size ( ) ) goto finishit;
+
+	skipbp:;
+
+	/* Calculate error */
+	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i ) {
+
+		vector < double > outdata = datasetsArg [ i ].first;
+
+		for ( size_t j = 0; j < layers.size ( ); ++ j ) {
+
+			outdata.push_back ( 1.0L );
+
+			auto layerWeights = layers [ j ].getWeights ( );
+
+			outdata = lib::matrixVectorMultiplication ( layerWeights, outdata );
+
+			for ( size_t od = 0; od < outdata.size ( ); ++ od ) outdata [ od ] = lib::phi ( outdata [ od ] );
+
+		}
+
+		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j )
+			error += ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] );
+
+	}
+
+	/* Error should be divided by 2 times the number of datasets that we have */
+	error /= 2 * datasetsArg.size ( );
+
+	cout << "Error: " << error << endl << flush;
+
+	if ( error > maxError ) goto redoBP;
+
+}
+
+void neural_network::learnDatabase ( database & db, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
+
+	vector < pair < vector < double >, vector < double > > > datasets;
+
+	size_t ind = 0;
+	for ( auto entry: db.m ) {
+
+		datasets.push_back ( { } );
+
+		for ( auto c: entry.first ) {
+
+			switch ( c ) {
+
+				case '.':
+					datasets [ ind ].first.push_back ( 0 );
+					break;
+
+				case 'O':
+					datasets [ ind ].first.push_back ( 0.5 );
+					break;
+
+				case 'P':
+					datasets [ ind ].first.push_back ( 1 );
+					break;
+
+			}
+
+		}
+
+		datasets [ ind ].second = { entry.second.first };
+
+		++ ind;
+
+	}
+	
+	learn ( datasets, maxError, learningSpeed, reportFrequency );
 
 }
 
@@ -399,6 +373,8 @@ void neural_network::addToWeights ( vector < vector < vector < double > > > delt
 		}
 
 	}
+	
+	weightCacheIsOutdated = true;
 
 }
 
