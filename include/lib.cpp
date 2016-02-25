@@ -259,16 +259,18 @@ vector < vector < double > > lib::matrixMultiplication ( vector < vector < doubl
 
 	}
 
+	return result;
+
 }
 
 vector < double > lib::matrixVectorMultiplication ( vector < vector < double > > & m, vector < double > & v ) {
 
-	vector < double > result ( m.size ( ), 0 );
+	vector < double > result ( v.size ( ), 0 );
 
-	for ( size_t i = 0; i < m.size ( ); ++ i ) {
+	for ( size_t i = 0; i < v.size ( ); ++ i ) {
 
-		for ( size_t k = 0; k < v.size ( ) && k < m [ i ].size ( ); ++ k )
-			result [ i ] += m [ i ] [ k ] * v [ k ];
+		for ( size_t k = 0; k < m.size ( ); ++ k )
+			result [ i ] += m [ k ] [ i ] * v [ i ];
 
 	}
 
@@ -277,13 +279,13 @@ vector < double > lib::matrixVectorMultiplication ( vector < vector < double > >
 }
 
 vector < double > lib::matrixTransposeVectorMultiplication ( vector < vector < double > > & m, vector < double > & v ) {
+	
+	vector < double > result ( v.size ( ), 0 );
 
-	vector < double > result ( m.size ( ), 0 );
+	for ( size_t i = 0; i < v.size ( ); ++ i ) {
 
-	for ( size_t i = 0; i < m [ 0 ].size ( ); ++ i ) {
-
-		for ( size_t k = 0; k < v.size ( ) && k < m [ i ].size ( ); ++ k )
-			result [ i ] += m [ k ] [ i ] * v [ k ];
+		for ( size_t k = 0; k < m [ i ].size ( ); ++ k )
+			result [ i ] += m [ i ] [ k ] * v [ i ];
 
 	}
 
