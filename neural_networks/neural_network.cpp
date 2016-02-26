@@ -225,13 +225,14 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	}
 
 	/* Calculate deltaU */
-	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
+	for ( size_t currentLayer = 0; currentLayer < weights.size ( ); ++ currentLayer ) {
 
-		double learningCoefficient = ( double ) ( - learningSpeed / nDatasets );
-		if ( i != 0 ) backpropDeltaU [ worker ] [ i ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ i ], backpropA [ worker ] [ i - 1 ] );
-		else          backpropDeltaU [ worker ] [ i ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ i ], currentDataset -> first );
+		if ( currentLayer != 0 ) backpropDeltaU [ worker ] [ currentLayer ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], backpropA [ worker ] [ currentLayer - 1 ] );
+		else                     backpropDeltaU [ worker ] [ currentLayer ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], currentDataset -> first );
 
 	}
+
+	for ( auto & layer: backpropDeltaU [ worker ]) lib::matrixMulCoefficient ( learningSpeed, layer );
 
 	return & backpropDeltaU [ worker ];
 
@@ -241,7 +242,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 	if ( !datasetsArg.size ( ) ) return;
 
-	this -> learningSpeed = learningSpeed / ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) );
+	this -> learningSpeed = - learningSpeed / ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) );
 	this -> nDatasets = datasetsArg.size ( );
 
 	/* Adding a 1 to each datasetsArg input */
@@ -259,7 +260,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	goto skipbp;
 
 	redoBP:;
-	
+
 	++ nIterations;
 
 	/* Choose ceil ( sqrt ( datasetsArg.size ( ) ) ) random datasets */
@@ -304,7 +305,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	weights += deltaU;
 
 	skipbp:;
-	
+
 	if ( nIterations % reportFrequency != 0 ) goto redoBP;
 
 	/* Calculate error */
@@ -326,13 +327,13 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j ) {
 			if ( ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) != ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) ) {
-				
+
 				cerr << "Fuck!\n";
 				cerr << deb ( weights [ weights.size ( ) - 1 ].size ( ) );
 				cerr << deb ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) << ", " << deb ( i ) << ", " << deb ( j ) << ", " << deb ( outdata ) << ", " << deb ( datasetsArg [ i ].second );
 				cin.ignore ( );
-				
-				
+
+
 			}
 			error += ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] );
 		}

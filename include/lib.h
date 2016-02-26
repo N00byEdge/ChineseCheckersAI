@@ -25,7 +25,7 @@ namespace lib {
 	vector < vector < double > > vectorsToMatrix ( vector < double > &, vector < double > & );
 	vector < vector < double > > matrixMultiplication ( vector < vector < double > > &, vector < vector < double > > & );
 	vector < vector < double > > matrixAdd ( vector < vector < double > > &, vector < vector < double > > & );
-	vector < vector < double > > matrixMulCoefficient ( double, vector < vector < double > > & );
+	void matrixMulCoefficient ( double, vector < vector < double > > & );
 	vector < double > matrixVectorMultiplication ( vector < vector < double > > &, vector < double > & );
 	vector < double > matrixTransposeVectorMultiplication ( vector < vector < double > > &, vector < double > & );
 	vector < vector < vector < double > > > tensorAdd ( vector < vector < vector < double > > > &, vector < vector < vector < double > > > & );

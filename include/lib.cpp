@@ -279,26 +279,26 @@ vector < double > lib::matrixVectorMultiplication ( vector < vector < double > >
 }
 
 vector < double > lib::matrixTransposeVectorMultiplication ( vector < vector < double > > & m, vector < double > & v ) {
-	
+
 	vector < double > result ( v.size ( ), 0 );
 
 	for ( size_t i = 0; i < v.size ( ); ++ i ) {
 
 		for ( size_t k = 0; k < m [ i ].size ( ); ++ k ) {
 			if ( m [ i ] [ k ] != m [ i ] [ k ] ) {
-				
+
 				cerr << deb ( m [ i ] [ k ] ) << ", " << deb ( i ) << ", " << deb ( k ) << endl;
 				cin.ignore ( );
-				
+
 			}
-			
+
 			if (v [ i ] !=v [ i ] ) {
-				
+
 				cerr << deb (v [ i ] ) << ", " << deb ( i ) << endl;
 				cin.ignore ( );
-				
+
 			}
-			
+
 			result [ i ] += m [ i ] [ k ] * v [ i ];
 		}
 
@@ -311,6 +311,8 @@ vector < double > lib::matrixTransposeVectorMultiplication ( vector < vector < d
 vector < double > lib::vectorPairMul ( vector < double > & v1, vector < double > & v2 ) {
 
 	vector < double > result;
+	
+	if ( v1.size ( ) != v2.size ( ) ) printf ( "lib::vectorPairMul: Size mismatch: v1.size ( ) = %lu, v2.size ( ) = %lu.\n", v1.size ( ), v2.size ( ) );
 
 	for ( size_t i = 0; i < v1.size ( ) && i < v2.size ( ); ++ i )
 		result.push_back ( v1 [ i ] * v2 [ i ] );
@@ -325,7 +327,7 @@ vector < vector < double > > lib::matrixAdd ( vector < vector < double > > & v1,
 
 	for ( size_t i = 0; i < v1.size ( ) && i < v2.size ( ); ++ i ) {
 
-		result.push_back ( * new vector < double > );
+		result.push_back ( { } );
 
 		for ( size_t j = 0; j < v1 [ i ].size ( ) && j < v2 [ i ].size ( ); ++ j )
 			result [ i ].push_back ( v1 [ i ] [ j ] + v2 [ i ] [ j ] );
@@ -337,16 +339,12 @@ vector < vector < double > > lib::matrixAdd ( vector < vector < double > > & v1,
 }
 
 
-vector < vector < double > > lib::matrixMulCoefficient ( double k, vector < vector < double > > & v ) {
-
-	vector < vector < double > > result ( v.size ( ), * new vector < double > );
+void lib::matrixMulCoefficient ( double k, vector < vector < double > > & v ) {
 
 	for ( size_t i = 0; i < v.size ( ); ++ i )
 
 		for ( size_t j = 0; j < v [ i ].size ( ); ++ j )
-			result [ i ].push_back ( k * v [ i ] [ j ] );
-
-	return result;
+			v [ i ] [ j ] *= k;
 
 }
 
@@ -403,11 +401,11 @@ vector < vector < vector < double > > > lib::tensorAdd ( vector < vector < vecto
 
 	for ( size_t i = 0; i < v1.size ( ); ++ i ) {
 
-		result.push_back ( * new vector < vector < double > > );
+		result.push_back ( { } );
 
 		for ( size_t j = 0; j < v1 [ i ].size ( ); ++ j ) {
 
-			result [ i ].push_back ( * new vector < double > );
+			result [ i ].push_back ( { } );
 
 			for ( size_t k = 0; k < v1 [ i ] [ j ].size ( ); ++ k ) result [ i ] [ j ].push_back ( v1 [ i ] [ j ] [ k ] + v2 [ i ] [ j ] [ k ] );
 
@@ -499,9 +497,9 @@ void operator += ( vector < vector < vector < double > > > & lhs, vector < vecto
 			
 			for ( size_t k = 0; k < lhs [ i ] [ j ].size ( ); ++ k )
 				lhs [ i ] [ j ] [ k ] += rhs [ i ] [ j ] [ k ];
-			
+
 		}
-		
+
 	}
-	
+
 }
