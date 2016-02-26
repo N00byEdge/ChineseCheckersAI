@@ -203,7 +203,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
 
 		for ( size_t j = 0; j < weights [ i ].size ( ); ++ j )
-			backpropSigmaPrim [ worker ] [ i ] [ j ] = backpropA [ worker ] [ i ] [ j ] * ( 1 - backpropA [ worker ] [ i ] [ j ] );
+			backpropSigmaPrim [ worker ] [ i ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] ) * ( 1 - lib::phi ( backpropZ [ worker ] [ i ] [ j ] ) );
 
 	}
 
