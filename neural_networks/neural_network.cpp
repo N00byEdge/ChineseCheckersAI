@@ -249,6 +249,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 		datasetsArg [ ds ].first.push_back ( 1 );
 
 	double error = 0;
+	long long nIterations = 0;
 
 	size_t t = 0;
 	vector < pair < vector < double >, vector < double > > * > datasetsQueue;
@@ -258,6 +259,8 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	goto skipbp;
 
 	redoBP:;
+	
+	++ nIterations;
 
 	/* Choose ceil ( sqrt ( datasetsArg.size ( ) ) ) random datasets */
 
@@ -301,6 +304,8 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	weights += deltaU;
 
 	skipbp:;
+	
+	if ( nIterations % reportFrequency != 0 ) goto redoBP;
 
 	/* Calculate error */
 	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i ) {
