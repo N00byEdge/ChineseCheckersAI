@@ -22,7 +22,7 @@ class neural_network {
 
 		vector < double > run ( vector < double > input );
 
-		vector < layer > layers;
+		vector < vector < vector < double > > > weights;
 
 		void learn ( vector < pair < vector < double >, vector < double > > > & datasets, double maxError, double learningSpeed, long long reportFrequency );
 		void learnDatabase ( database & db, double maxError, double learningSpeed, long long reportFrequency );
@@ -36,14 +36,8 @@ class neural_network {
 		
 		void clearDeltaU ( );
 
-		void remakeWeightCache ( );
-		vector < vector < vector < double > > > weightCache;
-		bool weightCacheIsOutdated = true;
-		vector < vector < vector < double > > > & weights ( );
-
 		void setThreadVectors ( );
 
-		vector < vector < pair < vector < double >, vector < double > > * > > workerQueue;
 		vector < thread > workerThreads;
 
 		double learningSpeed;

@@ -265,12 +265,12 @@ vector < vector < double > > lib::matrixMultiplication ( vector < vector < doubl
 
 vector < double > lib::matrixVectorMultiplication ( vector < vector < double > > & m, vector < double > & v ) {
 
-	vector < double > result ( v.size ( ), 0 );
+	vector < double > result ( m.size ( ), 0 );
 
 	for ( size_t i = 0; i < v.size ( ); ++ i ) {
 
 		for ( size_t k = 0; k < m.size ( ); ++ k )
-			result [ i ] += m [ k ] [ i ] * v [ i ];
+			result [ k ] += m [ k ] [ i ] * v [ i ];
 
 	}
 
@@ -284,8 +284,23 @@ vector < double > lib::matrixTransposeVectorMultiplication ( vector < vector < d
 
 	for ( size_t i = 0; i < v.size ( ); ++ i ) {
 
-		for ( size_t k = 0; k < m [ i ].size ( ); ++ k )
+		for ( size_t k = 0; k < m [ i ].size ( ); ++ k ) {
+			if ( m [ i ] [ k ] != m [ i ] [ k ] ) {
+				
+				cerr << deb ( m [ i ] [ k ] ) << ", " << deb ( i ) << ", " << deb ( k ) << endl;
+				cin.ignore ( );
+				
+			}
+			
+			if (v [ i ] !=v [ i ] ) {
+				
+				cerr << deb (v [ i ] ) << ", " << deb ( i ) << endl;
+				cin.ignore ( );
+				
+			}
+			
 			result [ i ] += m [ i ] [ k ] * v [ i ];
+		}
 
 	}
 
@@ -369,12 +384,12 @@ vector < vector < double > > lib::vectorsToMatrix ( vector < double > & v1, vect
 
 	 vector < vector < double > > result;
 
-	 for ( size_t i = 0; i < v1.size ( ); ++ i ) {
+	 for ( size_t i = 0; i < v2.size ( ); ++ i ) {
 
-		 result.push_back ( * new vector < double > );
+		 result.push_back ( { } );
 
-		 for ( size_t j = 0; j < v2.size ( ); ++ j )
-			result [ i ].push_back ( v1 [ i ] * v2 [ j ] );
+		 for ( size_t j = 0; j < v1.size ( ); ++ j )
+			result [ i ].push_back ( v1 [ j ] * v2 [ i ] );
 
 	 }
 
@@ -468,4 +483,25 @@ double lib::intToIndata ( int i, int player ) {
 
 	}
 
+}
+
+void operator += ( vector < vector < vector < double > > > & lhs, vector < vector < vector < double > > > & rhs ) {
+	
+	//if ( lhs.size ( ) != rhs.size ( ) ) printf ( "Size mismatch: lhs.size ( ) = %lu, rhs.size ( ) = %lu\n", lhs.size ( ), rhs.size ( ) );
+	
+	for ( size_t i = 0; i < lhs.size ( ); ++ i ) {		
+		
+		//if ( lhs [ i ].size ( ) != rhs [ i ].size ( ) ) printf ( "Size mismatch: lhs [ %lu ].size ( ) = %lu, rhs [ %lu ].size ( ) = %lu\n", i, lhs [ i ].size ( ), i, rhs [ i ].size ( ) );
+		
+		for ( size_t j = 0; j < lhs [ i ].size ( ); ++ j ) {
+			
+			//if ( lhs [ i ] [ j ].size ( ) != rhs [ i ] [ j ].size ( ) ) printf ( "Size mismatch: lhs [ %lu ] [ %lu ].size ( ) = %lu, rhs [ %lu ] [ %lu ].size ( ) = %lu\n", i, j, lhs [ i ] [ j ].size ( ), i, j, rhs [ i ] [ j ].size ( ) );
+			
+			for ( size_t k = 0; k < lhs [ i ] [ j ].size ( ); ++ k )
+				lhs [ i ] [ j ] [ k ] += rhs [ i ] [ j ] [ k ];
+			
+		}
+		
+	}
+	
 }
