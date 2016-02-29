@@ -31,7 +31,6 @@ class neural_network {
 
 	private:
 
-		void addToWeights ( vector < vector < vector < double > > > delta );
 		vector < vector < vector < double > > > * workerFunc ( int, pair < vector < double >, vector < double > > * );
 		
 		void clearDeltaU ( );

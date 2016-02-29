@@ -387,26 +387,3 @@ void neural_network::learnDatabase ( database & db, double maxError = 1e-7, doub
 	learn ( datasets, maxError, learningSpeed, reportFrequency );
 
 }
-
-void neural_network::addToWeights ( vector < vector < vector < double > > > delta ) {
-
-	cerr << weights << endl << delta << endl;
-
-	if ( weights.size ( ) != delta.size ( ) ) cerr << "Size mismatch!\n";
-
-	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
-
-		if ( weights [ i ].size ( ) != delta [ i ].size ( ) ) cerr << "Size mismatch! i = " << i << ", weights [ i ].size ( ) = " << weights [ i ].size ( ) << "\n";
-
-		for ( size_t j = 0; j < weights [ i ].size ( ); ++ j ) {
-
-			if ( weights [ i ] [ j ].size ( ) != delta [ i ] [ j ].size ( ) ) cerr << "Size mismatch! i = " << i << ", j = " << j << "\n";
-
-			for ( size_t k = 0; k < weights [ i ] [ j ].size ( ); ++ k )
-				weights [ i ] [ j ] [ k ] += delta [ i ] [ j ] [ k ];
-
-		}
-
-	}
-
-}
