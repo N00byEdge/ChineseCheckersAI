@@ -281,8 +281,6 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 	while ( datasetsQueue.size ( ) && t < N_THREADS ) {
 
-		//cout << "Spawning thread " << t << endl;
-
 		workerThreads.push_back ( thread ( &neural_network::workerFunc, this, t, datasetsQueue.back ( ) ) );
 		datasetsQueue.pop_back ( );
 
@@ -291,8 +289,6 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	}
 
 	for ( size_t i = 0; i < t; ++ i ) {
-
-		//cout << "Waiting for thread " << i << endl;
 
 		assert ( workerThreads [ i ].joinable ( ) );
 
@@ -312,18 +308,6 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i ) {
 
 		vector < double > outdata = run ( datasetsArg [ i ].first );
-
-		/*for ( size_t j = 0; j < weights.size ( ); ++ j ) {
-
-			outdata.push_back ( 1 );
-
-			outdata = lib::matrixVectorMultiplication ( weights [ j ], outdata );
-
-			for ( size_t od = 0; od < outdata.size ( ); ++ od ) outdata [ od ] = lib::phi ( outdata [ od ] );
-
-		}*/
-
-		//cerr << error;
 
 		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j ) {
 			if ( ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) != ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) ) {
