@@ -7,6 +7,7 @@ using namespace std;
 
 namespace lib {
 
+    /* Good things */
 	map < pair < int, int >, pair < int, int > > getCoordTranslationTable ( );
 
 	int charToInt ( char );
@@ -16,25 +17,25 @@ namespace lib {
 
 	double phi ( double v );
 
-	vector < double > matrixMul ( vector < vector < double > > &, vector < double > & );
+	void vectorsToMatrix ( vector < double > &, vector < double > &, vector < vector < double > > & );
+	double intToIndata ( int i, int player );
 
-	vector < vector < double > > transpose ( vector < vector < double > > & );
-	vector < double > vectorPairMul ( vector < double > &, vector < double > & );
-	template < typename T > vector < T > swapSign ( vector < T > & );
-	double scalarProduct ( vector < double > &, vector < double > & );
-	vector < vector < double > > vectorsToMatrix ( vector < double > &, vector < double > & );
+    vector < double > matrixMul ( vector < vector < double > > &, vector < double > & );
 	vector < vector < double > > matrixMultiplication ( vector < vector < double > > &, vector < vector < double > > & );
-	vector < vector < double > > matrixAdd ( vector < vector < double > > &, vector < vector < double > > & );
-	void matrixMulCoefficient ( double, vector < vector < double > > & );
-	vector < double > matrixVectorMultiplication ( vector < vector < double > > &, vector < double > & );
-	vector < double > matrixTransposeVectorMultiplication ( vector < vector < double > > &, vector < double > & );
-	vector < vector < vector < double > > > tensorAdd ( vector < vector < vector < double > > > &, vector < vector < vector < double > > > & );
+
+	vector < double > matrixVectorMultiplication ( const vector < vector < double > > &, const vector < double > & );
+	vector < double > matrixTransposeVectorMultiplication ( const vector < vector < double > > &, const vector < double > & );
+
+    vector < double > vectorPairMul ( vector < double > &, vector < double > & );
+
+	/* Please only use datasets if you need to. While they work, they don't do much for AI (read our paper) */
 	vector < pair < vector < double >, vector < double > > > getDatasets ( istream & is );
 	void printDatasets ( ostream & os, vector < pair < vector < double >, vector < double > > > datasets );
-	double intToIndata ( int i, int player );
 
 }
 
+/* Good things */
 template < typename T > std::ostream & operator<< ( std::ostream & os, const std::vector < T > & v ) { os << "{ "; for ( size_t i = 0; i < v.size ( ); ++ i ) { os << v [ i ]; if ( i != v.size ( ) - 1 ) os << ", "; } os << " }"; return os; }
 template < typename T1, typename T2 > std::ostream & operator<< ( ostream & os, const pair < T1, T2 > p ) { os << "{ " << p.first << ", " << p.second << " }"; return os; }
-void operator += ( vector < vector < vector < double > > > &, vector < vector < vector < double > > > & );
+void operator += ( vector < vector < vector < double > > > &, const vector < vector < vector < double > > > & );
+void operator *= ( vector < vector < double > > &, double );
