@@ -12,9 +12,9 @@ ostream & operator<< ( ostream & os, const neural_network & n ) {
 
 		for ( size_t j = 0; j < n.weights [ i ].size ( ); ++ j ) {
 
-			os << "\t\t" << n.weights [ i ] [ j ].size ( ) << " ";
+			os << "\t\t" << n.weights [ i ] [ j ].size ( ) - 1 << " ";
 
-			for ( size_t k = 0; k < n.weights [ i ] [ j ] [ k ]; ++ k )
+			for ( size_t k = 0; k < n.weights [ i ] [ j ].size ( ); ++ k )
 				os << n.weights [ i ] [ j ] [ k ] << " ";
 
 			os << "\n";
@@ -70,7 +70,7 @@ vector < double > neural_network::run ( vector < double > input ) {
 
 	for ( int i = 0; i < weights.size ( ); ++ i ) {
 
-		input.push_back ( 1.0L );
+		//input.push_back ( 1.0L );
 
 		output = ( lib::matrixVectorMultiplication ( weights [ i ], input ) );
 
@@ -208,8 +208,8 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	}
 
 	/* Add bias to each sigmaPrim */
-	for ( size_t i = 0; i < backpropSigmaPrim [ worker ].size ( ); ++ i )
-		backpropSigmaPrim [ worker ] [ i ].push_back ( 1 );
+	//for ( size_t i = 0; i < backpropSigmaPrim [ worker ].size ( ); ++ i )
+	//	backpropSigmaPrim [ worker ] [ i ].push_back ( 1 );
 
 	/* Delta for output layer */
 	backpropDelta [ worker ] [ weights.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ weights.size ( ) - 1 ] );
@@ -227,12 +227,12 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	/* Calculate deltaU */
 	for ( size_t currentLayer = 0; currentLayer < weights.size ( ); ++ currentLayer ) {
 
-		if ( currentLayer != 0 ) backpropDeltaU [ worker ] [ currentLayer ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], backpropA [ worker ] [ currentLayer - 1 ] );
-		else                     backpropDeltaU [ worker ] [ currentLayer ] = lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], currentDataset -> first );
+		if ( currentLayer != 0 ) lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], backpropA [ worker ] [ currentLayer - 1 ], backpropDeltaU [ worker ] [ currentLayer ] );
+		else                     lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], currentDataset -> first,                   backpropDeltaU [ worker ] [ currentLayer ] );
 
 	}
 
-	for ( auto & layer: backpropDeltaU [ worker ]) lib::matrixMulCoefficient ( learningSpeed, layer );
+	for ( auto & layer: backpropDeltaU [ worker ]) layer *= learningSpeed;
 
 	return & backpropDeltaU [ worker ];
 
