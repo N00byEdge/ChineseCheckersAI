@@ -43,6 +43,7 @@ class neural_network {
 		int nDatasets;
 
 		vector < vector < vector < vector < double > > > > backpropDeltaU;
+		vector < vector < vector < vector < double > > > > threadDeltaUStash;
 		vector < vector < vector < double > > > backpropSigmaPrim;
 		vector < vector < vector < double > > > backpropDelta;
 		vector < vector < vector < double > > > backpropA;

@@ -141,10 +141,16 @@ neural_network::neural_network ( istream & is ) {
 
 void neural_network::clearDeltaU ( ) {
 
-	for ( auto i: deltaU )
-		for ( auto j: i )
-			for ( auto k: j )
+	for ( auto & i: deltaU )
+		for ( auto & j: i )
+			for ( auto & k: j )
 				k = 0;
+
+	for ( auto & thread: threadDeltaUStash )
+		for ( auto & i: thread )
+			for ( auto & j: i )
+				for ( auto & k: j )
+					k = 0;
 
 }
 
@@ -176,6 +182,7 @@ void neural_network::setThreadVectors ( ) {
 
 	}
 
+	threadDeltaUStash = backpropDeltaU;
 	backpropSigmaPrim = backpropA;
 	backpropDelta = backpropA;
 
@@ -236,6 +243,8 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	}
 
 	for ( auto & layer: backpropDeltaU [ worker ]) layer *= learningSpeed;
+
+	threadDeltaUStash [ worker ] += backpropDeltaU [ worker ];
 
 	return & backpropDeltaU [ worker ];
 
@@ -301,11 +310,14 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	}
 
 	if ( datasetsQueue.size ( ) ) goto finishit;
-	weights += deltaU;
+
+	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
+		weights += threadDeltaUStash [ thread ];
 
 	skipbp:;
 
 	if ( nIterations % reportFrequency != 0 ) goto redoBP;
+	else printf("%lld iterations\n", nIterations);
 
 	/* Calculate error */
 	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i ) {
