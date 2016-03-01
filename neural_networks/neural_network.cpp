@@ -271,6 +271,8 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 	goto skipbp;
 
+	clearDeltaU ( );
+
 	redoBP:;
 
 	++ nIterations;
@@ -278,7 +280,6 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	/* Choose ceil ( sqrt ( datasetsArg.size ( ) ) ) random datasets */
 
 	datasetsQueue.clear ( );
-	clearDeltaU ( );
 
 	for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
 		datasetsQueue.push_back ( & datasetsArg [ lib::randInt ( datasetsArg.size ( ) ) ] );
@@ -305,19 +306,18 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 		assert ( workerThreads [ i ].joinable ( ) );
 
 		workerThreads [ i ].join ( );
-		deltaU += backpropDeltaU [ i ];
 
 	}
 
 	if ( datasetsQueue.size ( ) ) goto finishit;
 
-	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
-		weights += threadDeltaUStash [ thread ];
-
 	skipbp:;
 
 	if ( nIterations % reportFrequency != 0 ) goto redoBP;
 	else printf("%lld iterations\n", nIterations);
+	
+	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
+		weights += threadDeltaUStash [ thread ];
 
 	/* Calculate error */
 	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i ) {
