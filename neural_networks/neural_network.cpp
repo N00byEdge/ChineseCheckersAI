@@ -12,7 +12,7 @@ ostream & operator<< ( ostream & os, const neural_network & n ) {
 
 		for ( size_t j = 0; j < n.weights [ i ].size ( ); ++ j ) {
 
-			os << "\t\t" << n.weights [ i ] [ j ].size ( ) - 1 << " ";
+			os << "\t\t" << n.weights [ i ] [ j ].size ( ) << " ";
 
 			for ( size_t k = 0; k < n.weights [ i ] [ j ].size ( ); ++ k )
 				os << n.weights [ i ] [ j ] [ k ] << " ";
