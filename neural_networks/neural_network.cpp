@@ -183,8 +183,8 @@ void neural_network::setThreadVectors ( ) {
 	}
 
 	threadDeltaUStash = backpropDeltaU;
-	backpropSigmaPrim = backpropA;
-	backpropDelta = backpropA;
+	backpropSigmaPrim = backpropZ;
+	backpropDelta = backpropZ;
 
 }
 
@@ -217,20 +217,15 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 	}
 
-	/* Add bias to each sigmaPrim */
-	//for ( size_t i = 0; i < backpropSigmaPrim [ worker ].size ( ); ++ i )
-	//	backpropSigmaPrim [ worker ] [ i ].push_back ( 1 );
-
 	/* Delta for output layer */
 	backpropDelta [ worker ] [ weights.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ weights.size ( ) - 1 ] );
 
 	/* Delta for all other layers */
-	int currentLayer = weights.size ( ) - 2;
-	for ( ; currentLayer >= 0; -- currentLayer ) {
+	for ( size_t currentLayer = weights.size ( ) - 2; currentLayer >= 0; -- currentLayer ) {
 		vector < double > part1 = lib::matrixTransposeVectorMultiplication ( weights [ currentLayer + 1 ], backpropDelta [ worker ] [ currentLayer + 1 ] );
 		backpropDelta [ worker ] [ currentLayer ] = lib::vectorPairMul (
 			part1,
-			backpropSigmaPrim [ worker] [ currentLayer ]
+			backpropSigmaPrim [ worker ] [ currentLayer ]
 		);
 	}
 
