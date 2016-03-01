@@ -315,7 +315,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 	if ( nIterations % reportFrequency != 0 ) goto redoBP;
 	else printf("%lld iterations\n", nIterations);
-	
+
 	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
 		weights += threadDeltaUStash [ thread ];
 
@@ -324,18 +324,8 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 		vector < double > outdata = run ( datasetsArg [ i ].first );
 
-		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j ) {
-			if ( ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) != ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) ) {
-
-				cerr << "Fuck!\n";
-				cerr << deb ( weights [ weights.size ( ) - 1 ].size ( ) );
-				cerr << deb ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) << ", " << deb ( i ) << ", " << deb ( j ) << ", " << deb ( outdata ) << ", " << deb ( datasetsArg [ i ].second );
-				cin.ignore ( );
-
-
-			}
+		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j )
 			error += ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] );
-		}
 
 	}
 
