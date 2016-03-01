@@ -209,7 +209,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	for ( size_t i = 0; i < currentDataset -> second.size ( ); ++ i )
 		backpropDivergenceOutdata [ worker ] [ i ] = backpropA [ worker ] [ weights.size ( ) - 1 ] [ i ] - currentDataset -> second [ i ];
 
-	/* Calculate sigmaPrim = a-(1-a) */
+	/* Calculate sigmaPrim = phi(z)-(1-phi(z)) */
 	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
 
 		for ( size_t j = 0; j < weights [ i ].size ( ); ++ j )
