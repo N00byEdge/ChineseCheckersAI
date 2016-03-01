@@ -162,11 +162,12 @@ void neural_network::setThreadVectors ( ) {
 
 		backpropDeltaU [ i ] = deltaU;
 		backpropA [ i ].resize ( weights.size ( ) );
+		backpropZ [ i ].resize ( weights.size ( ) );
 
 		for ( size_t j = 0; j < weights.size ( ); ++ j ) {
 
 			if ( j == weights.size ( ) - 1 ) backpropDivergenceOutdata [ i ].resize ( weights [ j ].size ( ) );
-			
+
 			backpropA [ i ] [ j ].resize ( weights [ j ].size ( ) + 1 );
 			backpropZ [ i ] [ j ].resize ( weights [ j ].size ( ) );
 			backpropA [ i ] [ j ] [ backpropA [ i ] [ j ].size ( ) - 1 ] = 1;
@@ -186,7 +187,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	for ( int i = 0; i < backpropA [ worker ] [ 0 ].size ( ); ++ i )
 		backpropA [ worker ] [ 0 ] [ i ] = currentDataset -> first [ i ];
 	backpropA [ worker ] [ 0 ] [ backpropA [ worker ] [ 0 ].size ( ) - 1 ] = 1;
-	
+
 	for ( size_t i = 1; i < weights.size ( ); ++ i ) {
 
 		backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i - 1 ] );
