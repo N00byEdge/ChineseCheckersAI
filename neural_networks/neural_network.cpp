@@ -68,11 +68,9 @@ vector < double > neural_network::run ( vector < double > input ) {
 
 	vector < double > output;
 
-	for ( int i = 0; i < weights.size ( ); ++ i ) {
+	for ( auto & layer: weights ) {
 
-		//input.push_back ( 1.0L );
-
-		output = ( lib::matrixVectorMultiplication ( weights [ i ], input ) );
+		output = ( lib::matrixVectorMultiplication ( layer, input ) );
 
 		for ( size_t o = 0; o < output.size ( ); ++ o )
 			output [ o ] = lib::phi ( output [ o ] );
@@ -158,6 +156,7 @@ void neural_network::setThreadVectors ( ) {
 	backpropDivergenceOutdata.resize ( N_THREADS );
 	backpropSigmaPrim.resize ( N_THREADS );
 	backpropA.resize ( N_THREADS );
+	backpropZ.resize ( N_THREADS );
 
 	for ( size_t i = 0; i < N_THREADS; ++ i ) {
 
@@ -167,14 +166,15 @@ void neural_network::setThreadVectors ( ) {
 		for ( size_t j = 0; j < weights.size ( ); ++ j ) {
 
 			if ( j == weights.size ( ) - 1 ) backpropDivergenceOutdata [ i ].resize ( weights [ j ].size ( ) );
-
-			backpropA [ i ] [ j ].resize ( weights [ j ].size ( ) );
+			
+			backpropA [ i ] [ j ].resize ( weights [ j ].size ( ) + 1 );
+			backpropZ [ i ] [ j ].resize ( weights [ j ].size ( ) );
+			backpropA [ i ] [ j ] [ backpropA [ i ] [ j ].size ( ) - 1 ] = 1;
 
 		}
 
 	}
 
-	backpropZ = backpropA;
 	backpropSigmaPrim = backpropA;
 	backpropDelta = backpropA;
 
@@ -183,15 +183,17 @@ void neural_network::setThreadVectors ( ) {
 vector < vector < vector < double > > > * neural_network::workerFunc ( int worker, pair < vector < double >, vector < double > > * currentDataset ) {
 
 	/* Calculate a and z */
-	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
+	for ( int i = 0; i < backpropA [ worker ] [ 0 ].size ( ); ++ i )
+		backpropA [ worker ] [ 0 ] [ i ] = currentDataset -> first [ i ];
+	backpropA [ worker ] [ 0 ] [ backpropA [ worker ] [ 0 ].size ( ) - 1 ] = 1;
+	
+	for ( size_t i = 1; i < weights.size ( ); ++ i ) {
 
-		if ( i != 0 ) backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i - 1 ] );
-		else          backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], currentDataset -> first );
+		backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i - 1 ] );
 
-		for ( size_t j = 0; j < backpropA [ worker ] [ i ].size ( ); ++ j )
+		for ( size_t j = 0; j < backpropZ [ worker ] [ i ].size ( ); ++ j )
 			backpropA [ worker ] [ i ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
-
-		if ( i != weights.size ( ) - 1 ) backpropA [ worker ] [ i ].push_back ( 1 );
+		backpropA [ worker ] [ i ] [ backpropA [ worker ] [ i ].size ( ) - 1 ] = 1;
 
 	}
 
