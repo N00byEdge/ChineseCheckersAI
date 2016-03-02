@@ -312,7 +312,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 	if ( nIterations % reportFrequency != 0 ) goto redoBP;
 	else printf("%lld iterations\n", nIterations);
-	
+
 	error = 0;
 
 	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
