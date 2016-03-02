@@ -241,7 +241,7 @@ double lib::phi ( double v ) {
 
 }
 
-vector < vector < double > > lib::matrixMultiplication ( vector < vector < double > > & v1, vector < vector < double > > & v2 ) {
+vector < vector < double > > lib::matrixMultiplication ( const vector < vector < double > > & v1, const vector < vector < double > > & v2 ) {
 
 	vector < vector < double > > result;
 
@@ -287,7 +287,7 @@ vector < double > lib::matrixTransposeVectorMultiplication ( const vector < vect
 
 }
 
-vector < double > lib::vectorPairMul ( vector < double > & v1, vector < double > & v2 ) {
+vector < double > lib::vectorPairMul ( const vector < double > & v1, const vector < double > & v2 ) {
 
 	vector < double > result;
 
