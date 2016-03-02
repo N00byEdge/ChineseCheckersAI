@@ -256,8 +256,9 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	/* Adding a 1 to each datasetsArg input */
 	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
 		datasetsArg [ ds ].first.push_back ( 1 );
-
-	double error = 0;
+		
+	double error;
+		
 	long long nIterations = 0;
 
 	size_t t = 0;
@@ -311,6 +312,8 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 	if ( nIterations % reportFrequency != 0 ) goto redoBP;
 	else printf("%lld iterations\n", nIterations);
+	
+	error = 0;
 
 	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
 		weights += threadDeltaUStash [ thread ];
