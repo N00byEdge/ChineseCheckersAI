@@ -265,6 +265,8 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	vector < pair < vector < double >, vector < double > > * > datasetsQueue;
 
 	setThreadVectors ( );
+	
+	clearDeltaU ( );
 
 	goto skipbp;
 
