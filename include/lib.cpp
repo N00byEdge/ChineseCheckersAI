@@ -277,11 +277,11 @@ vector < double > lib::matrixVectorMultiplication ( const vector < vector < doub
 
 vector < double > lib::matrixTransposeVectorMultiplication ( const vector < vector < double > > & m, const vector < double > & v ) {
 
-	vector < double > result ( m.size ( ), 0 );
+	vector < double > result ( m[0].size ( ), 0 );
 
-	for ( size_t i = 0; i < m.size ( ); ++ i )
+	for ( size_t i = 0; i < m[0].size ( ); ++ i )
 		for ( size_t k = 0; k < v.size ( ); ++ k )
-			result [ i ] += m [ k ] [ i ] * v [ i ];
+			result [ i ] += m [ k ] [ i ] * v [ k ];
 
 	return result;
 
