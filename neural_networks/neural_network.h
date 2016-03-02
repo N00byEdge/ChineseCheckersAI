@@ -24,15 +24,15 @@ class neural_network {
 
 		vector < vector < vector < double > > > weights;
 
-		void learn ( vector < pair < vector < double >, vector < double > > > & datasets, double maxError, double learningSpeed, long long reportFrequency );
-		void learnDatabase ( database & db, double maxError, double learningSpeed, long long reportFrequency );
+		void learn ( vector < pair < vector < double >, vector < double > > > & datasets, double learningSpeed, double maxError, long long reportFrequency );
+		void learnDatabase ( database & db, double learningSpeed, double maxError, long long reportFrequency );
 
 	protected:
 
 	private:
 
 		vector < vector < vector < double > > > * workerFunc ( int, pair < vector < double >, vector < double > > * );
-		
+
 		void clearDeltaU ( );
 
 		void setThreadVectors ( );
@@ -49,7 +49,7 @@ class neural_network {
 		vector < vector < vector < double > > > backpropA;
 		vector < vector < vector < double > > > backpropZ;
 		vector < vector < double > > backpropDivergenceOutdata;
-		
+
 		vector < vector < vector < double > > > deltaU;
 
 };

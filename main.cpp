@@ -37,17 +37,17 @@ int main ( ) {
         cout << "Please enter the path to the database that you want to use: ";
 		string databaseFilePath;
 		getline ( cin, databaseFilePath );
-		
+
 		ifstream databaseFile;
 		databaseFile.open ( databaseFilePath );
 		database db;
 		if ( databaseFile.is_open ( ) )
 			databaseFile >> db;
-		
+
 		databaseFile.close ( );
-		
+
 		neural_network nw ( networkToTrain );
-		
+
 		cout << "What is the maximum accepted error? ";
 		long double maxError;
 		cin >> maxError;
@@ -62,7 +62,7 @@ int main ( ) {
 
 		cin.ignore ( );
 
-		nw.learnDatabase ( db, maxError, phi, reportTime );
+		nw.learnDatabase ( db, phi, maxError, reportTime );
 
 		cout << "Backprop done. Where do you want to save the file? ";
 		string outfile;

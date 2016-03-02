@@ -191,9 +191,9 @@ void neural_network::setThreadVectors ( ) {
 vector < vector < vector < double > > > * neural_network::workerFunc ( int worker, pair < vector < double >, vector < double > > * currentDataset ) {
 
 	/* Calculate a and z */
-	for ( int i = 0; i < backpropA [ worker ] [ 0 ].size ( ); ++ i )
+	for ( int i = 0; i < currentDataset -> first.size ( ); ++ i )
 		backpropA [ worker ] [ 0 ] [ i ] = currentDataset -> first [ i ];
-	backpropA [ worker ] [ 0 ] [ backpropA [ worker ] [ 0 ].size ( ) - 1 ] = 1;
+	backpropA [ worker ] [ 0 ] [ currentDataset -> first.size ( ) ] = 1;
 
 	for ( size_t i = 1; i < weights.size ( ); ++ i ) {
 
@@ -201,7 +201,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 		for ( size_t j = 0; j < backpropZ [ worker ] [ i ].size ( ); ++ j )
 			backpropA [ worker ] [ i ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
-		backpropA [ worker ] [ i ] [ backpropA [ worker ] [ i ].size ( ) - 1 ] = 1;
+		backpropA [ worker ] [ i ] [ backpropZ [ worker ] [ i ].size ( ) ] = 1;
 
 	}
 
@@ -238,7 +238,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 	}
 
-	for ( auto & layer: backpropDeltaU [ worker ]) layer *= learningSpeed;
+	for ( auto & layer: backpropDeltaU [ worker ] ) layer *= learningSpeed;
 
 	threadDeltaUStash [ worker ] += backpropDeltaU [ worker ];
 
@@ -246,11 +246,11 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 }
 
-void neural_network::learn ( vector < pair < vector < double >, vector < double > > > & datasetsArg, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
+void neural_network::learn ( vector < pair < vector < double >, vector < double > > > & datasetsArg, double _learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
 
 	if ( !datasetsArg.size ( ) ) return;
 
-	this -> learningSpeed = - learningSpeed / ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) );
+	this -> learningSpeed = - _learningSpeed / ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) );
 	this -> nDatasets = datasetsArg.size ( );
 
 	/* Adding a 1 to each datasetsArg input */
@@ -334,7 +334,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 }
 
-void neural_network::learnDatabase ( database & db, double maxError = 1e-7, double learningSpeed = 0.5, long long reportFrequency = 0 ) {
+void neural_network::learnDatabase ( database & db, double learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
 
 	vector < pair < vector < double >, vector < double > > > datasets;
 
