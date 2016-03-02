@@ -221,7 +221,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	backpropDelta [ worker ] [ weights.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ weights.size ( ) - 1 ] );
 
 	/* Delta for all other layers */
-	for ( size_t currentLayer = weights.size ( ) - 2;; -- currentLayer ) {
+	for ( size_t currentLayer = weights.size ( ) - 2; (long long) (weights.size()) - 1 > 0; -- currentLayer ) {
 		vector < double > part1 = lib::matrixTransposeVectorMultiplication ( weights [ currentLayer + 1 ], backpropDelta [ worker ] [ currentLayer + 1 ] );
 		backpropDelta [ worker ] [ currentLayer ] = lib::vectorPairMul (
 			part1,
@@ -256,9 +256,9 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	/* Adding a 1 to each datasetsArg input */
 	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
 		datasetsArg [ ds ].first.push_back ( 1 );
-		
+
 	double error;
-		
+
 	long long nIterations = 0;
 
 	size_t t = 0;
