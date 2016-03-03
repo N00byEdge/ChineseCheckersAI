@@ -220,7 +220,8 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	backpropDelta [ worker ] [ weights.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ weights.size ( ) - 1 ] );
 
 	/* Delta for all other layers */
-	for ( size_t currentLayer = weights.size ( ) - 2; (long long) (weights.size()) - 1 > 0; -- currentLayer ) {
+	for ( size_t currentLayer = weights.size ( ) - 2;; -- currentLayer ) {
+        if ( weights.size ( ) < 2 ) break;
 		vector < double > part1 = lib::matrixTransposeVectorMultiplication ( weights [ currentLayer + 1 ], backpropDelta [ worker ] [ currentLayer + 1 ] );
 		backpropDelta [ worker ] [ currentLayer ] = lib::vectorPairMul (
 			part1,
