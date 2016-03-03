@@ -23,7 +23,8 @@ void game::startGame ( int numPlayers ) {
 		<< "\t3: Randomizing agent\n"
 		<< "\t4: Neural agent\n"
 		<< "\t5: Statistical agent\n"
-		<< "\t6: Polynomial agent\n";
+		<< "\t6: Polynomial agent\n"
+		<< "\t7: Neural statistical agent\n";
 
 	while ( players.size ( ) < this -> numPlayers ) {
 
@@ -60,6 +61,10 @@ void game::startGame ( int numPlayers ) {
 			
 			case 6:
 				this -> players.push_back ( new agent_polynomial );
+				break;
+				
+			case 7:
+				this -> players.push_back ( new agent_neural_statistical );
 				break;
 
 			default:
