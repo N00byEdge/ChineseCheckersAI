@@ -24,8 +24,8 @@ class neural_network {
 
 		vector < vector < vector < double > > > weights;
 
-		void learn ( vector < pair < vector < double >, vector < double > > > & datasets, double learningSpeed, double maxError, long long reportFrequency );
-		void learnDatabase ( database & db, double learningSpeed, double maxError, long long reportFrequency );
+		void learn ( const vector < pair < vector < double >, vector < double > > > & datasets, double learningSpeed, double maxError, long long reportFrequency );
+		void learnDatabase ( const database & db, double learningSpeed, double maxError, long long reportFrequency );
 
 	protected:
 

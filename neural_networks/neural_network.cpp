@@ -197,7 +197,12 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 	for ( size_t i = 1; i < weights.size ( ); ++ i ) {
 
-		backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i - 1 ] );
+		if ( i != 0 ) backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i - 1 ] );
+		else {
+
+            backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], currentDataset -> first );
+
+		}
 
 		for ( size_t j = 0; j < backpropZ [ worker ] [ i ].size ( ); ++ j )
 			backpropA [ worker ] [ i ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
@@ -205,7 +210,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 	}
 
-	/* Calculate the outdata divergence, phi(z) - y = a - y */
+	/* Calculate the outdata divergence, a - y */
 	for ( size_t i = 0; i < currentDataset -> second.size ( ); ++ i )
 		backpropDivergenceOutdata [ worker ] [ i ] = backpropA [ worker ] [ weights.size ( ) - 1 ] [ i ] - currentDataset -> second [ i ];
 
@@ -246,12 +251,14 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 }
 
-void neural_network::learn ( vector < pair < vector < double >, vector < double > > > & datasetsArg, double _learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
+void neural_network::learn ( const vector < pair < vector < double >, vector < double > > > & _datasetsArg, double _learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
 
-	if ( !datasetsArg.size ( ) ) return;
+	if ( !_datasetsArg.size ( ) ) return;
 
-	this -> learningSpeed = - _learningSpeed / ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) );
-	this -> nDatasets = datasetsArg.size ( );
+	this -> learningSpeed = - _learningSpeed / ceil ( ( float ) sqrt ( _datasetsArg.size ( ) ) );
+	this -> nDatasets = _datasetsArg.size ( );
+
+    auto datasetsArg = _datasetsArg;
 
 	/* Adding a 1 to each datasetsArg input */
 	for ( size_t ds = 0; ds < datasetsArg.size ( ); ++ ds )
@@ -265,7 +272,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 	vector < pair < vector < double >, vector < double > > * > datasetsQueue;
 
 	setThreadVectors ( );
-	
+
 	clearDeltaU ( );
 
 	goto skipbp;
@@ -328,7 +335,11 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j )
 			error += ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] );
 
+        cerr << outdata << endl;
+
 	}
+
+	cerr << *this << endl;
 
 	/* Error should be divided by 2 times the number of datasets that we have */
 	error /= 2 * datasetsArg.size ( );
@@ -339,7 +350,7 @@ void neural_network::learn ( vector < pair < vector < double >, vector < double 
 
 }
 
-void neural_network::learnDatabase ( database & db, double learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
+void neural_network::learnDatabase ( const database & db, double learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
 
 	vector < pair < vector < double >, vector < double > > > datasets;
 
@@ -374,6 +385,6 @@ void neural_network::learnDatabase ( database & db, double learningSpeed, double
 
 	}
 
-	learn ( datasets, maxError, learningSpeed, reportFrequency );
+	learn ( datasets, learningSpeed, maxError, reportFrequency );
 
 }
