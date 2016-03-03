@@ -114,8 +114,6 @@ bool neural_network::init ( string source ) {
 
 neural_network::neural_network ( string source ) {
 
-	setThreadVectors ( );
-
 	if ( source.size ( ) && init ( source ) ) return;
 
 	string input;
@@ -169,7 +167,7 @@ void neural_network::setThreadVectors ( ) {
 		backpropDeltaU [ i ] = deltaU;
 		backpropA [ i ].resize ( weights.size ( ) + 1 );
 		backpropZ [ i ].resize ( weights.size ( ) );
-		if ( weights.size ( ) ) backpropA [ i ] [ 0 ].resize ( weights [ 0 ].size ( ) + 1 );
+		backpropA [ i ] [ 0 ].resize ( weights [ 0 ] [ 0 ].size ( ) );
 
 		for ( size_t j = 0; j < weights.size ( ); ++ j ) {
 
@@ -250,7 +248,7 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 
 	if ( !_datasetsArg.size ( ) ) return;
 
-	this -> learningSpeed = - _learningSpeed / ceil ( ( float ) sqrt ( _datasetsArg.size ( ) ) );
+	this -> learningSpeed = - _learningSpeed / ceil ( sqrt ( ( float ) _datasetsArg.size ( ) ) );
 	this -> nDatasets = _datasetsArg.size ( );
 
     auto datasetsArg = _datasetsArg;
@@ -284,6 +282,9 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 
 	for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
 		datasetsQueue.push_back ( & datasetsArg [ lib::randInt ( datasetsArg.size ( ) ) ] );
+		
+	/*for ( size_t i = 0; i < datasetsArg.size ( ); ++ i )
+		datasetsQueue.push_back ( & datasetsArg [ i ] );*/
 
 	/* Reset deltaU */
 
@@ -330,11 +331,7 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 		for ( size_t j = 0; j < datasetsArg [ i ].second.size ( ); ++ j )
 			error += ( datasetsArg [ i ].second [ j ] - outdata [ j ] ) * ( datasetsArg [ i ].second [ j ] - outdata [ j ] );
 
-        cerr << outdata << endl;
-
 	}
-
-	cerr << *this << endl;
 
 	/* Error should be divided by 2 times the number of datasets that we have */
 	error /= 2 * datasetsArg.size ( );
