@@ -167,14 +167,15 @@ void neural_network::setThreadVectors ( ) {
 	for ( size_t i = 0; i < N_THREADS; ++ i ) {
 
 		backpropDeltaU [ i ] = deltaU;
-		backpropA [ i ].resize ( weights.size ( ) );
+		backpropA [ i ].resize ( weights.size ( ) + 1 );
 		backpropZ [ i ].resize ( weights.size ( ) );
+		if ( weights.size ( ) ) backpropA [ i ] [ 0 ].resize ( weights [ 0 ].size ( ) + 1 );
 
 		for ( size_t j = 0; j < weights.size ( ); ++ j ) {
 
 			if ( j == weights.size ( ) - 1 ) backpropDivergenceOutdata [ i ].resize ( weights [ j ].size ( ) );
 
-			backpropA [ i ] [ j ].resize ( weights [ j ].size ( ) + 1 );
+			backpropA [ i ] [ j + 1 ].resize ( weights [ j ].size ( ) + 1 );
 			backpropZ [ i ] [ j ].resize ( weights [ j ].size ( ) );
 			backpropA [ i ] [ j ] [ backpropA [ i ] [ j ].size ( ) - 1 ] = 1;
 
@@ -193,26 +194,19 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	/* Calculate a and z */
 	for ( int i = 0; i < currentDataset -> first.size ( ); ++ i )
 		backpropA [ worker ] [ 0 ] [ i ] = currentDataset -> first [ i ];
-	backpropA [ worker ] [ 0 ] [ currentDataset -> first.size ( ) ] = 1;
 
-	for ( size_t i = 1; i < weights.size ( ); ++ i ) {
+	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
 
-		if ( i != 0 ) backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i - 1 ] );
-		else {
-
-            backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], currentDataset -> first );
-
-		}
+		backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i ] );
 
 		for ( size_t j = 0; j < backpropZ [ worker ] [ i ].size ( ); ++ j )
-			backpropA [ worker ] [ i ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
-		backpropA [ worker ] [ i ] [ backpropZ [ worker ] [ i ].size ( ) ] = 1;
+			backpropA [ worker ] [ i + 1 ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
 
 	}
 
 	/* Calculate the outdata divergence, a - y */
 	for ( size_t i = 0; i < currentDataset -> second.size ( ); ++ i )
-		backpropDivergenceOutdata [ worker ] [ i ] = backpropA [ worker ] [ weights.size ( ) - 1 ] [ i ] - currentDataset -> second [ i ];
+		backpropDivergenceOutdata [ worker ] [ i ] = backpropA [ worker ] [ weights.size ( ) ] [ i ] - currentDataset -> second [ i ];
 
 	/* Calculate sigmaPrim = phi(z)-(1-phi(z)) */
 	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
@@ -238,8 +232,8 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	/* Calculate deltaU */
 	for ( size_t currentLayer = 0; currentLayer < weights.size ( ); ++ currentLayer ) {
 
-		if ( currentLayer != 0 ) lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], backpropA [ worker ] [ currentLayer - 1 ], backpropDeltaU [ worker ] [ currentLayer ] );
-		else                     lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], currentDataset -> first,                   backpropDeltaU [ worker ] [ currentLayer ] );
+		if ( currentLayer != 0 ) lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], backpropA [ worker ] [ currentLayer ], backpropDeltaU [ worker ] [ currentLayer ] );
+		else                     lib::vectorsToMatrix ( backpropDelta [ worker ] [ currentLayer ], currentDataset -> first,               backpropDeltaU [ worker ] [ currentLayer ] );
 
 	}
 
