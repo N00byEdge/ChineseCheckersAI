@@ -241,9 +241,13 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 void neural_network::learn ( const vector < pair < vector < double >, vector < double > > > & _datasetsArg, double _learningSpeed, double maxError = 1e-7, long long reportFrequency = 0 ) {
 
+	random_device localRD;
+	mt19937 mersenneTwister ( localRD ( ) );
+	//mt19937_64 mersenneTwister ( localRD ( ) );
+
 	if ( !_datasetsArg.size ( ) ) return;
 
-	this -> learningSpeed = - _learningSpeed / ceil ( sqrt ( ( float ) _datasetsArg.size ( ) ) );
+	this -> learningSpeed = - _learningSpeed / N_THREADS / N_RUNS;
 	this -> nDatasets = _datasetsArg.size ( );
 
     auto datasetsArg = _datasetsArg;
@@ -277,9 +281,11 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 
 	/*for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
 		datasetsQueue.push_back ( & datasetsArg [ lib::randInt ( datasetsArg.size ( ) ) ] );*/
-		
+
 	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i )
 		datasetsQueue.push_back ( & datasetsArg [ i ] );
+
+	shuffle ( datasetsQueue.begin ( ), datasetsQueue.end ( ), mersenneTwister );
 
 	finishit:;
 
@@ -303,11 +309,15 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 		workerThreads [ i ].join ( );
 
 	}
-	
-	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
+
+	if ( nIterations % N_RUNS == 0 ) {
+
+		for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
 		weights += threadDeltaUStash [ thread ];
-		
-	clearDeltaU ( );
+
+		clearDeltaU ( );
+
+	}
 
 	if ( datasetsQueue.size ( ) ) goto finishit;
 
