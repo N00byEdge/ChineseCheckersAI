@@ -139,11 +139,6 @@ neural_network::neural_network ( istream & is ) {
 
 void neural_network::clearDeltaU ( ) {
 
-	for ( auto & i: deltaU )
-		for ( auto & j: i )
-			for ( auto & k: j )
-				k = 0;
-
 	for ( auto & thread: threadDeltaUStash )
 		for ( auto & i: thread )
 			for ( auto & j: i )
@@ -280,13 +275,11 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 
 	datasetsQueue.clear ( );
 
-	for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
-		datasetsQueue.push_back ( & datasetsArg [ lib::randInt ( datasetsArg.size ( ) ) ] );
+	/*for ( size_t i = 0; i < ceil ( ( float ) sqrt ( datasetsArg.size ( ) ) ); ++ i )
+		datasetsQueue.push_back ( & datasetsArg [ lib::randInt ( datasetsArg.size ( ) ) ] );*/
 		
-	/*for ( size_t i = 0; i < datasetsArg.size ( ); ++ i )
-		datasetsQueue.push_back ( & datasetsArg [ i ] );*/
-
-	/* Reset deltaU */
+	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i )
+		datasetsQueue.push_back ( & datasetsArg [ i ] );
 
 	finishit:;
 
@@ -310,6 +303,11 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 		workerThreads [ i ].join ( );
 
 	}
+	
+	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
+		weights += threadDeltaUStash [ thread ];
+		
+	clearDeltaU ( );
 
 	if ( datasetsQueue.size ( ) ) goto finishit;
 
@@ -319,9 +317,6 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 	else printf("%lld iterations\n", nIterations);
 
 	error = 0;
-
-	for ( size_t thread = 0; thread < threadDeltaUStash.size ( ); ++ thread )
-		weights += threadDeltaUStash [ thread ];
 
 	/* Calculate error */
 	for ( size_t i = 0; i < datasetsArg.size ( ); ++ i ) {
