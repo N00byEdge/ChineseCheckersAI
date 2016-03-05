@@ -241,60 +241,68 @@ double lib::phi ( double v ) {
 
 }
 
-vector < vector < double > > lib::matrixMultiplication ( const vector < vector < double > > & v1, const vector < vector < double > > & v2 ) {
-
-	vector < vector < double > > result;
+void lib::matrixMultiplication ( const vector < vector < double > > & v1, const vector < vector < double > > & v2, vector < vector < double > > & r ) {
 
 	for ( size_t row = 0; row < v1.size ( ); ++ row ) {
 
-		result.push_back ( * new vector < double > );
-
 		for ( size_t column = 0; column < v1.size ( ); ++ column ) {
 
-			result [ row ].push_back ( 0 );
+			r [ row ] [ column ] = 0;
 
-			for ( size_t inner = 0; inner < v2.size ( ); ++ inner ) result [ row ] [ column ] += v1 [ row ] [ inner ] * v2 [ inner ] [ column ];
+			for ( size_t inner = 0; inner < v2.size ( ); ++ inner ) r [ row ] [ column ] += v1 [ row ] [ inner ] * v2 [ inner ] [ column ];
 
 		}
 
 	}
 
-	return result;
+}
+
+void lib::matrixVectorMultiplication ( const vector < vector < double > > & m, const vector < double > & v, vector < double > & r ) {
+
+	for ( size_t i = 0; i < m.size ( ); ++ i ) {
+
+		r [ i ] = 0;
+
+		for ( size_t k = 0; k < v.size ( ); ++ k )
+			r [ i ] += m [ i ] [ k ] * v [ k ];
+
+	}
 
 }
 
 vector < double > lib::matrixVectorMultiplication ( const vector < vector < double > > & m, const vector < double > & v ) {
 
-	vector < double > result ( m.size ( ), 0 );
+	vector < double > result;
 
-	for ( size_t i = 0; i < m.size ( ); ++ i )
+	for ( size_t i = 0; i < m.size ( ); ++ i ) {
+
+		result.push_back ( 0 );
+		
 		for ( size_t k = 0; k < v.size ( ); ++ k )
 			result [ i ] += m [ i ] [ k ] * v [ k ];
 
+	}
+	
 	return result;
 
 }
 
-vector < double > lib::matrixTransposeVectorMultiplication ( const vector < vector < double > > & m, const vector < double > & v ) {
+void lib::matrixTransposeVectorMultiplication ( const vector < vector < double > > & m, const vector < double > & v, vector < double > & r ) {
 
-	vector < double > result ( m[0].size ( ), 0 );
+	for ( size_t i = 0; i < m [ 0 ].size ( ); ++ i ) {
 
-	for ( size_t i = 0; i < m[0].size ( ); ++ i )
+		r [ i ] = 0;
+
 		for ( size_t k = 0; k < v.size ( ); ++ k )
-			result [ i ] += m [ k ] [ i ] * v [ k ];
-
-	return result;
+			r [ i ] += m [ k ] [ i ] * v [ k ];
+	}
 
 }
 
-vector < double > lib::vectorPairMul ( const vector < double > & v1, const vector < double > & v2 ) {
-
-	vector < double > result;
+void lib::vectorPairMul ( const vector < double > & v1, const vector < double > & v2, vector < double > & r ) {
 
 	for ( size_t i = 0; i < v1.size ( ) && i < v2.size ( ); ++ i )
-		result.push_back ( v1 [ i ] * v2 [ i ] );
-
-	return result;
+		r [ i ] = v1 [ i ] * v2 [ i ];
 
 }
 

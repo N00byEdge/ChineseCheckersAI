@@ -45,6 +45,7 @@ class neural_network {
 		vector < vector < vector < vector < double > > > > backpropDeltaU;
 		vector < vector < vector < vector < double > > > > threadDeltaUStash;
 		vector < vector < vector < double > > > backpropSigmaPrim;
+		vector < vector < vector < double > > > backpropPart1;
 		vector < vector < vector < double > > > backpropDelta;
 		vector < vector < vector < double > > > backpropA;
 		vector < vector < vector < double > > > backpropZ;

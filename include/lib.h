@@ -20,13 +20,15 @@ namespace lib {
 	void vectorsToMatrix ( vector < double > &, vector < double > &, vector < vector < double > > & );
 	double intToIndata ( int i, int player );
 
-    vector < double > matrixMul ( vector < vector < double > > &, vector < double > & );
-	vector < vector < double > > matrixMultiplication ( const vector < vector < double > > &, const vector < vector < double > > & );
 
-	vector < double > matrixVectorMultiplication ( const vector < vector < double > > &, const vector < double > & );
-	vector < double > matrixTransposeVectorMultiplication ( const vector < vector < double > > &, const vector < double > & );
+    void matrixMul ( vector < vector < double > > &, vector < double > &, vector < double > & );
+	void matrixMultiplication ( const vector < vector < double > > &, const vector < vector < double > > &, vector < vector < double > > & );
 
-    vector < double > vectorPairMul ( const vector < double > &, const vector < double > & );
+	void matrixVectorMultiplication ( const vector < vector < double > > &, const vector < double > &, vector < double > & );
+    vector < double > matrixVectorMultiplication ( const vector < vector < double > > &, const vector < double > & );
+	void matrixTransposeVectorMultiplication ( const vector < vector < double > > &, const vector < double > &, vector < double > & );
+
+    void vectorPairMul ( const vector < double > &, const vector < double > &, vector < double > & );
 
 	/* Please only use datasets if you need to. While they work, they don't do much for AI (read our paper) */
 	vector < pair < vector < double >, vector < double > > > getDatasets ( istream & is );

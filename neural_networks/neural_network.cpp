@@ -68,9 +68,11 @@ vector < double > neural_network::run ( vector < double > input ) {
 
 	vector < double > output;
 
-	for ( auto & layer: weights ) {
+	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
 
-		output = ( lib::matrixVectorMultiplication ( layer, input ) );
+        output.resize ( weights [ weights.size ( ) - 1 ].size ( ) );
+
+		output = lib::matrixVectorMultiplication ( weights [ i ], input );
 
 		for ( size_t o = 0; o < output.size ( ); ++ o )
 			output [ o ] = lib::phi ( output [ o ] );
@@ -179,6 +181,7 @@ void neural_network::setThreadVectors ( ) {
 	threadDeltaUStash = backpropDeltaU;
 	backpropSigmaPrim = backpropZ;
 	backpropDelta = backpropZ;
+	backpropPart1 = backpropA;
 
 }
 
@@ -190,7 +193,7 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 
 	for ( size_t i = 0; i < weights.size ( ); ++ i ) {
 
-		backpropZ [ worker ] [ i ] = lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i ] );
+		lib::matrixVectorMultiplication ( weights [ i ], backpropA [ worker ] [ i ], backpropZ [ worker ] [ i ] );
 
 		for ( size_t j = 0; j < backpropZ [ worker ] [ i ].size ( ); ++ j )
 			backpropA [ worker ] [ i + 1 ] [ j ] = lib::phi ( backpropZ [ worker ] [ i ] [ j ] );
@@ -210,16 +213,13 @@ vector < vector < vector < double > > > * neural_network::workerFunc ( int worke
 	}
 
 	/* Delta for output layer */
-	backpropDelta [ worker ] [ weights.size ( ) - 1 ] = lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ weights.size ( ) - 1 ] );
+	lib::vectorPairMul ( backpropDivergenceOutdata [ worker ], backpropSigmaPrim [ worker ] [ weights.size ( ) - 1 ], backpropDelta [ worker ] [ weights.size ( ) - 1 ] );
 
 	/* Delta for all other layers */
 	for ( size_t currentLayer = weights.size ( ) - 2;; -- currentLayer ) {
         if ( weights.size ( ) < 2 ) break;
-		vector < double > part1 = lib::matrixTransposeVectorMultiplication ( weights [ currentLayer + 1 ], backpropDelta [ worker ] [ currentLayer + 1 ] );
-		backpropDelta [ worker ] [ currentLayer ] = lib::vectorPairMul (
-			part1,
-			backpropSigmaPrim [ worker ] [ currentLayer ]
-		);
+		lib::matrixTransposeVectorMultiplication ( weights [ currentLayer + 1 ], backpropDelta [ worker ] [ currentLayer + 1 ], backpropPart1 [ worker ] [ currentLayer ] );
+		lib::vectorPairMul ( backpropPart1 [ worker ] [ currentLayer + 1 ], backpropSigmaPrim [ worker ] [ currentLayer ], backpropDelta [ worker ] [ currentLayer ] );
 		if ( currentLayer == 0 ) break;
 	}
 
