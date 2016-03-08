@@ -342,6 +342,10 @@ void neural_network::learn ( const vector < pair < vector < double >, vector < d
 	error /= 2 * datasetsArg.size ( );
 
 	cout << "Error: " << error << endl << flush;
+	ofstream tempWrite;
+    tempWrite.open ( filename + ".tmp" /*+ to_string ( nIterations )*/ );
+    tempWrite << *this;
+    tempWrite.close ( );
 
 	if ( error > maxError ) goto redoBP;
 

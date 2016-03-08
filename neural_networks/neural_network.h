@@ -27,6 +27,8 @@ class neural_network {
 		void learn ( const vector < pair < vector < double >, vector < double > > > & datasets, double learningSpeed, double maxError, long long reportFrequency );
 		void learnDatabase ( const database & db, double learningSpeed, double maxError, long long reportFrequency );
 
+		string filename = "Neural Networks/temp.nn";
+
 	protected:
 
 	private:

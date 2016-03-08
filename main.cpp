@@ -67,6 +67,7 @@ int main ( ) {
 
 		cin.ignore ( );
 
+        nw.filename = networkToTrain;
 		nw.learnDatabase ( db, phi, maxError, reportTime );
 
 		cout << "Backprop done. Where do you want to save the file? ";
