@@ -15,7 +15,7 @@ class agent_polynomial : public agent {
 
 		double scoreBoard ( board & b, int player );
 
-		vector < float > p;
+		vector < double > p;
 
 	protected:
 
