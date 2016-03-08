@@ -15,6 +15,8 @@ void automatedGame::startGame (  ) {
 
 	for ( int i = 0;  5; ++ i ) {
 
+        if ( 10000 < turn ) break;
+
 		if ( this -> numPlayers <= i ) { i = 0; ++ turn; }
 
 		board_turn t;
@@ -71,8 +73,6 @@ void automatedGame::startGame (  ) {
             db.addToDB ( playerBoardStrings [ i ] [ j ], won );
 
         }
-
-		if ( 10000 < turn ) break;
 
 	}
 
