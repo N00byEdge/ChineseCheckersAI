@@ -104,6 +104,10 @@ void genetics::nextGeneration ( ) {
 
 void genetics::natrualSelection ( unsigned u, string algo ) {
 
+    size_t genepoolTargetSize = genepool.size ( );
+
+    nextGeneration ( );
+
     vector < double > fitnesses ( genepool.size ( ), 0 );
 
     if ( algo == "agent_polynomial" ) fitnesses = fitnessPolynomialAgents ( );
@@ -114,7 +118,7 @@ void genetics::natrualSelection ( unsigned u, string algo ) {
 
 	sort ( fitnessesPaired.begin ( ), fitnessesPaired.end ( ), greater < pair < double, vector < double > > > ( ) );
 
-	fitnessesPaired.resize ( genepool.size ( ) );
+	fitnessesPaired.resize ( genepoolTargetSize );
 
 	for ( size_t i = 0; i < genepool.size ( ); ++ i ) genepool [ i ] = fitnessesPaired [ i ].second;
 
