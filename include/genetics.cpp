@@ -15,6 +15,7 @@ vector < double > genetics::fitnessPolynomialAgents ( ) {
 
             automatedGame game;
             game.players = { & firstAgent, & secondAgent };
+            game.startGame ( );
 
             totalTurnsToWin [ firstAgentN ] += game.turnsToWin [ 0 ];
             totalTurnsToWin [ secondAgentN ] += game.turnsToWin [ 1 ];

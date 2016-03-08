@@ -2,6 +2,8 @@
 
 void automatedGame::startGame (  ) {
 
+    masterBoard.resetBoard ( players.size ( ) );
+
 	vector < bool > hasWon ( players.size( ) + 1, false );
 	turnsToWin.resize ( players.size( ) );
 	for ( auto & e: turnsToWin ) e = -1;
