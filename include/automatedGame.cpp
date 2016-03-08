@@ -4,6 +4,7 @@ void automatedGame::startGame (  ) {
 
 	vector < bool > hasWon ( players.size( ) + 1, false );
 	turnsToWin.resize ( players.size( ) );
+	for ( e: turnsToWin ) e = -1;
 
 	int turn = 0;
 
@@ -68,6 +69,8 @@ void automatedGame::startGame (  ) {
             db.addToDB ( playerBoardStrings [ i ] [ j ], won );
 
         }
+		
+		if ( 10000 < turn ) break;
 
 	}
 
