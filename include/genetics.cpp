@@ -1,5 +1,35 @@
 #include <genetics.h>
 
+#include <automatedGame.h>
+
+vector < double > genetics::fitnessPolynomialAgents ( ) {
+
+    vector < double > totalTurnsToWin ( genepool.size ( ), 0 );
+
+    for ( size_t firstAgentN = 0; firstAgentN < genepool.size ( ); ++ firstAgentN ) {
+
+        for ( size_t secondAgentN = 0; secondAgentN < firstAgentN; ++ secondAgentN ) {
+
+            agent_polynomial firstAgent ( genepool [ firstAgentN ] );
+            agent_polynomial secondAgent ( genepool [ secondAgentN ] );
+
+            automatedGame game;
+            game.players = { & firstAgent, & secondAgent };
+
+            totalTurnsToWin [ firstAgentN ] += game.turnsToWin [ 0 ];
+            totalTurnsToWin [ secondAgentN ] += game.turnsToWin [ 1 ];
+
+        }
+
+    }
+
+    /* We also multiply by -1, since a lower number of turns means higher fitness. */
+    for ( auto & entry: totalTurnsToWin ) entry /= - (genepool.size ( ) -1);
+
+    return totalTurnsToWin;
+
+}
+
 bool operator< ( pair < double, vector < double > > & l, pair < double, vector < double > > & r ) {
 
 	/* FIXME: make this faster by only having the payload be an index */
@@ -7,9 +37,24 @@ bool operator< ( pair < double, vector < double > > & l, pair < double, vector <
 
 }
 
+void genetics::randomizeGenepool ( size_t nSets, size_t nGenomesPerSet, size_t minRand, size_t maxRand ) {
+
+    normal_distribution < double > dist ( 0, 0.5 );
+
+    genepool.resize ( nSets );
+    for ( auto & g: genepool ) g.resize ( nGenomesPerSet );
+
+    for ( size_t n = 0; n < nSets; ++ n )
+        for ( size_t g = 0; g < nGenomesPerSet; ++ g )
+            genepool [ n ] [ g ] = dist ( rd );
+
+    cerr << genepool << endl;
+
+}
+
 genetics::genetics ( ): eng ( rd ( ) )  { }
 
-double genetics::randomDouble ( double r1, double r2 ) {
+    double genetics::randomDouble ( double r1, double r2 ) {
 
 	uniform_real_distribution < double > dist ( r1, r2 );
 
@@ -56,9 +101,12 @@ void genetics::nextGeneration ( ) {
 
 }
 
-void genetics::natrualSelection ( unsigned u, vector < double > ( * fitnessFunc ) ( vector < vector < double > > ) ) {
+void genetics::natrualSelection ( unsigned u, string algo ) {
 
-	vector < double > fitnesses = fitnessFunc ( genepool );
+    vector < double > fitnesses ( genepool.size ( ), 0 );
+
+    if ( algo == "agent_polynomial" ) fitnesses = fitnessPolynomialAgents ( );
+
 	vector < pair < double, vector < double > > > fitnessesPaired;
 
 	for ( size_t i = 0; i < genepool.size ( ); ++ i ) fitnessesPaired.push_back ( { fitnesses [ i ], genepool [ i ] } );
@@ -68,5 +116,7 @@ void genetics::natrualSelection ( unsigned u, vector < double > ( * fitnessFunc 
 	fitnessesPaired.resize ( genepool.size ( ) );
 
 	for ( size_t i = 0; i < genepool.size ( ); ++ i ) genepool [ i ] = fitnessesPaired [ i ].second;
+
+	cerr << genepool << endl;
 
 }

@@ -9,15 +9,18 @@ class genetics {
 		genetics ( );
 
     	void nextGeneration ( );
-		
+
 		vector < vector < double > > genepool;
-		
-		void natrualSelection ( unsigned, vector < double > ( * fitnessFunc ) ( vector < vector < double > > ) );
+		vector < double > fitnessPolynomialAgents ( );
+
+		void randomizeGenepool ( size_t, size_t, size_t, size_t );
+
+		void natrualSelection ( unsigned, string );
 
 	protected:
 
 	private:
-	
+
 		random_device rd;
 		mt19937_64 eng;
 		double randomDouble ( double, double );

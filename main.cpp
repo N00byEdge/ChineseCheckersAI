@@ -2,6 +2,7 @@
 
 #include <game.h>
 #include <neural_network.h>
+#include <genetics.h>
 
 #include <lib.h>
 #include <fstream>
@@ -24,6 +25,10 @@ int main ( ) {
     }
     #endif
 
+    genetics femg;
+    femg.randomizeGenepool ( 200, 45, -0.5, 0.5 );
+    femg.fitnessPolynomialAgents ( );
+    femg.natrualSelection ( 200, "agent_polynomial" );
 	string networkToTrain;
 
 	getNetworkToTrain:;
