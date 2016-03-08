@@ -9,6 +9,7 @@ class agent_polynomial : public agent {
 	public:
 
 		agent_polynomial ( );
+		agent_polynomial ( vector < double > );
 
 		board_turn doTurn ( board, int );
 

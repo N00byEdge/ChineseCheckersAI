@@ -102,3 +102,5 @@ agent_polynomial::agent_polynomial ( ): p ( 45, 1.0f ) {
 
 
 }
+
+agent_polynomial::agent_polynomial ( vector < double > _p ): p( _p ) { }
