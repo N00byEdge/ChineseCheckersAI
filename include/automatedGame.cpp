@@ -4,7 +4,7 @@ void automatedGame::startGame (  ) {
 
 	vector < bool > hasWon ( players.size( ) + 1, false );
 	turnsToWin.resize ( players.size( ) );
-	for ( auto e: turnsToWin ) e = -1;
+	for ( auto & e: turnsToWin ) e = -1;
 
 	int turn = 0;
 
