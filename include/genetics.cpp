@@ -112,7 +112,7 @@ void genetics::natrualSelection ( unsigned u, string algo ) {
 
 	for ( size_t i = 0; i < genepool.size ( ); ++ i ) fitnessesPaired.push_back ( { fitnesses [ i ], genepool [ i ] } );
 
-	sort ( fitnessesPaired.begin ( ), fitnessesPaired.end ( ), less < pair < double, vector < double > > > ( ) );
+	sort ( fitnessesPaired.begin ( ), fitnessesPaired.end ( ), greater < pair < double, vector < double > > > ( ) );
 
 	fitnessesPaired.resize ( genepool.size ( ) );
 
