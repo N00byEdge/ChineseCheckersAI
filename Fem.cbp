@@ -193,6 +193,8 @@
 		<Unit filename="agents/agent_statistical.cpp" />
 		<Unit filename="agents/agent_statistical.h" />
 		<Unit filename="agents/include_agents.h" />
+		<Unit filename="include/automatedGame.cpp" />
+		<Unit filename="include/automatedGame.h" />
 		<Unit filename="include/board.cpp" />
 		<Unit filename="include/board.h" />
 		<Unit filename="include/board_move.cpp" />
