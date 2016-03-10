@@ -110,7 +110,7 @@ void genetics::nextGeneration ( size_t u ) {
 
 	}
 
-	for ( size_t i = 0; i < u; ++ i ) {
+	for ( size_t i = 0; i < u - genepool.size ( ); ++ i ) {
 
 		offspring.push_back ( defaultOffspring );
 		size_t randGenome = dist ( eng );
@@ -119,7 +119,7 @@ void genetics::nextGeneration ( size_t u ) {
 
 	}
 
-	genepool = offspring;
+	genepool.insert ( genepool.end ( ), offspring.begin ( ), offspring.end ( ) );
 
 }
 
