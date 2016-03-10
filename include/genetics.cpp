@@ -8,7 +8,7 @@
 
 vector < double > genetics::fitnessPolynomialAgents ( ) {
 
-	std::cout << "kör den här koden äns?\n" << std::flush;
+	std::cout << "kör den här koden ens?\n" << std::flush;
 
     vector < double > totalTurnsToWin ( genepool.size ( ), 0 );
 
@@ -39,6 +39,8 @@ vector < double > genetics::fitnessPolynomialAgents ( ) {
         }
 
     }
+
+    std::cout << totalTurnsToWin << "\n" << std::flush;
 
     /* We also multiply by -1, since a lower number of turns means higher fitness. */
     for ( auto & entry: totalTurnsToWin ) entry /= - (genepool.size ( ) -1);
