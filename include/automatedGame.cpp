@@ -15,7 +15,7 @@ void automatedGame::startGame (  ) {
 
 	for ( int i = 0;  5; ++ i ) {
 
-        if ( 500 < turn ) break;
+        if ( 200 < turn ) break;
 
 		if ( this -> numPlayers <= i ) { i = 0; ++ turn; }
 

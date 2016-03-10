@@ -18,21 +18,23 @@ vector < double > genetics::fitnessPolynomialAgents ( ) {
 
     for ( size_t firstAgentN = 0; firstAgentN < genepool.size ( ); ++ firstAgentN ) {
 
-        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < ( firstAgentN + min ( ( size_t ) 7, genepool.size ( ) ) ) % genepool.size ( ); ++ secondAgentN ) {
+        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < firstAgentN + min ( ( size_t ) 7, genepool.size ( ) ); ++ secondAgentN ) {
 
-        	std::cout << "initiating game " << firstAgentN << " vs " << secondAgentN << "\n" << std::flush;
+        	size_t secondAgentN2 = secondAgentN % genepool.size ( );
+
+        	std::cout << "initiating game " << firstAgentN << " vs " << secondAgentN2 << "\n" << std::flush;
 
             agent_polynomial firstAgent ( genepool [ firstAgentN ] );
-            agent_polynomial secondAgent ( genepool [ secondAgentN ] );
+            agent_polynomial secondAgent ( genepool [ secondAgentN2 ] );
 
             automatedGame game;
             game.players = { & firstAgent, & secondAgent };
             game.startGame ( );
 
-            std::cout << "game " << firstAgentN << " vs " << secondAgentN << " finished\n" << std::flush;
+            std::cout << "game " << firstAgentN << " vs " << secondAgentN2 << " finished\n" << std::flush;
 
             totalTurnsToWin [ firstAgentN ] += game.turnsToWin [ 0 ];
-            totalTurnsToWin [ secondAgentN ] += game.turnsToWin [ 1 ];
+            totalTurnsToWin [ secondAgentN2 ] += game.turnsToWin [ 1 ];
 
         }
 
