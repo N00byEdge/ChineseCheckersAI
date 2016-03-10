@@ -8,7 +8,7 @@ class genetics {
 
 		genetics ( );
 
-    	void nextGeneration ( );
+    	void nextGeneration ( size_t );
 
 		vector < vector < double > > genepool;
 		vector < double > fitnessPolynomialAgents ( );

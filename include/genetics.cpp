@@ -79,7 +79,9 @@ genetics::genetics ( ): eng ( rd ( ) )  { }
 
 }
 
-void genetics::nextGeneration ( ) {
+void genetics::nextGeneration ( size_t u ) {
+
+    uniform_int_distribution < int > dist ( 0, genepool.size ( ) );
 
 	if ( !genepool.size ( ) || !genepool [ 0 ].size ( ) ) {
 
@@ -106,11 +108,12 @@ void genetics::nextGeneration ( ) {
 
 	}
 
-	for ( size_t i = 0; i < defaultOffspring.size ( ); ++ i ) {
+	for ( size_t i = 0; i < u; ++ i ) {
 
 		offspring.push_back ( defaultOffspring );
-		offspring [ offspring.size ( ) - 1 ] [ i ] *= randomDouble ( -1.5f, 1.5f );
-		offspring [ offspring.size ( ) - 1 ] [ i ] += randomDouble ( -0.3f, 0.3f );
+		size_t randGenome = dist ( eng );
+		offspring [ offspring.size ( ) - 1 ] [ randGenome ] *= randomDouble ( -1.5f, 1.5f );
+		offspring [ offspring.size ( ) - 1 ] [ randGenome ] += randomDouble ( -0.3f, 0.3f );
 
 	}
 
@@ -122,7 +125,7 @@ void genetics::natrualSelection ( unsigned u, string algo ) {
 
     size_t genepoolTargetSize = genepool.size ( );
 
-    nextGeneration ( );
+    nextGeneration ( u );
 
     vector < double > fitnesses ( genepool.size ( ), 0 );
 
