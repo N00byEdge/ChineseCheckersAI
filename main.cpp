@@ -26,7 +26,7 @@ int main ( ) {
     #endif
 
     genetics femg;
-    femg.randomizeGenepool ( 200, 45, -0.5, 0.5 );
+    femg.randomizeGenepool ( 10, 45, -0.5, 0.5 );
     femg.fitnessPolynomialAgents ( );
     femg.natrualSelection ( 200, "agent_polynomial" );
 	string networkToTrain;

@@ -2,13 +2,19 @@
 
 #include <automatedGame.h>
 
+#include <algorithm>
+
+#include <iostream>
+
 vector < double > genetics::fitnessPolynomialAgents ( ) {
 
     vector < double > totalTurnsToWin ( genepool.size ( ), 0 );
 
+     std::random_shuffle ( genepool.begin ( ), genepool.end ( ) );
+
     for ( size_t firstAgentN = 0; firstAgentN < genepool.size ( ); ++ firstAgentN ) {
 
-        for ( size_t secondAgentN = 0; secondAgentN < firstAgentN; ++ secondAgentN ) {
+        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < firstAgentN + min ( ( size_t ) 7, genepool.size ( ) ); ++ secondAgentN ) {
 
             agent_polynomial firstAgent ( genepool [ firstAgentN ] );
             agent_polynomial secondAgent ( genepool [ secondAgentN ] );
@@ -16,6 +22,8 @@ vector < double > genetics::fitnessPolynomialAgents ( ) {
             automatedGame game;
             game.players = { & firstAgent, & secondAgent };
             game.startGame ( );
+
+            std::cout << firstAgentN << " " << secondAgentN << std::endl;
 
             totalTurnsToWin [ firstAgentN ] += game.turnsToWin [ 0 ];
             totalTurnsToWin [ secondAgentN ] += game.turnsToWin [ 1 ];
