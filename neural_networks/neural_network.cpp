@@ -181,7 +181,7 @@ void neural_network::setThreadVectors ( ) {
 	threadDeltaUStash = backpropDeltaU;
 	backpropSigmaPrim = backpropZ;
 	backpropDelta = backpropZ;
-	backpropPart1 = backpropA;
+	backpropPart1 = backpropZ;
 
 }
 
