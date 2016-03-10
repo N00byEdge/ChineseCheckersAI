@@ -8,13 +8,19 @@
 
 vector < double > genetics::fitnessPolynomialAgents ( ) {
 
+	std::cout << "kör den här koden äns?\n" << std::flush;
+
     vector < double > totalTurnsToWin ( genepool.size ( ), 0 );
 
-     std::random_shuffle ( genepool.begin ( ), genepool.end ( ) );
+    std::random_shuffle ( genepool.begin ( ), genepool.end ( ) );
+
+    std::cout << "dags att börja loooopa\n" << std::flush;
 
     for ( size_t firstAgentN = 0; firstAgentN < genepool.size ( ); ++ firstAgentN ) {
 
-        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < firstAgentN + min ( ( size_t ) 7, genepool.size ( ) ); ++ secondAgentN ) {
+        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < ( firstAgentN + min ( ( size_t ) 7, genepool.size ( ) ) ) % genepool.size ( ); ++ secondAgentN ) {
+
+        	std::cout << "initiating game " << firstAgentN << " vs " << secondAgentN << "\n" << std::flush;
 
             agent_polynomial firstAgent ( genepool [ firstAgentN ] );
             agent_polynomial secondAgent ( genepool [ secondAgentN ] );
@@ -23,7 +29,7 @@ vector < double > genetics::fitnessPolynomialAgents ( ) {
             game.players = { & firstAgent, & secondAgent };
             game.startGame ( );
 
-            std::cout << firstAgentN << " " << secondAgentN << std::endl;
+            std::cout << "game " << firstAgentN << " vs " << secondAgentN << " finished\n" << std::flush;
 
             totalTurnsToWin [ firstAgentN ] += game.turnsToWin [ 0 ];
             totalTurnsToWin [ secondAgentN ] += game.turnsToWin [ 1 ];
