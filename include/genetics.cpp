@@ -121,7 +121,7 @@ void genetics::nextGeneration ( size_t u ) {
 
 }
 
-void genetics::natrualSelection ( unsigned u, string algo ) {
+void genetics::naturalSelection ( unsigned u, string algo ) {
 
     size_t genepoolTargetSize = genepool.size ( );
 

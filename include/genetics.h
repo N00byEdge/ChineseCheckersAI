@@ -15,7 +15,7 @@ class genetics {
 
 		void randomizeGenepool ( size_t, size_t, size_t, size_t );
 
-		void natrualSelection ( unsigned, string );
+		void naturalSelection ( unsigned, string );
 
 	protected:
 
