@@ -18,7 +18,7 @@ vector < double > genetics::fitnessPolynomialAgents ( ) {
 
     for ( size_t firstAgentN = 0; firstAgentN < genepool.size ( ); ++ firstAgentN ) {
 
-        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < firstAgentN + min ( ( size_t ) 7, genepool.size ( ) ); ++ secondAgentN ) {
+        for ( size_t secondAgentN = firstAgentN + 1; secondAgentN < firstAgentN + min ( ( size_t ) 7, genepool.size ( ) - 1 ); ++ secondAgentN ) {
 
         	size_t secondAgentN2 = secondAgentN % genepool.size ( );
 
