@@ -83,7 +83,11 @@ genetics::genetics ( ): eng ( rd ( ) )  { }
 
 void genetics::nextGeneration ( size_t u ) {
 
-    uniform_int_distribution < int > dist ( 0, genepool.size ( ) );
+    if ( !genepool.size ( ) ) return;
+
+    cerr << genepool << endl << flush;
+
+    uniform_int_distribution < int > dist ( 0, genepool [ 0 ].size ( ) );
 
 	if ( !genepool.size ( ) || !genepool [ 0 ].size ( ) ) {
 
