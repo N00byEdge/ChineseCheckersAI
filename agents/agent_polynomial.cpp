@@ -36,7 +36,7 @@ double agent_polynomial::scoreBoard ( board & b, int player ) {
 												  p [ i * 5 + 32 ] )
 									  * pow (
 										  	  y + p [ i * 5 + 33 ],
-												  p [ i * 5 + 33 ] );
+												  p [ i * 5 + 34 ] );
 
 
 	}
@@ -89,7 +89,7 @@ board_turn agent_polynomial::doTurn ( board b, int player ) {
 	for ( size_t i = 0; i < turns.size ( ); ++ i ) if ( b.canMakeTurn ( turns [ i ] ) ) possibleTurns.push_back ( { 5.0f, turns [ i ] } );
 	for ( size_t i = 0; i < possibleTurns.size ( ); ++ i ) possibleTurns [ i ].first = scoreTurn ( possibleTurns [ i ].second, b, player );
 
-	sort ( possibleTurns.begin ( ), possibleTurns.end ( ) );
+	sort ( possibleTurns.begin ( ), possibleTurns.end ( ), greater < pair < double, board_turn > > ( ) );
 
 	possibleTurns [ 0 ].second.rotate ( 6 - boardRotations );
 
