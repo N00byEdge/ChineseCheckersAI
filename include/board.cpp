@@ -2217,6 +2217,48 @@ float board::score ( int player ) {
 	return score;
 }
 
+double board::polynomialScore ( int player, vector < double > & p ) {
+	
+	double score = 0.0f;
+
+	vector < tile * > playerTiles = getPlayerTiles ( player );
+
+	for ( size_t i = 0; i < playerTiles.size ( ); ++ i ) {
+
+		double y = playerTiles [ i ] -> getCoordinates ( ).second;
+		double x = abs ( playerTiles [ i ] -> getCoordinates ( ).first - getMiddleXCoord ( y ) );
+
+		/* [2/8/16, 5:19 PM]: */
+		/* 5 st    15 doubles */
+		//c(y+a)**e
+		for ( unsigned i = 0; i < 5; ++ i )
+			score += p [ i * 3 ] * pow (
+										 y + p [ i * 3 + 1 ],
+											 p [ i * 3 + 2 ] );
+
+		/* 5 st    15 doubles */
+		//c(x+a)**e
+		for ( unsigned i = 0; i < 5; ++ i )
+			score += p [ i * 3 + 15 ] * pow (
+											  y + p [ i * 3 + 16 ],
+												  p [ i * 3 + 17 ] );
+
+		/* 3 st    15 doubles */
+		//c(x+a)**e(y+b)**f
+		for ( unsigned i = 0; i < 3; ++ i )
+			score += p [ i * 5 + 30 ] * pow (
+											  x + p [ i * 5 + 31 ],
+												  p [ i * 5 + 32 ] )
+									  * pow (
+										  	  y + p [ i * 5 + 33 ],
+												  p [ i * 5 + 33 ] );
+
+
+	}
+	
+	return score;
+}
+
 vector < board_turn > board::findAllPossibleTurns ( int player ) {
 
 	vector < board_turn > allPossibleTurns;

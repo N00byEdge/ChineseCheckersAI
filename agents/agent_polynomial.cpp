@@ -49,7 +49,7 @@ double agent_polynomial::scoreTurn ( board_turn & t, board & b, int player ) {
 
 	board dummyBoard = b;
 	dummyBoard.makeTurn ( t );
-	return scoreBoard ( dummyBoard, player );
+	return dummyBoard.polynomialScore ( player, p );
 
 }
 

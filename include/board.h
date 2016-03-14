@@ -45,6 +45,7 @@ class board {
 		float getMiddleXCoord ( int y );
 
 		float score ( int player );
+		double polynomialScore ( int, vector < double > & );
 
 		tile * intToTile ( int in );
 
