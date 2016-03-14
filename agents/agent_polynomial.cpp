@@ -89,11 +89,23 @@ board_turn agent_polynomial::doTurn ( board b, int player ) {
 	for ( size_t i = 0; i < turns.size ( ); ++ i ) if ( b.canMakeTurn ( turns [ i ] ) ) possibleTurns.push_back ( { 5.0f, turns [ i ] } );
 	for ( size_t i = 0; i < possibleTurns.size ( ); ++ i ) possibleTurns [ i ].first = scoreTurn ( possibleTurns [ i ].second, b, player );
 
-	sort ( possibleTurns.begin ( ), possibleTurns.end ( ), greater < pair < double, board_turn > > ( ) );
+	auto bestTurnScore = possibleTurns [ 0 ].first;
+	auto bestTurn = possibleTurns [ 0 ].second;
 
-	possibleTurns [ 0 ].second.rotate ( 6 - boardRotations );
+	for ( auto & e: possibleTurns ) {
+		
+		if ( e.first > bestTurnScore ) {
+			
+			bestTurnScore = e.first;
+			bestTurn = e.second;
+			
+		}
+		
+	}
 
-	return possibleTurns [ 0 ].second;
+	bestTurn.rotate ( 6 - boardRotations );
+
+	return bestTurn;
 
 }
 
