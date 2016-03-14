@@ -2251,7 +2251,7 @@ double board::polynomialScore ( int player, vector < double > & p ) {
 												  p [ i * 5 + 32 ] )
 									  * pow (
 										  	  y + p [ i * 5 + 33 ],
-												  p [ i * 5 + 33 ] );
+												  p [ i * 5 + 34 ] );
 
 
 	}
