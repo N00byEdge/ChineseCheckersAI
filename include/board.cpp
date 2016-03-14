@@ -2223,10 +2223,10 @@ double board::polynomialScore ( int player, vector < double > & p ) {
 
 	vector < tile * > playerTiles = getPlayerTiles ( player );
 
-	for ( size_t i = 0; i < playerTiles.size ( ); ++ i ) {
+	for ( size_t pt = 0; pt < playerTiles.size ( ); ++ pt ) {
 
-		double y = playerTiles [ i ] -> getCoordinates ( ).second;
-		double x = abs ( playerTiles [ i ] -> getCoordinates ( ).first - getMiddleXCoord ( y ) );
+		double y = playerTiles [ pt ] -> getCoordinates ( ).second;
+		double x = abs ( playerTiles [ pt ] -> getCoordinates ( ).first - getMiddleXCoord ( y ) );
 
 		/* [2/8/16, 5:19 PM]: */
 		/* 5 st    15 doubles */
